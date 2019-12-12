@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1772966563",
+    "firebase_url": "https://spreezy-643e2.firebaseio.com",
+    "project_id": "spreezy-643e2",
+    "storage_bucket": "spreezy-643e2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1772966563:android:e51609e89ff54987e76516",
+        "android_client_info": {
+          "package_name": "com.push"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1772966563-cisknbs171v2q7r0ctelkj47sj1f0k9p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.push",
+            "certificate_hash": "122c911c9f0e40f0082195b50a56194767f7098d"
+          }
+        },
+        {
+          "client_id": "1772966563-0k2p42oqrtg3l8ikdgjq9v2h5uqnpdas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAtKYjL0OuFLs7q4d6DDvbIsqS11NxO4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1772966563-0k2p42oqrtg3l8ikdgjq9v2h5uqnpdas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
