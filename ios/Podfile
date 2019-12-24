@@ -3,6 +3,17 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 target 'push' do
   # Pods for push
+
+  pod 'Firebase/Auth', '~> 6.13.0'
+  pod 'Firebase/Core', '~> 6.13.0'
+#  pod 'Firebase/Database', '~> 6.13.0'
+#  pod 'Firebase/Functions', '~> 6.13.0'
+#  pod 'Firebase/DynamicLinks', '~> 6.13.0'
+  pod 'Firebase/Firestore', '~> 6.13.0'
+  pod 'Firebase/Messaging', '~> 6.13.0'
+#  pod 'Firebase/RemoteConfig', '~> 6.13.0'
+#  pod 'Firebase/Storage', '~> 6.13.0'
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
