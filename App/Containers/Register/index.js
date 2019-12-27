@@ -9,6 +9,7 @@ import firebase from 'react-native-firebase';
 
 import { connect } from 'react-redux'
 import AuthActions from '../../Stores/Auth/Actions'
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Register extends Component {
 
@@ -30,10 +31,10 @@ class Register extends Component {
     createProfile = async () => {
         let {email, pass, name} = this.state;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
-        .then(() => {
+        .then(async () => {
             console.log('done');
-            // let token = await AsyncStorage
-            // this.props.createUser(email, name, token);
+            let token = await AsyncStorage.getItem('fcmToken');
+            this.props.createUser(email, name, token);
             
         })
         .catch(err => {
@@ -86,7 +87,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    createUser: (newUser) => dispatch(AuthActions.createUserRequest(newUser)),
+    createUser: (email, name, token) => dispatch(AuthActions.createUserRequest(email, name, token)),
 })
 
 export default connect(
