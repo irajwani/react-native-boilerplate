@@ -37,6 +37,8 @@ const Metrics = {
     large: 60,
     logo: 200,
   },
+
+  platform: Platform.OS,
 }
 
 export default Metrics

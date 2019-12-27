@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, SafeAreaView, Image, AsyncStorage } from 'react-native'
+import { Text, SafeAreaView, Image } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 
 // import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk'
 import NavigationService from '../../Services/NavigationService'
@@ -10,18 +11,63 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux'
 
 import styles from './styles'
+import { Metrics } from '../../Theme';
 
 
 const splashScreenDuration = 1500
 
 class SplashScreen extends React.Component {
 
-    componentDidMount = () => {
+    componentDidMount = async () => {
+      Metrics.platform == 'android' ? this.createChannel() : null;
+      this.checkPermission();
+      this.createNotificationListeners();
       setTimeout(() => {
-        // this.showAppOrAuth();
-        NavigationService.navigate('AppStack');
+        this.showAppOrAuth();
+        
       }, splashScreenDuration);
         
+    }
+
+    createChannel() {
+      const channel = new firebase.notifications.Android.Channel('insider', 'insider channel', firebase.notifications.Android.Importance.Max)
+      firebase.notifications().android.createChannel(channel);
+    }
+
+    async getToken() {
+      let fcmToken = await AsyncStorage.getItem('fcmToken');
+      if (!fcmToken) {
+          fcmToken = await firebase.messaging().getToken();
+          if (fcmToken) {
+            alert(fcmToken);
+              await AsyncStorage.setItem('fcmToken', fcmToken);
+          }
+        }
+    }
+    
+    async checkPermission() {
+        const enabled = await firebase.messaging().hasPermission();
+        if (enabled) {
+            this.getToken();
+        } else {
+            this.requestPermission();
+        }
+    }
+    
+    async requestPermission() {
+        try {
+            await firebase.messaging().requestPermission();
+            this.getToken();
+        } catch (error) {
+            console.log('permission rejected');
+        }
+    }
+    
+    async createNotificationListeners() {
+        firebase.notifications().onNotification(notification => {
+            notification.android.setChannelId('insider').setSound('default')
+            firebase.notifications().displayNotification(notification)
+        });
     }
 
     showAppOrAuth = () => {

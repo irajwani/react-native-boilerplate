@@ -23,6 +23,11 @@ export class Welcome extends Component {
                 onPress={()=>NavigationService.navigate('Login')}  
                 />
 
+                <AuthButton
+                text={"Sign Up"}
+                onPress={()=>NavigationService.navigate('Register')}  
+                />
+
             </Container>
         )
     }

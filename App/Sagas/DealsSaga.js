@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects'
-import { AsyncStorage } from 'react-native'
+// import { AsyncStorage } from 'react-native'
 import DealsActions from '../Stores/Deals/Actions'
 import { videoService } from '../Services/VideoService'
 import NavigationService from '../Services/NavigationService'
