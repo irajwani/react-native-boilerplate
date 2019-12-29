@@ -34,7 +34,12 @@ class Register extends Component {
         .then(async () => {
             console.log('done');
             let token = await AsyncStorage.getItem('fcmToken');
-            this.props.createUser(email, name, token);
+            let newUser = {
+                email,
+                username: name, 
+                token,
+            }
+            this.props.createUser(newUser);
             
         })
         .catch(err => {
@@ -87,7 +92,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    createUser: (email, name, token) => dispatch(AuthActions.createUserRequest(email, name, token)),
+    createUser: (newUser) => dispatch(AuthActions.createUserRequest(newUser)),
 })
 
 export default connect(

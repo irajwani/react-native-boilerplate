@@ -36,10 +36,11 @@ class SplashScreen extends React.Component {
 
     async getToken() {
       let fcmToken = await AsyncStorage.getItem('fcmToken');
+      console.log(fcmToken);
       if (!fcmToken) {
           fcmToken = await firebase.messaging().getToken();
           if (fcmToken) {
-            alert(fcmToken);
+            
               await AsyncStorage.setItem('fcmToken', fcmToken);
           }
         }
@@ -65,6 +66,7 @@ class SplashScreen extends React.Component {
     
     async createNotificationListeners() {
         firebase.notifications().onNotification(notification => {
+            //spruce up notification styles
             notification.android.setChannelId('insider').setSound('default')
             firebase.notifications().displayNotification(notification)
         });

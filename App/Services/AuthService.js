@@ -22,8 +22,8 @@ const apiClient = create({
 
 let fulfilled = (response) => response
 
-function createUser(email, username, token) {
-  return apiClient.post(`/createUser`, {email, username, token}).then(fulfilled)
+function createUser(newUser) {
+  return apiClient.post(`/createUser`, newUser).then(fulfilled)
 }
 
 export const authService = {
