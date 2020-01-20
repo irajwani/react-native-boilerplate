@@ -10,6 +10,8 @@ const background = {
     primary: "#D3D4D8"
   }
 
+
+  
   const shadow = '#D3D4D8';
   
   export default {
@@ -21,7 +23,12 @@ const background = {
     green: '#2b663d',
     //Example colors:
     text: '#212529',
-    primary: '#007bff',
+
+
+    primary: '#4fb8be',
+    secondary: "#ff3ac8",
+
+
     success: '#28a745',
     lightgreen: '#337546',
     error: '#dc3545',

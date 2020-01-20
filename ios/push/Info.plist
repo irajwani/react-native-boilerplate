@@ -57,5 +57,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  
+  <key>NSCameraUsageDescription</key>
+  <string>Push would like your permission to access your camera, to capture/edit a profile picture.</string>
+  
+  <!-- Required with iOS 11 and higher: include this only if you are planning to use the camera roll -->
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>Push would like your permission to add pictures to your photo library.</string>
+  
+  <!-- Include this only if you are planning to use the camera roll -->
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>Push would like your permission to access your photo library, to capture/edit a profile picture.</string>
+  
+  <!-- Include this only if you are planning to use the microphone for video recording -->
+<!--  <key>NSMicrophoneUsageDescription</key>-->
+<!--  <string>Your message to user when the microphone is accessed for the first time</string>-->
+
 </dict>
 </plist>

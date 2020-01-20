@@ -12,6 +12,7 @@ const DrawerNavigator = createDrawerNavigator(
     
   },
   {
+    initialRouteName: "HomeStack",
     drawerBackgroundColor: Colors.background.drawerNavigator,
     drawerPosition: 'left',
     drawerType: 'slide', // maybe this should be front,

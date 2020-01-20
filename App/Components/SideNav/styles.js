@@ -5,15 +5,42 @@ import { Colors, Metrics, Fonts, ApplicationStyles } from '../../Theme'
 
 export default StyleSheet.create({
   ...ApplicationStyles,
-  ratingContainer: {
-    width: (64 * 0.65) * 5,
-    marginLeft: (Metrics.screenWidth - ((64 * 0.65) * 5)) / 2,
-    display: 'flex',
+  profileContainer: {
+    flex: 0.1,
+    borderColor: Colors.grey,
+    borderBottomWidth: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
+  },
+
+  drawer: {
+    backgroundColor: "#fff",
+    flex: 0.9,
+    // width: (64 * 0.65) * 5,
+    // marginLeft: (Metrics.screenWidth - ((64 * 0.65) * 5)) / 2,
+    // display: 'flex',
     // flexDirection: 'row',
     // justifyContent: 'center',
-    position: 'relative',
-    height: (54 * 0.65),
+    // position: 'relative',
+    // height: (54 * 0.65),
   },
+
+  drawerItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    // backgroundColor: Colors.background.drawerNavigator,
+    marginHorizontal: 10,
+    marginVertical: 10,
+    height: 40,
+  },
+
+  drawerItem: {
+    color: Colors.black,
+    ...Fonts.style.h3,
+  },
+
   ratingImages: {
     position: 'absolute',
     left: 0,
@@ -38,17 +65,5 @@ export default StyleSheet.create({
     marginLeft: -1,
   },
 
-  drawerItemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: Colors.background.drawerNavigator,
-    marginVertical: 2,
-    height: 40,
-  },
-
-  drawerItem: {
-    color: Colors.white,
-    ...Fonts.style.normal,
-  }
+  
 })

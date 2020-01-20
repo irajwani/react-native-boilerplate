@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import Colors from './Colors'
 
 export default StyleSheet.create({
   fill: {
@@ -147,4 +148,17 @@ export default StyleSheet.create({
   fullWidth: {
     width: '100%',
   },
+
+
+  thinBorder: {
+    borderColor: 'black',
+    borderWidth: 0.8
+  },
+
+  thinBottomBorder: {
+    borderColor: Colors.grey,
+    borderBottomWidth: 1.3
+  },
+
+
 })

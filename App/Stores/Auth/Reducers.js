@@ -7,9 +7,10 @@ export const createUserRequest = (state, {newUser}) => ({
   newUser,
 })
 
-export const createUserSuccess = (state) => {
+export const createUserSuccess = (state, {message}) => {
   return {
     ...state,
+    message,
     registerStatus: true
     // deals: [{title: 'Top Rated', deals}],
   }

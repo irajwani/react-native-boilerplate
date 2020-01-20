@@ -6,7 +6,7 @@ import sagaPlugin from 'reactotron-redux-saga'
 if (__DEV__) {
   // https://github.com/infinitered/reactotron for more options!
   Reactotron
-    .configure({ name: 'vidpk' })
+    .configure({ name: 'push-mobile-app' })
     // .configure({ name: 'PKWY Tavern - TEAM' , host : '192.168.0.8'})
     .useReactNative()
     .use(reduxPlugin({ onRestore: Immutable }))

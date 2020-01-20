@@ -1,46 +1,46 @@
 const size = {
-    h1: 38,
-    h2: 34,
+    h1: 40,
+    h2: 32,
     h3: 30,
     h4: 24,
-    input: 18,
-    big: 20,
-    regular: 17,
-    medium: 14,
+    input: 16,
+    big: 24,
+    regular: 16,
+    medium: 16,
     small: 12,
   }
   
   const style = {
     h1: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.h1,
     },
     h2: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.h2,
     },
     h3: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.h3,
     },
     h4: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.h4,
     },
     big: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.big,
     },
     normal: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.regular,
     },
     medium: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.medium
     },
     small: {
-      fontFamily: 'Avenir Next',
+      fontFamily: 'Helvetica',
       fontSize: size.small
     },
   }

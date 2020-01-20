@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet, View, SafeAreaView } from 'react-native'
 import { Colors } from '../../Theme'
 
-const Container = ({children}) => (
-    <View style={styles.container}>
+const Container = ({children, style = null} ) => (
+    <View style={[styles.container, style ? style : null]}>
         {children}
     </View>
 )
