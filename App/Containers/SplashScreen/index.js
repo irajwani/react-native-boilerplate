@@ -14,7 +14,7 @@ import styles from './styles'
 import { Metrics } from '../../Theme';
 
 let companyName = "Wafadaar"
-const splashScreenDuration = 2000
+const splashScreenDuration = 200;
 // FIRST CONTAINER REACT COMPONENT THAT MOUNTS
 class SplashScreen extends React.Component {
 
@@ -89,21 +89,9 @@ class SplashScreen extends React.Component {
               NavigationService.navigate('AppStack');
             }
             else {
+              NavigationService.navigate('AuthStack');
               console.log("USER DISCONNECTED")
-              let newUser = await AsyncStorage.getItem('newUser');
-              if(newUser == 'false') {
-                NavigationService.navigate('AuthStack', {newUser: false});
-              }
-              else {
-                AsyncStorage.setItem('newUser', 'false', () => {
-                  //since this person is a new user, show them tutorials screen,
-                  //and also set newUser to false so they don't see tutorial in future
-                  NavigationService.navigate('AuthStack', {newUser: true});
-                });
-              }
-              
-              
-              
+
             }
     
             

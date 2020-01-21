@@ -11,6 +11,7 @@ import Tutorial from '../Tutorial';
 import { Colors, Fonts, Images, Strings, Helpers, Metrics } from '../../Theme';
 import AuthInput from '../../Components/Input/AuthInput';
 import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
  // '[DEFAULT]'
 
@@ -25,12 +26,94 @@ export class Welcome extends Component {
 
             email: '',
             pass: '',
+
+            saveUsernamePass: true,
         }
         // console.log(props.navigation.state.params.newUser)
         // this.newUser = props.navigation.state.params.newUser;
     }
 
+    async componentWillMount () {
+       
+        let newUser = await AsyncStorage.getItem('newUser');
+        AsyncStorage.getItem('saveUsernamePass')
+        .then( (data) => {
+            // console.log(data);
+            this.setState({saveUsernamePass: data == "true" ? true : false}, () => {
+                if(this.state.saveUsernamePass) {
+                    AsyncStorage.multiGet(['previousEmail', 'previousPassword'] ).then((data)=> {
+                        this.setState({email: data[0][1] ? data[0][1] : '', pass: data[1][1] ? data[1][1] : '', }) 
+                    })
+                }
+                
+            })
+        })
+        .then( () => {
+            if(newUser == 'false') {
+                this.setState({newUser: false})
+            }
+            else {
+                AsyncStorage.setItem('newUser', 'false', () => {
+                    //since this person is a new user, show them tutorials screen,
+                    //and also set newUser to false so they don't see tutorial in future
+                    this.setState({newUser: true})
+                });
+            }
+            
+        })
+        .catch( () => {
+            console.log("Error Retrieving Data")
+        })
+
+        
+        
+    }
+
+    signIn = () => {
+        let {email, pass} = this.state;
+        firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then(() => {
+            firebase.auth().onAuthStateChanged( (user) => {
+                if(user) {
+                    this.state.saveUsernamePass ? AsyncStorage.multiSet([ ['previousEmail', email], ['previousPassword', pass] ]) : null;
+                    NavigationService.navigate('AppStack')
+                }
+            })
+            
+        })
+        .catch(err => {
+            console.log('failed because' + err);
+        })
+    }
+
+    toggleSaveUsernamePass = () => {
+        this.setState({saveUsernamePass: !this.state.saveUsernamePass}, () => {
+            AsyncStorage.setItem('saveUsernamePass', this.state.saveUsernamePass ? "true" : "false");
+        });
+    }
+
+    
+
+
     toggleNewUser = () => this.setState({newUser: !this.state.newUser})
+
+    renderRememberHelper = () => (
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15, marginHorizontal: 15}}>
+            <View style={{ justifyContent: 'center', alignItems: 'flex-start', marginHorizontal: 5}}>
+                <TouchableOpacity 
+                onPress={this.toggleSaveUsernamePass} 
+                style={{backgroundColor: this.state.saveUsernamePass ? 'red' : 'transparent',height: 25, width: 25, borderWidth: 2, borderColor: '#fff', justifyContent: 'center', alignItems: 'center'}}
+                >
+
+                </TouchableOpacity>
+                    
+                
+            </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 5}}>
+                <Text onPress={this.toggleSaveUsernamePass}>Remember Username & Password</Text>
+            </View>
+        </View>
+    )
 
     renderTutorialOrWelcome = () => {
         
@@ -70,12 +153,13 @@ export class Welcome extends Component {
                     />
 
                     <AuthInput
-                        placeholder={'Pass'}
+                        placeholder={'Password'}
                         value={this.state.pass}
                         onChangeText={pass => this.setState({pass})}
-                        keyboardType={'email'}
                         secureTextEntry
                     />
+
+                    {this.renderRememberHelper()}
                     
                     <View style={styles.forgotPassContainer}>
                         <Text style={styles.forgotPass}>Forgot Password?</Text>
@@ -84,7 +168,7 @@ export class Welcome extends Component {
                     <View style={styles.buttonContainer}>
                         <AuthButton
                             text={"Login"}
-                            onPress={()=>NavigationService.navigate('Login')}  
+                            onPress={this.signIn}  
                         />
                     </View>
                     
@@ -93,21 +177,14 @@ export class Welcome extends Component {
                 <View style={styles.footerContainer}>
                     <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.white}]}>New User? <Text style={[styles.footerPurple, {color: Colors.secondary}]}>Sign Up</Text></Text>
                 </View>
-                {/* <AuthButton
-                text={"Login"}
-                onPress={()=>NavigationService.navigate('Login')}  
-                />
-
-                <AuthButton
-                text={"Sign Up"}
-                onPress={()=>NavigationService.navigate('Register')}  
-                /> */}
+                
             </ImageBackground>
             </Container>
     )}
 
     render() {
-        // alert((firebase.auth().sign));
+        console.log("HI")
+        console.log(this.props.navigation.state);
         return (
             this.renderTutorialOrWelcome()
         )
@@ -115,11 +192,11 @@ export class Welcome extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    // user: state.user
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    logIn: () => dispatch(AuthActions.logIn()),
+    // logIn: () => dispatch(AuthActions.logIn()),
 })
 
 export default connect(

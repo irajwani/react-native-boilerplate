@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
 
 import Container from '../../Components/Container'
 import AuthInput from '../../Components/Input/AuthInput'
@@ -10,6 +10,9 @@ import firebase from 'react-native-firebase';
 import { connect } from 'react-redux'
 import AuthActions from '../../Stores/Auth/Actions'
 import AsyncStorage from '@react-native-community/async-storage';
+
+import styles from './styles';
+import SelectPictures from '../../Components/SelectPictures';
 
 class Register extends Component {
 
@@ -48,8 +51,21 @@ class Register extends Component {
     }
 
     render() {
+        let {navigation} = this.props;
+        var pictureuris = navigation.getParam('pictureuris', "nothing here");
         return (
-            <Container>
+            <Container style={{marginHorizontal: 10}}>
+
+            <View style={styles.headerContainer}>
+                
+            </View>
+
+            <View style={styles.pictureContainer}>
+                <SelectPictures navToComponent={'CreateProfile'} pictureuris={pictureuris} />
+            </View>
+
+            <ScrollView style={styles.fieldsContainer} contentContainerStyle={styles.fieldsContentContainer}>
+
                 <AuthInput
                     placeholder={'Username'}
                     value={this.state.name}
@@ -72,10 +88,14 @@ class Register extends Component {
                     secureTextEntry
                 />
 
+            </ScrollView>
+
+            <View style={styles.buttonContainer}>
                 <AuthButton
                     text={"Sign Up"}
                     onPress={this.createProfile}
                 />
+            </View>
 
 
 

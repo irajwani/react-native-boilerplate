@@ -17,7 +17,7 @@ const AuthInput = ({placeholder, onChangeText, value, secureTextEntry, keyboardT
         multiline={false}
         
         autoCorrect={false}
-        autoCapitalize={false}
+        autoCapitalize={'none'}
         clearButtonMode={'while-editing'}
         underlineColorAndroid={"transparent"}
         keyboardType={keyboardType == "email" ? 'email-address' : 'default'}

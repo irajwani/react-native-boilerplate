@@ -10,7 +10,6 @@ import { StackStyles } from '../../Theme/NavigationStyles'
 export default createStackNavigator(
   {
     Welcome,
-    Login,
     Register,
   },
   {
