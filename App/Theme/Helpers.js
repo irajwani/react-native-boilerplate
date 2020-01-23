@@ -160,5 +160,11 @@ export default StyleSheet.create({
     borderBottomWidth: 1.3
   },
 
+  //ICONS
+  smallIcon: {
+    width: 30,
+    height: 30,
+  }
+
 
 })

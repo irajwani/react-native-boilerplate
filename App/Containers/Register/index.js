@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 
 import Container from '../../Components/Container'
 import AuthInput from '../../Components/Input/AuthInput'
 import AuthButton from '../../Components/Button/AuthButton';
 
+import NavigationService from '../../Services/NavigationService';
 import firebase from 'react-native-firebase';
 
 import { connect } from 'react-redux'
@@ -13,6 +14,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import styles from './styles';
 import SelectPictures from '../../Components/SelectPictures';
+import { Images, Helpers } from '../../Theme';
+
+const {BackArrow, PasswordsMatch} = Images;
 
 class Register extends Component {
 
@@ -21,7 +25,10 @@ class Register extends Component {
         this.state = {
             email: '',
             pass: '',
-            name: '',
+            pass2: '',
+
+            firstName: '',
+            lastName: '',
         }
     }
 
@@ -53,11 +60,14 @@ class Register extends Component {
     render() {
         let {navigation} = this.props;
         var pictureuris = navigation.getParam('pictureuris', "nothing here");
+        var passwordConditionMet = (this.state.pass == this.state.pass2) && (this.state.pass.length > 0);
+
+        console.log(pictureuris);
         return (
             <Container style={{marginHorizontal: 10}}>
 
             <View style={styles.headerContainer}>
-                
+                <BackArrow onPress={() => NavigationService.goBack()}/>
             </View>
 
             <View style={styles.pictureContainer}>
@@ -66,12 +76,27 @@ class Register extends Component {
 
             <ScrollView style={styles.fieldsContainer} contentContainerStyle={styles.fieldsContentContainer}>
 
-                <AuthInput
-                    placeholder={'Username'}
-                    value={this.state.name}
-                    onChangeText={name => this.setState({name})}
-                    
-                />
+
+                <View style={{flexDirection: 'row', }}>
+                    <View style={{flex: 0.5}}>
+                        <AuthInput 
+                        placeholder={"First Name"} 
+                        value={this.state.firstName} 
+                        onChangeText={firstName => this.setState({ firstName })}
+                        maxLength={13}
+                        />
+                    </View>
+                    <View style={{flex: 0.5}}>
+                        <AuthInput
+                            placeholder={'Last Name'}
+                            value={this.state.lastName}
+                            onChangeText={lastName => this.setState({lastName})}
+                            
+                        />
+                    </View>
+                </View>
+                
+                
 
                 <AuthInput
                     placeholder={'Email'}
@@ -81,12 +106,31 @@ class Register extends Component {
                 />
 
                 <AuthInput
-                    placeholder={'Pass'}
+                    placeholder={'Password'}
                     value={this.state.pass}
                     onChangeText={pass => this.setState({pass})}
-                    keyboardType={'email'}
                     secureTextEntry
                 />
+
+                <View style={{
+                    flexDirection: 'row', 
+                    // borderWidth: this.state.pass && this.state.pass2 ? 0.5 : 0, borderColor: passwordConditionMet ? mantisGreen : flashOrange
+                }}>
+                    <View style={{flex: passwordConditionMet ? 1 : 0.85}}>
+                        <AuthInput 
+                        placeholder={"Retype Password"} 
+                        value={this.state.pass2} 
+                        onChangeText={pass2 => this.setState({ pass2 })}
+                        secureTextEntry
+                        />
+                    </View>
+                    {passwordConditionMet && 
+                    <View style={{flex: 0.15, justifyContent: 'center', alignItems: 'center'}}>
+                        <PasswordsMatch/>
+                    </View>
+                    }
+
+                </View>
 
             </ScrollView>
 

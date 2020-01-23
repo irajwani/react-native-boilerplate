@@ -4,6 +4,13 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 target 'push' do
   # Pods for push
 
+  # Pods for r-n-image-crop-picker
+  pod 'QBImagePickerController', :path => '../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec'
+
+  #Pods for r-n-vector-icons
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  # Firebase Pods
   pod 'Firebase/Auth', '~> 6.13.0'
   pod 'Firebase/Core', '~> 6.13.0'
 #  pod 'Firebase/Database', '~> 6.13.0'

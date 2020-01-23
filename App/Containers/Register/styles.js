@@ -9,20 +9,20 @@ export default StyleSheet.create({
     },
 
     pictureContainer: {
-        flex: 0.275,
-        justifyContent: 'space-between',
+        flex: 0.375,
         alignItems: 'center',
         margin: 5,
         marginBottom: 10,
     },
 
     fieldsContainer: {
-        flex: 0.45,
+        flex: 0.35,
+        // backgroundColor: 'green'
     },
 
     fieldsContentContainer: {
         flexGrow: 1,
-
+        justifyContent: 'center'
     },
 
     buttonContainer: {
