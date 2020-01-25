@@ -530,9 +530,10 @@ PODS:
     - React
   - RNGestureHandler (1.5.2):
     - React
-  - RNImageCropPicker (0.24.1):
+  - RNImageCropPicker (0.27.0):
     - QBImagePickerController
     - React-Core
+    - React-RCTImage
     - RSKImageCropper
   - RNReanimated (1.4.0):
     - React
@@ -553,7 +554,6 @@ DEPENDENCIES:
   - Firebase/Messaging (~> 6.13.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - QBImagePickerController (from `../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -615,6 +615,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - QBImagePickerController
     - RSKImageCropper
 
 EXTERNAL SOURCES:
@@ -628,8 +629,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  QBImagePickerController:
-    :path: "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePickerController.podspec"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -746,13 +745,13 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8539fc80a0075fcc9c8e2dff84cd22dc5bf1dacf
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
-  RNImageCropPicker: d9fc1fa9321aaa9f1551f9019d8e9a21863e73b2
+  RNImageCropPicker: fcdbbbef2f0ea869c6d9ce39b8e4fd67e94009f4
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 392b3e3964b295da52e3e89d91347c1fe6bc0da7
+PODFILE CHECKSUM: e72d0a3b77f4e2077a40b04291bee7000a0d5bf6
 
 COCOAPODS: 1.7.3

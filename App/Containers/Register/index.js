@@ -18,6 +18,8 @@ import { Images, Helpers } from '../../Theme';
 
 const {BackArrow, PasswordsMatch} = Images;
 
+let avatarUri = "https://firebasestorage.googleapis.com/v0/b/spreezy-643e2.appspot.com/o/Placeholders%2Fblank.jpg?alt=media&token=bf2ab9de-bcf7-4138-9bba-0e4e47f1ff73";
+
 class Register extends Component {
 
     constructor(props) {
@@ -39,23 +41,86 @@ class Register extends Component {
     }
 
     createProfile = async () => {
-        let {email, pass, name} = this.state;
+        let {email, pass, firstName, lastName} = this.state;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
-        .then(async () => {
-            console.log('done');
-            let token = await AsyncStorage.getItem('fcmToken');
-            let newUser = {
-                email,
-                username: name, 
-                token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
-            }
-            this.props.createUser(newUser);
-            
+        .then(() => {
+            let uid = firebase.auth().currentUser.uid;
+            console.log(uid);
         })
-        .catch(err => {
-            console.log('failed because' + err);
+        // .then(async () => {
+        //     let picture = await this.promiseToUploadPhoto;
+        //     console.log(picture);
+        //     return picture
+        // })
+        // .then(async (picture) => {
+        //     console.log('done');
+            
+        //     let token = await AsyncStorage.getItem('fcmToken');
+        //     let newUser = {
+        //         email,
+        //         picture,
+        //         name: firstName + " " + lastName, 
+        //         token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
+        //     }
+        //     this.props.createUser(newUser);
+            
+        // })
+        .catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode == 'auth/weak-password') {
+              alert('The password is too weak.');
+            }
         })
     }
+
+    promiseToUploadPhoto = new Promise(async (resolve, reject) => {
+
+        if(uri.includes('googleusercontent') || uri.includes('platform') || uri.includes('firebasestorage')) {
+            // console.log(`We already have a url for this image: ${uri}, so need for interaction with cloud storage, just store URL in cloud db`);
+            
+            // const imageRef = firebase.storage().ref().child(`Users/${uid}/profile`);
+            resolve(uri);
+        }
+
+        else if(uri == "nothing here") {
+            resolve(avatarUri)
+        }
+
+        else {
+            // console.log('user has chosen picture manually through photo lib or camera, store it on cloud and generate a URL for it.')
+            // let resizedImage = await ImageResizer.createResizedImage(uri,resizedWidth, resizedHeight,'JPEG',suppressionLevel);
+            // const uploadUri = Platform.OS === 'ios' ? resizedImage.uri.replace('file://', '') : resizedImage.uri
+            const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+            let uploadBlob = null
+            const imageRef = firebase.storage().ref().child(`Users/${uid}/profile`);
+            fs.readFile(uploadUri, 'base64')
+            .then((data) => {
+            return Blob.build(data, { type: `${mime};BASE64` })
+            })
+            .then((blob) => {
+            // console.log('got to blob')
+            uploadBlob = blob
+            return imageRef.put(blob, { contentType: mime })
+            })
+            .then(() => {
+            uploadBlob.close()
+            return imageRef.getDownloadURL()
+            })
+            .then((url) => {
+    
+                resolve(url)
+                
+            })
+            .catch((error) => {
+            reject(error)
+            })
+        }
+    
+        
+    
+    })
 
     render() {
         let {navigation} = this.props;
