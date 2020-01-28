@@ -84,9 +84,22 @@ class SplashScreen extends React.Component {
             //If you want to re-enable presence checker in future
             if(user) {
               console.log("USER IS: " + user);
+              var cT = new Date(user.metadata.creationTime);
+              var pT = new Date();
+              var dif = pT.getTime() - cT.getTime();
+              var seconds_dif = dif / 1000;
+              seconds_dif = Math.abs(seconds_dif);
+              if(seconds_dif < 10) {
+                console.log('person signed up')
+              }
+              else {
+                NavigationService.navigate('AppStack');
+              }
+              
+
               
               // await this.updateAppUse();
-              NavigationService.navigate('AppStack');
+              
             }
             else {
               NavigationService.navigate('AuthStack');

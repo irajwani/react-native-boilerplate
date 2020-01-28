@@ -6,7 +6,7 @@ import NavigationService from '../../Services/NavigationService';
 
 let {style} = Fonts;
 
-export default class HeaderNavigation extends Component {
+class HeaderNavigation extends Component {
     constructor(props) {
         super(props);
         

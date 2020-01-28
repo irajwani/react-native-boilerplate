@@ -126,15 +126,26 @@ class SelectPictures extends Component {
       width: 300,
       height: 400,
       cropping: true,
-      multiple: true,
-      maxFiles: 4
-    }).then(images => {
-      console.log(images);
+      multiple: navToComponent == "CreateProfile" ? false : false,
+      // maxFiles: 4
+    }).then(image => {
+      // console.log(image);
       // console.log("TEST FOR IMAGES: " + JSON.stringify(images));
-      let pictureuris = images.map((image) => {return image.sourceURL})
+      let pictureuris = image.sourceURL
       console.log('Preparing to nav back to origin component with pictures:')
-      console.log(pictureuris);
-      this.props.navigation.navigate(`${navToComponent}`, {pictureuris: pictureuris});
+      // console.log(pictureuris);
+      let origin = "";
+      switch(navToComponent) {
+        case "CreateProfile":
+          origin = "Register";
+          break;
+        default:
+          origin = "Register";
+          break;
+
+      }
+    
+      this.props.navigation.navigate(`${origin}`, {pictureuris: pictureuris} )
     });
   }
 
@@ -196,6 +207,7 @@ class SelectPictures extends Component {
   }
 
   renderMainPictureRow = (pictureuris) => {
+    console.log(pictureuris)
     return (
       <View style={styles.mainPictureRow}>
         <TouchableHighlight underlayColor={'transparent'} style={styles.mainPictureTouchContainer} onPress={this.platformSpecificAction} >
@@ -214,7 +226,7 @@ class SelectPictures extends Component {
               </View>
               :
               <Image 
-              source={{uri: pictureuris[0]} } 
+              source={{uri: pictureuris} } 
               style={this.props.navToComponent == "CreateProfile" ? [styles.mainPictureCP, {backgroundColor: 'transparent'}] : styles.mainPicture} 
               /> 
             }
@@ -252,50 +264,23 @@ class SelectPictures extends Component {
     
     // console.log(moreThanOnePicture);
     // just have one uri and one image placeholder in the case of creating or editing your profile
-    if(this.props.navToComponent == 'EditProfile' || this.props.navToComponent == 'CreateProfile') {
-      return (
-        <View style={styles.mainContainer}>
-        
-          {this.renderMainPictureRow(this.props.pictureuris)}
-        
-          <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'Method to Select Picture:'}
-          options={['Camera', 'Photo Library', 'cancel']}
-          cancelButtonIndex={2}
-          destructiveButtonIndex={1}
-          onPress={(index) => { this.cameraOrGallery(index, this.props.navToComponent) }}
-          
-          />
-        
-        </View>
-      )
-    }
-    
     return (
-      <View style={[styles.mainContainer, {height: moreThanOnePicture ? 270: 140}]}>
+      
+      <View style={styles.mainContainer}>
+      
+        {this.renderMainPictureRow(this.props.pictureuris)}
+      
+        <ActionSheet
+        ref={o => this.ActionSheet = o}
+        title={'Method to Select Picture:'}
+        options={['Camera', 'Photo Library', 'cancel']}
+        cancelButtonIndex={2}
+        // destructiveButtonIndex={1}
+        onPress={(index) => { this.cameraOrGallery(index, this.props.navToComponent) }}
         
-          {this.renderMainPictureRow(this.props.pictureuris)}
-          {moreThanOnePicture ?
-            this.renderOtherPicturesRow(this.props.pictureuris)
-            :
-            null
-          }
-        
-        
-          <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'Choose picture selection option'}
-          options={['Camera', 'Photo Library', 'cancel']}
-          cancelButtonIndex={2}
-          destructiveButtonIndex={1}
-          onPress={(index) => { this.cameraOrGallery(index, this.props.navToComponent) }}
-          />
-        
-        
-       
-        </View>
-        
+        />
+    
+      </View>
       
       
     )

@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, SafeAreaView } from 'react-native'
-import { Colors } from '../../Theme'
+import { Colors, Helpers } from '../../Theme'
 
-const Container = ({children, style = null} ) => (
-    <View style={[styles.container, style ? style : null]}>
+const Container = ({children, style = null, center = null} ) => (
+    <View style={[styles.container, style ? style : null, center ? {...Helpers.center} : null]}>
         {children}
     </View>
 )
