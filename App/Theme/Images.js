@@ -17,6 +17,33 @@ export default {
 
   loginBg: require(`${path}/loginBg.jpg`),
 
+  Wallet: ({size, focused}) => (
+    <Icon 
+      name={focused ? 'wallet' : 'wallet-outline'}
+      size={size}
+      color={Colors.primary}
+      
+    />
+  ),
+
+  Cards: ({size, focused}) => (
+    <Icon 
+      name={focused ? 'cards' : 'cards-outline'}
+      size={size}
+      color={Colors.primary}
+      
+    />
+  ),
+
+  Gift: ({size, focused}) => (
+    <Icon 
+      name={focused ? 'gift' : 'gift-outline'}
+      size={size}
+      color={Colors.primary}
+      
+    />
+  ),
+
   BackArrow: ({onPress}) => (
     <Icon 
       name='arrow-left'

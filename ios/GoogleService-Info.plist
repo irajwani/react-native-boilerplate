@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1772966563-lejmrc8e2anrv7ufeh2vj59nuljt5iq3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1772966563-lejmrc8e2anrv7ufeh2vj59nuljt5iq3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1772966563-cisknbs171v2q7r0ctelkj47sj1f0k9p.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBBw3Hp4BSKphyapteCNSoOTTaU0BqBDXU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1772966563</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.appstack.push</string>
+	<key>PROJECT_ID</key>
+	<string>spreezy-643e2</string>
+	<key>STORAGE_BUCKET</key>
+	<string>spreezy-643e2.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1772966563:ios:beaee5d35ef4919be76516</string>
+	<key>DATABASE_URL</key>
+	<string>https://spreezy-643e2.firebaseio.com</string>
+</dict>
+</plist>

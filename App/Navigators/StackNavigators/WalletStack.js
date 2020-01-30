@@ -1,17 +1,17 @@
 import {createStackNavigator} from 'react-navigation-stack'
 
-import Home from '../../Containers/Home'
-import Vendor from '../../Containers/Vendor'
+import Wallet from '../../Containers/Wallet';
+
 import { StackStyles } from '../../Theme/NavigationStyles'
 
 
 export default createStackNavigator(
   {
-    Home,
-    Vendor
+    Wallet,
+    
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Wallet',
     ...StackStyles,
   }
 )

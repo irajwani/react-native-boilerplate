@@ -10,21 +10,14 @@ import VendorActions from '../../Stores/Vendor/Actions'
 import NavigationService from '../../Services/NavigationService';
 import VendorList from '../../Components/List/VendorList'
 import Loading from '../../Components/ActivityIndicator/Loading'
-import firebase from 'react-native-firebase'
 
-class Home extends Component {
+
+class Cards extends Component {
     async componentDidMount() {
         await this.props.getVendors();
         // console.tron.log(this.props.vendors);
     }
-
-    logOut = () => {
-        firebase.auth().signOut();
-        // .then(() => {
-        //     NavigationService.navigate()
-        // })
-    }
-
+    
     render() {
         return (
             <Container>
@@ -40,7 +33,7 @@ class Home extends Component {
                     <Loading/>
                 }
 
-                <Text onPress={this.logOut}>Log Out</Text>
+                
 
             </Container>
         )
@@ -59,4 +52,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 mapStateToProps,
 mapDispatchToProps
-)(Home)
+)(Cards)

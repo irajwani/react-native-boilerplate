@@ -40,11 +40,8 @@
 		6A9A305423D8618A00770656 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A9A304423D8618900770656 /* EvilIcons.ttf */; };
 		6A9A305523D8618A00770656 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A9A304523D8618900770656 /* SimpleLineIcons.ttf */; };
 		6A9A305623D8618A00770656 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A9A304623D8618900770656 /* MaterialIcons.ttf */; };
-		6A9C9D3323B2204D00378B38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */; };
-		6A9C9D3423B2204D00378B38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */; };
-		6A9C9D3523B2204D00378B38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */; };
-		6A9C9D3623B2204D00378B38 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */; };
 		6A9E80DD23D9D04200B1C8D8 /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A9E80DC23D9D04200B1C8D8 /* QBImagePicker.storyboard */; };
+		6AA5208423E1A59F00A5EB21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6AA5208323E1A59F00A5EB21 /* GoogleService-Info.plist */; };
 		96F82A665D6E481F9571042D /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BA7D37CC30C40FD9CDAAE0E /* FontAwesome5_Solid.ttf */; };
 		9C64E935D7C72F80012126E2 /* libPods-push.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F98B34C5E6EAC468953110CF /* libPods-push.a */; };
 		AE5D3482430142CF9B54CEDF /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A12DF79D7B8545DB94A7F8EE /* Fontisto.ttf */; };
@@ -123,8 +120,8 @@
 		6A9A304423D8618900770656 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		6A9A304523D8618900770656 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		6A9A304623D8618900770656 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
-		6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6A9E80DC23D9D04200B1C8D8 /* QBImagePicker.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = QBImagePicker.storyboard; sourceTree = "<group>"; };
+		6AA5208323E1A59F00A5EB21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6AF41A1C239F9D9A00DE56B5 /* push.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = push.entitlements; path = push/push.entitlements; sourceTree = "<group>"; };
 		6B001B6BA334E378935D7378 /* Pods-pushTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pushTests.debug.xcconfig"; path = "Target Support Files/Pods-pushTests/Pods-pushTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8BA3527C8060C3684379FB76 /* Pods-push.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-push.release.xcconfig"; path = "Target Support Files/Pods-push/Pods-push.release.xcconfig"; sourceTree = "<group>"; };
@@ -205,7 +202,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				6A9C9D3223B2204D00378B38 /* GoogleService-Info.plist */,
+				6AA5208323E1A59F00A5EB21 /* GoogleService-Info.plist */,
 			);
 			name = push;
 			sourceTree = "<group>";
@@ -465,7 +462,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A9C9D3423B2204D00378B38 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +475,7 @@
 				6A9A304F23D8618A00770656 /* Ionicons.ttf in Resources */,
 				6A9A305623D8618A00770656 /* MaterialIcons.ttf in Resources */,
 				6A9A305023D8618A00770656 /* FontAwesome5_Solid.ttf in Resources */,
+				6AA5208423E1A59F00A5EB21 /* GoogleService-Info.plist in Resources */,
 				6A9A305523D8618A00770656 /* SimpleLineIcons.ttf in Resources */,
 				6A9A304A23D8618900770656 /* Entypo.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -491,7 +488,6 @@
 				6A9A305223D8618A00770656 /* FontAwesome.ttf in Resources */,
 				6A9A304723D8618900770656 /* Fontisto.ttf in Resources */,
 				6A9A304C23D8618A00770656 /* MaterialCommunityIcons.ttf in Resources */,
-				6A9C9D3323B2204D00378B38 /* GoogleService-Info.plist in Resources */,
 				07225E40583F4C3D8422AB67 /* AntDesign.ttf in Resources */,
 				4742D9A2134E4819941054C9 /* Entypo.ttf in Resources */,
 				D5D597EAFCDB42C98FC2D376 /* EvilIcons.ttf in Resources */,
@@ -517,7 +513,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
-				6A9C9D3523B2204D00378B38 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +520,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A9C9D3623B2204D00378B38 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

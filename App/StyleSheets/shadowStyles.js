@@ -11,5 +11,27 @@ export default StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 3,
+    },
+
+    blackShadow: {
+        shadowColor: Colors.black,
+        
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 5,
+    },
+
+    lowerBlackShadow: {
+        shadowColor: Colors.black,
+        
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
     }
 })
