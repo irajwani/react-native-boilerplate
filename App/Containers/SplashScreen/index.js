@@ -8,6 +8,7 @@ import NavigationService from '../../Services/NavigationService'
 
 import firebase from 'react-native-firebase';
 // import StartupActions from 'App/Stores/Startup/Actions'
+import AuthActions from '../../Stores/Auth/Actions'
 import { connect } from 'react-redux'
 
 import styles from './styles'
@@ -17,6 +18,7 @@ let companyName = "Wafadaar"
 const splashScreenDuration = 200;
 // FIRST CONTAINER REACT COMPONENT THAT MOUNTS
 class SplashScreen extends React.Component {
+  
 
     componentDidMount = async () => {
       Metrics.platform == 'android' ? this.createChannel() : null;
@@ -83,18 +85,22 @@ class SplashScreen extends React.Component {
             
             //If you want to re-enable presence checker in future
             if(user) {
-              console.log("USER IS: " + user);
+              // console.log(user)
+              this.props.storeUid(user.uid);
               var cT = new Date(user.metadata.creationTime);
               var pT = new Date();
               var dif = pT.getTime() - cT.getTime();
               var seconds_dif = dif / 1000;
               seconds_dif = Math.abs(seconds_dif);
+
               if(seconds_dif < 10) {
                 console.log('person signed up')
               }
               else {
                 NavigationService.navigate('AppStack');
               }
+
+              
               
 
               
@@ -138,18 +144,16 @@ class SplashScreen extends React.Component {
   
 }
 
-export default SplashScreen
+const mapStateToProps = (state) => ({})
 
-// const mapStateToProps = (state) => ({})
+const mapDispatchToProps = (dispatch) => ({
+  storeUid: (uid) => dispatch(AuthActions.storeUid(uid)),
+})
 
-// const mapDispatchToProps = (dispatch) => ({
-//   startup: () => dispatch(StartupActions.startup()),
-// })
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SplashScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SplashScreen)
 
 
 //OLDER (possibly faulty/possibly better than current) METHOD:

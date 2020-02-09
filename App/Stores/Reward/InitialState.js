@@ -1,7 +1,5 @@
 export const INITIAL_STATE = {
-    vendors: [],
-    uid: '',
-    vendorUid: '',
+    rewards: [],
     // message: false,
     errorMessage: null,
     

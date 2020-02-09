@@ -9,14 +9,6 @@ export default StyleSheet.create({
         ...shadowStyles.lowerBlackShadow,
     },
 
-        headerContainer: {
-            flex: 0.25,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            margin: 10,
-        },
-
     bodyContainer: {
         flex: 0.55,
         

@@ -21,6 +21,28 @@ export const createUserFailure = (state, { errorMessage }) => ({
   errorMessage,
 })
 
+export const storeUid = (state, {uid}) => ({
+  ...state,
+  uid,
+})
+
+export const getProfileRequest = (state, {uid}) => ({
+  ...state,
+  // uid,
+})
+
+export const getProfileSuccess = (state, {message}) => {
+  return {
+    ...state,
+    profile: message,
+  }
+}
+
+export const getProfileFailure = (state, { errorMessage }) => ({
+  ...state,
+  errorMessage,
+})
+
 
 
 
@@ -28,6 +50,12 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AuthTypes.CREATE_USER_REQUEST]: createUserRequest,
   [AuthTypes.CREATE_USER_SUCCESS]: createUserSuccess,
   [AuthTypes.CREATE_USER_FAILURE]: createUserFailure,
+
+  [AuthTypes.GET_PROFILE_REQUEST]: getProfileRequest,
+  [AuthTypes.GET_PROFILE_FAILURE]: getProfileFailure,
+  [AuthTypes.GET_PROFILE_SUCCESS]: getProfileSuccess,
+
+  [AuthTypes.STORE_UID]: storeUid,
 
   
 

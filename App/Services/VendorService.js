@@ -26,6 +26,12 @@ function getVendors() {
   return apiClient.get(`/getVendors`).then(fulfilled)
 }
 
+function addCard(payload) {
+  return apiClient.post(`/addCard`, payload).then(fulfilled)
+}
+
 export const vendorService = {
   getVendors,
+
+  addCard,
 }

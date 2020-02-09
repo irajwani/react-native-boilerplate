@@ -46,9 +46,10 @@ class Register extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.registerStatus) {
-            NavigationService.navigate('AppStack')
-        }
+        // if (nextProps.registerStatus === true) {
+        //     console.tron.log('Reg complete, going to app')
+        //     NavigationService.navigate('AppStack')
+        // }
     }
 
     promiseToUploadPhoto = (uid, uri) => {
@@ -92,7 +93,7 @@ class Register extends Component {
 
     createProfile = (uri) => {
         
-
+        // console.tron.log("Initaite profile creation");
         // this.setState({isLoading: true})
         let {email, pass, firstName, lastName} = this.state;
         let {createUser} = this.props;

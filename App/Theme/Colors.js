@@ -27,7 +27,8 @@ const background = {
 
     primary: '#4fb8be',
     secondary: "#ff3ac8",
-
+    
+    number: '#032a57',
 
     success: '#28a745',
     lightgreen: '#337546',

@@ -183,8 +183,7 @@ export class Welcome extends Component {
     )}
 
     render() {
-        console.log("HI")
-        console.log(this.props.navigation.state);
+        console.log(this.props.uid)
         return (
             this.renderTutorialOrWelcome()
         )
@@ -192,7 +191,7 @@ export class Welcome extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    // user: state.user
+    uid: state.auth.uid
 })
 
 const mapDispatchToProps = (dispatch) => ({

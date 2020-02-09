@@ -3,8 +3,8 @@ import { Colors } from '../Theme';
 
 export default StyleSheet.create({
     standardCircle: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
     }
 })

@@ -4,11 +4,16 @@ import Container from '../../Components/Container';
 
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase'
-
+import NavigationService from '../../Services/NavigationService.js';
 import styles from './styles';
 import { Fonts, Images } from '../../Theme';
+import HeaderRow from '../../Components/HeaderRow'
 import VendorCard from '../../Components/Card/VendorCard';
 import ProgressiveImage from '../../Components/Image/ProgressiveImage';
+import CardList from '../../Components/List/CardList';
+
+import VendorActions from '../../Stores/Vendor/Actions'
+import AuthActions from '../../Stores/Auth/Actions'
 
 let stats = [
     {title: 'Number Of Stamps', number: 12},
@@ -16,22 +21,22 @@ let stats = [
     {title: 'Number of Cards Used', number: 3},
 ]
 
-let cards = [{}]
-
 class Wallet extends Component {
     constructor(props) {
         super(props);
-        let {photoURL, displayName} = firebase.auth().currentUser;
+        // let {photoURL, displayName} = firebase.auth().currentUser;
         this.state = {
-            displayName,
-            photoURL,
+            // displayName,
+            // photoURL,
 
             isDrawerActive: false,
             drawerHeight: new Animated.Value(0),
         }
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
+        console.log('Wallet')
+        await this.props.getProfile(this.props.uid);
         await this.props.getVendors();
     }
 
@@ -60,23 +65,25 @@ class Wallet extends Component {
     }
 
     render() {
+        
+        // console.tron.log(this.props.uid)
         return (
             <Container>
                 <View style={styles.gradientBanner}>
-                    <View style={styles.headerContainer}>
+                    <HeaderRow flex={0.25}>
                         <Text style={{...Fonts.style.big}}>Profile</Text>
                         <Text onPress={this.logOut}>Log Out</Text>
-                    </View>
+                    </HeaderRow>
                 </View>
 
                 <View style={styles.bodyContainer}>
 
                     <View style={styles.profilePictureContainer}>
-                        <ProgressiveImage thumbnailSource={Images.blankAvatar} source={{uri: this.state.photoURL }} style={styles.profilePicture}/>
+                        <ProgressiveImage thumbnailSource={Images.blankAvatar} source={{uri: this.props.photoURL }} style={styles.profilePicture}/>
                     </View>
 
                     <View style={styles.profileTextContainer}>
-                        <Text style={styles.profileText}>{this.state.displayName}</Text>
+                        <Text style={styles.profileText}>{this.props.displayName}</Text>
                     </View>
                     
                     <View style={styles.statsContainer}>
@@ -101,15 +108,27 @@ class Wallet extends Component {
                         <Text style={{...Fonts.style.h4, fontWeight: "300"}}>My Cards</Text>
                     </TouchableOpacity>
 
-                    <Animated.FlatList 
+                    {this.props.myCards == undefined ?
+                    <Animated.View style={{height: this.state.drawerHeight, backgroundColor: '#fff'}}/>
+                    :
+                    <CardList
+                        //vendor input argument will be provided within CardList
+                        vendors={this.props.vendors.filter(vendor => this.props.myCards.map((card) => card.vendorUid).includes(vendor.uid) )}
+                        myCards={this.props.myCards}
+                        onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
+                        style={{height: this.state.drawerHeight}}
+                    />
+                    }
+
+                    {/* <Animated.FlatList 
                     style={[styles.drawerBody, {height: this.state.drawerHeight,}]} 
                     data={this.props.vendors}
                     showsVerticalScrollIndicator={true}
-                    renderItem={(item, index) => <VendorCard vendor={item.item}/>}
+                    renderItem={(item, index) => <VendorCard vendor={item.item} onPress={}/>}
                     keyExtractor={(item, index) => index}
                     numColumns={1}
 
-                    />
+                    /> */}
                         
                     
                 </Animated.View>
@@ -120,11 +139,17 @@ class Wallet extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    uid: state.auth.uid,
+    myCards: state.auth.profile.cards, 
+    photoURL: state.auth.profile.profile.photoURL,
+    displayName: state.auth.profile.profile.displayName,
     vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
     getVendors: () => dispatch(VendorActions.getVendorsRequest()),
+
 
 })
 

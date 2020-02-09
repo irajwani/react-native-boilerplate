@@ -22,15 +22,11 @@ const apiClient = create({
 
 let fulfilled = (response) => response
 
-function createUser(newUser) {
-  return apiClient.post(`/createUser`, newUser).then(fulfilled)
+function getRewards(payload) {
+  return apiClient.get(`/getRewards/?uid=${payload.uid}`).then(fulfilled)
 }
 
-function getProfile(payload) {
-  return apiClient.get(`/getProfile/?uid=${payload.uid}`).then(fulfilled)
-}
 
-export const authService = {
-  createUser,
-  getProfile
+export const vendorService = {
+  getRewards
 }

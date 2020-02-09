@@ -8,8 +8,8 @@ function setTopLevelNavigator(navigatorRef) {
 }
 
 function navigate(routeName, params) {
-  console.tron.log(routeName)
-  console.tron.log(params)
+  // console.tron.log(routeName)
+  // console.tron.log(params)
   navigator.dispatch(
     NavigationActions.navigate({
       routeName,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { TextInput, View, Text } from 'react-native'
 import { Metrics, Fonts, Colors, Helpers } from '../../Theme'
 

@@ -5,6 +5,10 @@ const { Types, Creators } = createActions({
   getVendorsSuccess: ['vendors'],
   getVendorsFailure: ['errorMessage'],
 
+  addCardRequest: ['uid', 'vendorUid'],
+  addCardSuccess: ['message'],
+  addCardFailure: ['errorMessage'],
+
 })
 
 export const VendorTypes = Types
