@@ -4,7 +4,14 @@ export const INITIAL_STATE = {
     errorMessage: null,
 
     uid: '',
-    profile: {},
+    profile: {
+        cards: [],
+        profile: {
+            photoURL: "",
+            displayName: ""
+        },
+        isFetching: true,
+    },
     
      
 }

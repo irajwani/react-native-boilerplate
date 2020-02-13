@@ -21,6 +21,12 @@ export default {
 
   loginBg: require(`${path}/loginBg.jpg`),
 
+  gift: require(`${path}/Gift.png`),
+  stamp: require(`${path}/Stamp.png`),
+  loyaltyProgram: require(`${path}/LoyaltyProgram.png`),
+
+   
+
   //Tabs
   Wallet: ({size, focused}) => (
     <Icon 

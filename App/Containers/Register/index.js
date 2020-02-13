@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, View, ScrollView, Text } from 'react-native'
+import { Image, View, ScrollView, Text, Keyboard, KeyboardAvoidingView } from 'react-native'
 
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -16,18 +16,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import styles from './styles';
 import SelectPictures from '../../Components/SelectPictures';
-import { Images, Helpers, Metrics } from '../../Theme';
+import { Colors, Images, Helpers, Metrics } from '../../Theme';
 import Loading from '../../Components/ActivityIndicator/Loading';
 import HeaderNav from '../../Components/HeaderNav';
+
 
 const {BackArrow, PasswordsMatch} = Images;
 
 let avatarUri = "https://firebasestorage.googleapis.com/v0/b/spreezy-643e2.appspot.com/o/Placeholders%2Fblank.jpg?alt=media&token=bf2ab9de-bcf7-4138-9bba-0e4e47f1ff73";
+let numbers = /^[0-9]+$/;
 
-const Blob = RNFetchBlob.polyfill.Blob;
-const fs = RNFetchBlob.fs;
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-window.Blob = Blob;
+// const Blob = RNFetchBlob.polyfill.Blob;
+// const fs = RNFetchBlob.fs;
+// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+// window.Blob = Blob;
 
 class Register extends Component {
 
@@ -42,7 +44,20 @@ class Register extends Component {
 
             firstName: 'Uzi',
             lastName: 'Lalani',
+
+            phone: "",
         }
+    }
+
+    componentDidMount = () => {
+        this.keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            this.keyboardDidShow.bind(this),
+        );
+        this.keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            this.keyboardDidHide.bind(this),
+        );
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
@@ -50,6 +65,19 @@ class Register extends Component {
         //     console.tron.log('Reg complete, going to app')
         //     NavigationService.navigate('AppStack')
         // }
+    }
+
+    keyboardDidShow() {
+        this.setState({keyboardShown: true})
+    }
+    
+    keyboardDidHide() {
+        this.setState({keyboardShown: false})
+    }
+    
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
     }
 
     promiseToUploadPhoto = (uid, uri) => {
@@ -126,6 +154,89 @@ class Register extends Component {
         })
     }
 
+    renderProfileInputFields = (passwordConditionMet) => (
+        <>
+            <View style={{flexDirection: 'row', }}>
+                <View style={{flex: 0.5}}>
+                    <AuthInput 
+                    placeholder={"First Name"} 
+                    value={this.state.firstName} 
+                    onChangeText={firstName => this.setState({ firstName })}
+                    maxLength={13}
+                    />
+                </View>
+                <View style={{flex: 0.5}}>
+                    <AuthInput
+                        placeholder={'Last Name'}
+                        value={this.state.lastName}
+                        onChangeText={lastName => this.setState({lastName})}
+                        
+                    />
+                </View>
+            </View>
+
+            {this.renderAuthInputFields(passwordConditionMet)}
+
+            <AuthInput
+                placeholder={'Phone Number (Optional)'}
+                value={this.state.phone}
+                onChangeText={phone => {
+                    if(phone.match(numbers) || phone == "") {
+                        this.setState({phone})
+                    }
+                    else {
+                        alert('Please input a valid phone number.')
+                    }
+                    
+                }}
+                keyboardType={Metrics.platform == "ios" ? 'number-pad' : 'phone-pad'}
+            />
+        </>
+        
+        
+
+        
+    )
+
+    renderAuthInputFields = (passwordConditionMet) => (
+        <>
+            <AuthInput
+                placeholder={'Email'}
+                value={this.state.email}
+                onChangeText={email => this.setState({email})}
+                keyboardType={'email-address'}
+            />
+
+            <AuthInput
+                placeholder={'Password'}
+                value={this.state.pass}
+                onChangeText={pass => this.setState({pass})}
+                secureTextEntry
+            />
+
+            <View style={{
+                flexDirection: 'row', 
+                // borderWidth: this.state.pass && this.state.pass2 ? 0.5 : 0, borderColor: passwordConditionMet ? mantisGreen : flashOrange
+            }}>
+                <View style={{flex: passwordConditionMet ? 1 : 0.85}}>
+                    <AuthInput 
+                    placeholder={"Retype Password"} 
+                    value={this.state.pass2} 
+                    onChangeText={pass2 => this.setState({ pass2 })}
+                    secureTextEntry
+                    />
+                </View>
+                {passwordConditionMet && 
+                <View style={{flex: 0.15, justifyContent: 'center', alignItems: 'center'}}>
+                    <PasswordsMatch/>
+                </View>
+                }
+
+            </View>
+
+        </>
+    )
+
     
 
     render() {
@@ -133,6 +244,7 @@ class Register extends Component {
         let {navigation} = this.props;
         var pictureuris = navigation.getParam('pictureuris', "nothing here");
         var passwordConditionMet = (this.state.pass == this.state.pass2) && (this.state.pass.length > 0);
+        var isDone = this.state.firstName && this.state.lastName && this.state.email && passwordConditionMet;
         if(isLoading) {
             return (
                 <Container center>
@@ -163,66 +275,30 @@ class Register extends Component {
                 <ScrollView style={styles.fieldsContainer} contentContainerStyle={styles.fieldsContentContainer}>
 
 
-                    <View style={{flexDirection: 'row', }}>
-                        <View style={{flex: 0.5}}>
-                            <AuthInput 
-                            placeholder={"First Name"} 
-                            value={this.state.firstName} 
-                            onChangeText={firstName => this.setState({ firstName })}
-                            maxLength={13}
-                            />
-                        </View>
-                        <View style={{flex: 0.5}}>
-                            <AuthInput
-                                placeholder={'Last Name'}
-                                value={this.state.lastName}
-                                onChangeText={lastName => this.setState({lastName})}
-                                
-                            />
-                        </View>
-                    </View>
+                {Metrics.platform == 'ios' ?
+                    <KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={80} enabled={this.state.keyboardShown ? true : false}>
+                          
+
+                        {this.renderProfileInputFields(passwordConditionMet)}
+
                     
-                    
+                    </KeyboardAvoidingView>
+                :
+                    <View>
+                        
 
-                    <AuthInput
-                        placeholder={'Email'}
-                        value={this.state.email}
-                        onChangeText={email => this.setState({email})}
-                        keyboardType={'email'}
-                    />
-
-                    <AuthInput
-                        placeholder={'Password'}
-                        value={this.state.pass}
-                        onChangeText={pass => this.setState({pass})}
-                        secureTextEntry
-                    />
-
-                    <View style={{
-                        flexDirection: 'row', 
-                        // borderWidth: this.state.pass && this.state.pass2 ? 0.5 : 0, borderColor: passwordConditionMet ? mantisGreen : flashOrange
-                    }}>
-                        <View style={{flex: passwordConditionMet ? 1 : 0.85}}>
-                            <AuthInput 
-                            placeholder={"Retype Password"} 
-                            value={this.state.pass2} 
-                            onChangeText={pass2 => this.setState({ pass2 })}
-                            secureTextEntry
-                            />
-                        </View>
-                        {passwordConditionMet && 
-                        <View style={{flex: 0.15, justifyContent: 'center', alignItems: 'center'}}>
-                            <PasswordsMatch/>
-                        </View>
-                        }
+                        {this.renderProfileInputFields(passwordConditionMet)}
 
                     </View>
+                }
 
                 </ScrollView>
 
                 <View style={styles.buttonContainer}>
                     <AuthButton
                         text={"Sign Up"}
+                        disabled={isDone ? false : true}
+                        extraStyles={{backgroundColor: isDone ? Colors.secondary : Colors.grey}}
                         onPress={() => this.createProfile(pictureuris)}
                     />
                 </View>

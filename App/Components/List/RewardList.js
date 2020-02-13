@@ -5,7 +5,7 @@ import { Helpers, Fonts, Images, Colors } from '../../Theme';
 import ProgressiveImage from '../Image/ProgressiveImage';
 import shadowStyles from '../../StyleSheets/shadowStyles';
 
-const Reward = ({reward}) => (
+const Reward = ({reward, onRewardPress}) => (
     <View style={styles.rewardContainer}>
         <View style={styles.logoContainer}>
             <ProgressiveImage thumbnailSource={Images.blur} source={{uri: reward.logo}} style={styles.logo}/>
@@ -16,7 +16,7 @@ const Reward = ({reward}) => (
             <Text style={styles.rewardDetails}>Details....</Text>
         </View>
 
-        <TouchableOpacity disabled={reward.hasUsed ? true : false} style={styles.redeemButton}>
+        <TouchableOpacity disabled={reward.hasUsed ? true : false} style={styles.redeemButton} onPress={onRewardPress}>
             <Text style={[styles.redeemText]}>{reward.hasUsed ? "REDEEMED" : "REDEEM"}</Text>
         </TouchableOpacity>
         
@@ -24,17 +24,20 @@ const Reward = ({reward}) => (
 )
     
     
-const RewardList = ({rewards, style = null}) => (
-        <Animated.FlatList 
-            style={[styles.cardsContainer, style]}
-            contentContainerStyle={styles.cardsContentContainer}
-            data={rewards}
-            showsVerticalScrollIndicator={true}
-            renderItem={(item, index) => <Reward reward={item.item} />}
-            // renderItem={(item, index) => this.renderVendor(item.item, index)}
-            keyExtractor={(item, index) => index}
-            numColumns={1}
-        />
+const RewardList = ({rewards, onRewardPress, style = null}) => (
+    <Animated.FlatList 
+        style={[styles.cardsContainer, style]}
+        contentContainerStyle={styles.cardsContentContainer}
+        data={rewards}
+        showsVerticalScrollIndicator={true}
+        renderItem={(item, index) => 
+            <Reward reward={item.item} 
+            onRewardPress={()=>onRewardPress(item.item.vendorUid, item.item.visitNumber)} 
+            />
+        }
+        keyExtractor={(item, index) => index}
+        numColumns={1}
+    />
     )
 
     

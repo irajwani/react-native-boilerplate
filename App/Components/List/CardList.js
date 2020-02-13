@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     },
     cardsContentContainer: {
         // flex: 1,
+        flexGrow: 1,
         padding: 10,
         
     },

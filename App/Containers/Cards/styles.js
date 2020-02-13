@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Fonts } from "../../Theme";
+import { Fonts, Helpers } from "../../Theme";
 
 export default StyleSheet.create({
     headerText: {
@@ -9,6 +9,7 @@ export default StyleSheet.create({
 
     cardsContainer: {
         flex: 0.9,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        ...Helpers.center
     }
 })

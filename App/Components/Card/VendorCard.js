@@ -46,8 +46,8 @@ export default ({vendor, myCards, onPress, handleWalletChange}) => {
 const styles = StyleSheet.create({
     card: {
         // width: "100%",
-        height: Metrics.screenHeight/4.7,
-        // flex: 0.33,
+        // height: Metrics.screenHeight/4.7,
+        flex: 0.33,
         margin: 5,
         ...shadowStyles.whiteCard,
         ...borderStyles.mediumBorder,

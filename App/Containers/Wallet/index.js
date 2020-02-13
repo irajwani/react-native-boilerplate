@@ -34,10 +34,12 @@ class Wallet extends Component {
         }
     }
 
-    async componentWillMount() {
-        console.log('Wallet')
-        await this.props.getProfile(this.props.uid);
-        await this.props.getVendors();
+    async componentDidMount() {
+        if(this.props.uid) {
+            await this.props.getProfile(this.props.uid);
+        }
+        
+        // this.props.getVendors();
     }
 
     toggleDrawer = () => {
@@ -140,15 +142,15 @@ class Wallet extends Component {
 
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
-    myCards: state.auth.profile.cards, 
-    photoURL: state.auth.profile.profile.photoURL,
-    displayName: state.auth.profile.profile.displayName,
+    // myCards: state.auth.profile.cards,
+    // photoURL: state.auth.profile.profile.photoURL,
+    // displayName: state.auth.profile.profile.displayName,
     vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
     getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
-    getVendors: () => dispatch(VendorActions.getVendorsRequest()),
+    // getVendors: () => dispatch(VendorActions.getVendorsRequest()),
 
 
 })

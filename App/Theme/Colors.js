@@ -25,6 +25,7 @@ const background = {
     text: '#212529',
 
 
+
     primary: '#4fb8be',
     secondary: "#ff3ac8",
     

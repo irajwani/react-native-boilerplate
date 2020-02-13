@@ -1,19 +1,36 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native'
-import Container from '../../Components/Container'
 
+import Container from '../../Components/Container'
+import TutorialList from '../../Components/List/TutorialList';
 import firebase from 'react-native-firebase';
 import AuthButton from '../../Components/Button/AuthButton';
 import NavigationService from '../../Services/NavigationService';
 
 import styles from './styles';
-import Tutorial from '../Tutorial';
+// import Tutorial from '../Tutorial';
 import { Colors, Fonts, Images, Strings, Helpers, Metrics } from '../../Theme';
 import AuthInput from '../../Components/Input/AuthInput';
 import { connect } from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';;
+
 
  // '[DEFAULT]'
+
+ let Tutorial = [
+     {
+         image: Images.gift, 
+         text: {header: "Earn Rewards", text: "Cash in your rewards at select outlets to win freebies"}
+    },
+     {
+         image: Images.stamp, 
+         text: {header: "Collect Stamps", text: "Collect stamps every time you visit an outlet with your loyalty card. Earn enough and get access to exclusive rewards"}
+    },
+     {
+         image: Images.loyaltyProgram, 
+         text: {header: "Add Cards", text: "Pick from a variety of loyalty cards. Add to your wallet to avail exclusive discounts and rewards upon visit."}
+    },
+ ]
 
 
 export class Welcome extends Component {
@@ -95,7 +112,9 @@ export class Welcome extends Component {
     
 
 
-    toggleNewUser = () => this.setState({newUser: !this.state.newUser})
+    toggleNewUser = () => {
+        this.setState({newUser: !this.state.newUser})
+    }
 
     renderRememberHelper = () => (
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15, marginHorizontal: 15}}>
@@ -115,27 +134,8 @@ export class Welcome extends Component {
         </View>
     )
 
-    renderTutorialOrWelcome = () => {
-        
-        return (
-        this.state.newUser ?
-            <Container style={{backgroundColor: Colors.primary}}>
-                <View style={tutorialStyles.headerContainer}>
-                    <Text style={tutorialStyles.headerText}>Tutorial</Text>
-                </View>
-
-                <View style={tutorialStyles.carouselContainer}>
-                    <Text>carousel here</Text>
-                </View>
-
-                <View style={tutorialStyles.footerContainer}>
-                    <TouchableOpacity style={tutorialStyles.skipButton} onPress={this.toggleNewUser}>
-                        <Text style={{...Fonts.style.h2}}>SKIP</Text>
-                    </TouchableOpacity>
-                </View>
-            </Container>
-        :
-            <Container style={styles.container}>
+    renderWelcome = () => (
+        <Container style={styles.container}>
             <ImageBackground source={Images.loginBg} style={styles.container}>
 
                 <View style={styles.headerContainer}>
@@ -149,7 +149,7 @@ export class Welcome extends Component {
                         placeholder={'Email'}
                         value={this.state.email}
                         onChangeText={email => this.setState({email})}
-                        keyboardType={'email'}
+                        keyboardType={'email-address'}
                     />
 
                     <AuthInput
@@ -179,7 +179,16 @@ export class Welcome extends Component {
                 </View>
                 
             </ImageBackground>
-            </Container>
+        </Container>
+    )
+
+    renderTutorialOrWelcome = () => {
+        
+        return (
+        this.state.newUser ?
+            <TutorialList data={Tutorial} handleSkip={this.toggleNewUser} />
+            : 
+            this.renderWelcome()
     )}
 
     render() {

@@ -1,4 +1,4 @@
-import { takeLatest, all } from 'redux-saga/effects'
+import { takeEvery, takeLatest, all } from 'redux-saga/effects'
 
 import { AuthTypes } from '../Stores/Auth/Actions'
 // import { DealsTypes } from '../Stores/Deals/Actions'

@@ -17,7 +17,7 @@ import styles from './styles'
 
 class Cards extends Component {
     
-    async componentWillMount() {
+    async componentDidMount() {
         await this.props.getVendors();
     }
 
@@ -34,23 +34,22 @@ class Cards extends Component {
                     <Text style={styles.headerText}>Browse Cards</Text>
                 </HeaderRow>
                 
-                <View style={styles.cardsContainer}>
-                    {this.props.vendors ?
-                        <CardList
-                            vendors={this.props.vendors}
-                            myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
-                            //vendor input argument will be provided within CardList
-                            onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
-                            handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
-                        />
-                    :
+                
+                {this.props.vendors ?
+                    <CardList
+                        vendors={this.props.vendors}
+                        myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
+                        //vendor input argument will be provided within CardList
+                        onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
+                        handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
+                    />
+                :
+                    <View style={styles.cardsContainer}>
                         <Loading/>
-                    }
-                </View>
+                    </View>
+                }
                 
-
                 
-
             </Container>
         )
     }
@@ -59,7 +58,7 @@ class Cards extends Component {
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
     vendors: state.vendor.vendors,
-    myCards: state.auth.profile.cards,
+    // myCards: state.auth.profile.cards,
 })
 
 const mapDispatchToProps = (dispatch) => ({

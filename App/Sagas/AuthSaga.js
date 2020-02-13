@@ -1,4 +1,4 @@
-import { put, call } from 'redux-saga/effects'
+import { put, call, fork } from 'redux-saga/effects'
 import { AsyncStorage } from 'react-native'
 import AuthActions from '../Stores/Auth/Actions'
 import { authService } from '../Services/AuthService'
