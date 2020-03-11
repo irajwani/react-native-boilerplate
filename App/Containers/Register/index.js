@@ -38,14 +38,14 @@ class Register extends Component {
         this.state = {
             isLoading: false,
 
-            email: 'test@gmail.com',
+            email: 'saif@gmail.com',
             pass: 'password',
             pass2: 'password',
 
-            firstName: 'Uzi',
-            lastName: 'Lalani',
+            firstName: 'Saif',
+            lastName: 'Shahid',
 
-            phone: "",
+            phone: "0321239871",
         }
     }
 
@@ -121,12 +121,13 @@ class Register extends Component {
 
     createProfile = (uri) => {
         
-        // console.tron.log("Initaite profile creation");
+        console.log("Initaite profile creation");
         // this.setState({isLoading: true})
         let {email, pass, firstName, lastName} = this.state;
         let {createUser} = this.props;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
         .then(async () => {
+            console.log('created new firebase certified user');
             let uid = firebase.auth().currentUser.uid;
             let url = await this.promiseToUploadPhoto(uid, uri);
             return {uid, url}

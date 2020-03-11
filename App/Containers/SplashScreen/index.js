@@ -1,10 +1,11 @@
 import React from 'react'
-import { Text, SafeAreaView, Image } from 'react-native'
+import { Text, View, SafeAreaView, Image } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 
 // import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk'
 import NavigationService from '../../Services/NavigationService'
 
+import {Strings} from '../../Theme'
 
 import firebase from 'react-native-firebase';
 // import StartupActions from 'App/Stores/Startup/Actions'
@@ -14,7 +15,7 @@ import { connect } from 'react-redux'
 import styles from './styles'
 import { Metrics } from '../../Theme';
 
-let companyName = "Wafadaar"
+const {companyName} = Strings;
 const splashScreenDuration = 200;
 // FIRST CONTAINER REACT COMPONENT THAT MOUNTS
 class SplashScreen extends React.Component {
@@ -38,11 +39,13 @@ class SplashScreen extends React.Component {
 
     async getToken() {
       let fcmToken = await AsyncStorage.getItem('fcmToken');
+      console.log("Push Notifications TOken:");
       console.log(fcmToken);
       if (!fcmToken) {
           fcmToken = await firebase.messaging().getToken();
           if (fcmToken) {
-            
+              console.log("Push Notifications TOken:");
+              console.log(fcmToken);
               await AsyncStorage.setItem('fcmToken', fcmToken);
           }
         }
@@ -86,7 +89,8 @@ class SplashScreen extends React.Component {
             //If you want to re-enable presence checker in future
             if(user) {
               // console.log(user)
-              this.props.storeUid(user.uid);
+              await this.props.storeUid(user.uid);
+              
               var cT = new Date(user.metadata.creationTime);
               var pT = new Date();
               var dif = pT.getTime() - cT.getTime();
@@ -99,6 +103,10 @@ class SplashScreen extends React.Component {
               else {
                 NavigationService.navigate('AppStack');
               }
+
+              this.props.getProfile(user.uid);
+
+
 
               
               
@@ -130,12 +138,16 @@ class SplashScreen extends React.Component {
 //       }
 //     }, splashScreenDuration)
 //   }
-
+c
     render() {
         return (
           <SafeAreaView style={styles.container}>
             {/* <Image source={Images.logo} style={{ height: 100, width: 300 }} /> */}
-            <Text style={styles.companyName}>{companyName}</Text>
+            <View style={styles.textContainer}>
+              <Text style={styles.companyName}>{companyName}</Text>
+              <Text style={styles.companyInfo}>loyalty cards</Text>
+            </View>
+            
           </SafeAreaView>
         )
     }
@@ -148,6 +160,9 @@ const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = (dispatch) => ({
   storeUid: (uid) => dispatch(AuthActions.storeUid(uid)),
+  getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
+
+
 })
 
 export default connect(

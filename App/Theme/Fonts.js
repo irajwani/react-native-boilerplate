@@ -1,4 +1,5 @@
 const size = {
+    h0: 48,
     h1: 40,
     h2: 32,
     h3: 30,
@@ -11,36 +12,40 @@ const size = {
   }
   
   const style = {
+    h0: {
+      fontFamily: 'HelveticaNeue-Light',
+      fontSize: size.h0,
+    },
     h1: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.h1,
     },
     h2: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.h2,
     },
     h3: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.h3,
     },
     h4: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.h4,
     },
     big: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.big,
     },
     normal: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.regular,
     },
     medium: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.medium
     },
     small: {
-      fontFamily: 'Helvetica',
+      fontFamily: 'HelveticaNeue-Light',
       fontSize: size.small
     },
   }

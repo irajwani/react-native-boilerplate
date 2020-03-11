@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import Container from '../../Components/Container'
 import HeaderNav from '../../Components/HeaderNav'
 import ProgressiveImage from '../../Components/Image/ProgressiveImage'
@@ -7,10 +7,12 @@ import ProgressiveImage from '../../Components/Image/ProgressiveImage'
 import NavigationService from '../../Services/NavigationService';
 import {connect} from 'react-redux';
 import styles from './styles';
-import { Images } from '../../Theme'
+import { Images, Fonts, Colors } from '../../Theme'
 import Label from '../../Components/Text/Label'
 
-let {BackArrow, Reward} = Images;
+let {BackArrow} = Images;
+
+let stampSize = 25;
 
 class Vendor extends Component {
 
@@ -38,7 +40,7 @@ class Vendor extends Component {
                     <View style={styles.stampContainer} key={key}>
                         <TouchableOpacity style={styles.stamp}>
                             {visitRewards[key].text ? 
-                                <Reward />
+                                <Image source={Images.gift} style={{width: stampSize, height: stampSize}}/>
                             :
                                 <Text style={styles.visitNumber}>{index+1}</Text>
                             }
@@ -46,6 +48,22 @@ class Vendor extends Component {
                     </View>
                 ))}
             </View>
+
+            {Object.keys(visitRewards).map((key, index) => 
+                visitRewards[key].text ? (
+                    <View style={styles.visitRewardContainer}>
+                        <View style={styles.visitContainer}>
+                            <Text style={{...Fonts.style.normal, color: Colors.white}}>{index+1}</Text>
+                            <Text style={{...Fonts.style.small, color: Colors.white}}>Stamps</Text>
+                        </View>
+                        <View style={styles.rewardContainer}>
+                            <Text style={{...Fonts.style.normal, color: Colors.primary}}>{visitRewards[key].text}</Text>
+                        </View>
+                    </View>
+                )
+                :
+                null
+            )}
         </View>
         
     )}
@@ -55,7 +73,7 @@ class Vendor extends Component {
         let {staticRewards} = this.state;
         return (
         <View style={styles.staticRewards}>
-            <Label text={"Static deals"}/>
+            <Label text={"Deals Offered"}/>
             {Object.keys(staticRewards).map((key, index) => (
                 staticRewards[key].text ?
                 <TouchableOpacity style={styles.dealContainer} key={key}>
@@ -67,11 +85,17 @@ class Vendor extends Component {
         </View>
     )}   
 
-    renderAddress = (address) => (
+    renderContactDetail = (title, text) => (
+        <Text style={{...styles.address, fontWeight: "600", color: 'black'}}>
+        {title} <Text style={styles.address}>{text}</Text>
+        </Text>
+    )
+
+    renderAddress = (address, phone) => (
         <View style={styles.addressContainer}>
-            <Text style={{...styles.address, fontWeight: "600", color: 'black'}}>
-            Address: <Text style={styles.address}>{address}</Text>
-            </Text>
+            <Label text={"Contact"}/>
+            {this.renderContactDetail("Address:", address)}
+            {this.renderContactDetail("Phone:", phone)}
         </View>
     )
 
@@ -102,7 +126,7 @@ class Vendor extends Component {
 
                         {this.renderVisitRewards()}
                         {this.renderStaticRewards()}
-                        {this.renderAddress(this.state.branch)}
+                        {this.renderAddress(this.state.branch, this.state.branch)}
                     </View>
 
 

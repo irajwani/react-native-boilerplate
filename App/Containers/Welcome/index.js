@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native'
+import { Text, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, CheckBox } from 'react-native'
 
 import Container from '../../Components/Container'
 import TutorialList from '../../Components/List/TutorialList';
@@ -14,6 +14,7 @@ import AuthInput from '../../Components/Input/AuthInput';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';;
 
+let {Check, Facebook} = Images;
 
  // '[DEFAULT]'
 
@@ -88,9 +89,12 @@ export class Welcome extends Component {
 
     signIn = () => {
         let {email, pass} = this.state;
+        console.log(email)
         firebase.auth().signInWithEmailAndPassword(email, pass)
         .then(() => {
+            console.log('signed in')
             firebase.auth().onAuthStateChanged( (user) => {
+                console.log(user);
                 if(user) {
                     this.state.saveUsernamePass ? AsyncStorage.multiSet([ ['previousEmail', email], ['previousPassword', pass] ]) : null;
                     NavigationService.navigate('AppStack')
@@ -117,21 +121,27 @@ export class Welcome extends Component {
     }
 
     renderRememberHelper = () => (
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 15, marginHorizontal: 15}}>
-            <View style={{ justifyContent: 'center', alignItems: 'flex-start', marginHorizontal: 5}}>
-                <TouchableOpacity 
-                onPress={this.toggleSaveUsernamePass} 
-                style={{backgroundColor: this.state.saveUsernamePass ? 'red' : 'transparent',height: 25, width: 25, borderWidth: 2, borderColor: '#fff', justifyContent: 'center', alignItems: 'center'}}
-                >
-
+        
+        <View style={styles.authActionsContainer}>
+            <View style={styles.rememberMeContainer}>
+                <TouchableOpacity onPress={this.toggleSaveUsernamePass} style={{height: 25, width: 25, borderWidth: 2, borderRadius: 10, borderColor: Colors.black, justifyContent: 'center', alignItems: 'center', marginRight: 5,}}>
+                    {this.state.saveUsernamePass ?
+                        <Check/>
+                    :
+                        null
+                    }
                 </TouchableOpacity>
-                    
-                
+                <Text onPress={this.toggleSaveUsernamePass} style={{...Fonts.style.small, color: Colors.black}}>Remember Me</Text>
             </View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 5}}>
-                <Text onPress={this.toggleSaveUsernamePass}>Remember Username & Password</Text>
-            </View>
+            
+            <TouchableOpacity 
+            onPress={this.toggleShowPasswordReset}
+            style={styles.forgotPasswordContainer}>
+                <Text style={{...Fonts.style.small, color: Colors.tertiary, fontWeight: "400"}}>Forgot Password?</Text>
+            </TouchableOpacity>
         </View>
+
+        
     )
 
     renderWelcome = () => (
@@ -144,6 +154,8 @@ export class Welcome extends Component {
 
                 <View style={styles.bodyContainer}>
 
+                    <Text style={{...Fonts.style.big, fontWeight: "500", textAlign: 'center'}}>Salaam</Text>
+                    <Text style={{...Fonts.style.small, textAlign: 'center', color: Colors.grey, marginBottom: 20}}>Please login to your account.</Text>
                     
                     <AuthInput
                         placeholder={'Email'}
@@ -161,9 +173,7 @@ export class Welcome extends Component {
 
                     {this.renderRememberHelper()}
                     
-                    <View style={styles.forgotPassContainer}>
-                        <Text style={styles.forgotPass}>Forgot Password?</Text>
-                    </View>
+                    
 
                     <View style={styles.buttonContainer}>
                         <AuthButton
@@ -171,11 +181,20 @@ export class Welcome extends Component {
                             onPress={this.signIn}  
                         />
                     </View>
+
+                    <View style={{marginTop: 15}}>
+                        <View style={{...Helpers.center, paddingVertical: 5,}}>
+                            <Text style={{...Fonts.style.small, fontWeight: "bold", color: Colors.primary}}>Or login with</Text>
+                        </View>
+                        <View style={{...Helpers.center, flexDirection: 'row', padding: 0, }}>
+                            <Facebook />
+                        </View>
+                    </View>
                     
                 </View>
 
                 <View style={styles.footerContainer}>
-                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.white}]}>New User? <Text style={[styles.footerPurple, {color: Colors.secondary}]}>Sign Up</Text></Text>
+                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.primary}]}>Sign Up</Text>
                 </View>
                 
             </ImageBackground>
@@ -185,14 +204,13 @@ export class Welcome extends Component {
     renderTutorialOrWelcome = () => {
         
         return (
-        this.state.newUser ?
+            this.state.newUser ?
             <TutorialList data={Tutorial} handleSkip={this.toggleNewUser} />
             : 
             this.renderWelcome()
     )}
 
     render() {
-        console.log(this.props.uid)
         return (
             this.renderTutorialOrWelcome()
         )
@@ -211,36 +229,3 @@ export default connect(
 mapStateToProps,
 mapDispatchToProps
 )(Welcome)
-
-const tutorialStyles = StyleSheet.create({
-    
-    // TUTORIAL
-    headerContainer: {
-        flex: 0.15,
-        ...Helpers.center
-    },
-        headerText: {
-            ...Fonts.style.h1,
-            color: Colors.secondary,
-            letterSpacing: 1.7,
-        },
-
-    carouselContainer: {
-        flex: 0.6,
-        ...Helpers.center,
-    },
-
-    footerContainer: {
-        flex: 0.25,
-        ...Helpers.center,
-    },
-
-        skipButton: {
-            paddingVertical: 3,
-            width: Metrics.screenWidth/2.4,
-            ...Helpers.center,
-            ...Helpers.thinBorder,
-            backgroundColor: '#fff'
-        },
-    
-})

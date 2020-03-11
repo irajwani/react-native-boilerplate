@@ -21,9 +21,9 @@ export function* createUser(payload) {
 
 export function* getProfile(payload) {
   // console.log(JSON.stringify(payload))
-  console.log('Initiate profile retrieval for ' + payload);
+  console.log('Initiate profile retrieval for ' + JSON.stringify(payload));
   const response = yield call(authService.getProfile, payload)
-  // console.log(JSON.stringify(response));
+  console.log(JSON.stringify(response));
   if (response.status === 200) {
     yield put(AuthActions.getProfileSuccess(response.data))
   } else {

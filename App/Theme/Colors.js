@@ -26,18 +26,22 @@ const background = {
 
 
 
-    primary: '#4fb8be',
-    secondary: "#ff3ac8",
+    primary: '#7e11a8',
+    secondary: "#ffbe0c",
+
+    tertiary: "#963484",
+    gold: "#ffa401",
     
     number: '#032a57',
 
     success: '#28a745',
     lightgreen: '#337546',
     error: '#dc3545',
-    gold: '#EBCE91',
+    // gold: '#EBCE91',
     white: '#fff',
     black: '#000',
     grey: '#989898',
+    lightgrey: "#e3dede",
     containerBackground: '#F2F2F2',
   }
   

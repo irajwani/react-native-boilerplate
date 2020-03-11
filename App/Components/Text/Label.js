@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     labelContainer: {
         flexDirection: 'row',
         marginVertical: 5,
-        marginHorizontal: 10,
+        // marginHorizontal: 10,
         alignItems: 'center',
     },
 

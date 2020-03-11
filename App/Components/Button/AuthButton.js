@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { Colors, Metrics, Fonts } from '../../Theme'
+import shadowStyles from '../../StyleSheets/shadowStyles'
 
 const AuthButton = ({text, onPress, disabled, extraStyles, textStyles}) => (
     <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, extraStyles]}>
@@ -14,12 +15,15 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.secondary, 
         width: Metrics.screenWidth/1.5,
         paddingVertical: 10, 
+        borderRadius: 30,
+        ...shadowStyles.greyShadow
+        
     },
 
     text: {
-        ...Fonts.style.normal,
-        fontWeight: "500",
-        color: "#fff"
+        ...Fonts.style.big,
+        fontWeight: "600",
+        color: Colors.black
     }
 })
 

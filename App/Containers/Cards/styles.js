@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Fonts, Helpers } from "../../Theme";
+import { Fonts, Helpers, Colors } from "../../Theme";
 
 export default StyleSheet.create({
     headerText: {
-        ...Fonts.style.h4,
-        color: 'white'
+        ...Fonts.style.h3,
+        color: Colors.white
     },
 
     cardsContainer: {

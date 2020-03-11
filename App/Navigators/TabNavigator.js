@@ -1,6 +1,8 @@
 
 import React from 'react';
 
+import {Image} from 'react-native';
+
 import WalletStack from './StackNavigators/WalletStack'
 import CardStack from './StackNavigators/CardStack';
 import RewardStack from './StackNavigators/RewardStack';
@@ -21,7 +23,7 @@ WalletStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => {
     
     iconSize = focused ? 30 : 25;
-    return <Wallet size={iconSize} focused={focused}/>;
+    return <Image source={Images.wallet} style={{height: iconSize, width: iconSize}}/>;
   }
 };
 
@@ -30,7 +32,7 @@ CardStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => {
     
     iconSize = focused ? 30 : 25;
-    return <Cards size={iconSize} focused={focused}/>;
+    return <Image source={Images.cards} style={{height: iconSize, width: iconSize}}/>;
   }
 };
 
@@ -39,7 +41,7 @@ RewardStack.navigationOptions = {
   tabBarIcon: ({ focused, tintColor }) => {
     
     iconSize = focused ? 30 : 25;
-    return <Gift size={iconSize} focused={focused}/>;
+    return <Image source={Images.rewards} style={{height: iconSize, width: iconSize}}/>;
   }
 };
 

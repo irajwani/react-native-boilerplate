@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TouchableOpacity, View, Text, Image, StyleSheet, Dimensions} from 'react-native';
+import {TouchableOpacity, View, Text, Image, ImageBackground, StyleSheet, Dimensions} from 'react-native';
 import styled from "styled-components/native"; // 3.1.6
 import Carousel, {Pagination} from 'react-native-snap-carousel'; // 3.6.0
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -77,7 +77,7 @@ class TutorialList extends Component {
           containerStyle={styles.paginationContainer}
           dotStyle={dotStyle}
           inactiveDotStyle={{
-              backgroundColor: Colors.grey
+              backgroundColor: Colors.white
               // Define styles for inactive dots here
           }}
           inactiveDotOpacity={0.5}
@@ -96,33 +96,34 @@ class TutorialList extends Component {
   
     return (
 
-      <Container style={{flex: 1,backgroundColor: Colors.primary, padding: 10}}>
-
+      <Container>
+      <ImageBackground source={Images.tutBg} style={styles.container}>
         <View style = {styles.headerContainer}>
           {showSkip && 
           <TouchableOpacity style={styles.skipButton} onPress={this.props.handleSkip}>
-            <Text style={styles.skipText}>Skip</Text>
+            <Text style={[styles.skipText, {...Fonts.style.normal}]}>Skip</Text>
           </TouchableOpacity>
           }
         </View>
-
-        <Carousel
-          ref={ (c) => { this._carousel = c; } }
-          data={data}
-          renderItem={this._renderItem.bind(this)}
-          onSnapToItem={this.handleSnapToItem.bind(this)}
-          sliderWidth={screenWidth - 20}
-          itemWidth={screenWidth - 20}
-          layout={'default'}
-          firstItem={0}
-        />
+        <View style={{flex: 0.8, ...Helpers.center}}>
+          <Carousel
+            ref={ (c) => { this._carousel = c; } }
+            data={data}
+            renderItem={this._renderItem.bind(this)}
+            onSnapToItem={this.handleSnapToItem.bind(this)}
+            sliderWidth={screenWidth - 20}
+            itemWidth={screenWidth - 20}
+            layout={'default'}
+            firstItem={0}
+          />
+        </View>
           
-        <TouchableOpacity style={styles.footerButton} onPress={this.props.handleSkip}>
+        <TouchableOpacity style={styles.footerButton} onPress={isDone ? this.props.handleSkip : () => this._carousel.snapToNext()}>
           <Text style={styles.skipText}>{isDone ? "GET STARTED" : "NEXT"}</Text>
         </TouchableOpacity>
 
         
-
+      </ImageBackground>
       </Container>
     )
   
@@ -141,7 +142,7 @@ const CardContainer = styled.TouchableOpacity`
 `
 
 const styles = StyleSheet.create({
-
+  container: {flex: 1, padding: Metrics.doubleBaseMargin, ...StyleSheet.absoluteFillObject},
   headerContainer: {
     flex: 0.1,
     flexDirection: 'row',
@@ -158,9 +159,9 @@ const styles = StyleSheet.create({
     },
 
       skipText: {
-        ...Fonts.style.medium,
-        color: Colors.white,
-        fontWeight: "500",
+        ...Fonts.style.big,
+        color: Colors.black,
+        fontWeight: "bold",
 
       },
 
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
 
     cardContainer: {
       backgroundColor: Colors.white,
-      flex: 0.8, //flex of 0.0 leftover to get carousel and pagination to play nice
+      flex: 1, //flex of 0.0 leftover to get carousel and pagination to play nice
       // height: 0.5*screenHeight,
       padding: 10,
       

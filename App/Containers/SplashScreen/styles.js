@@ -14,10 +14,23 @@ export default StyleSheet.create({
 
   },
 
-  companyName: {
-    ...Fonts.style.h1,
-    color: Colors.secondary,
-    letterSpacing: 2,
-  }
+  textContainer: {
+    justifyContent: 'center'
+  },
+
+    companyName: {
+      ...Fonts.style.h0,
+      color: Colors.white,
+      fontWeight: "bold"
+    },
+
+    companyInfo: {
+      ...Fonts.style.big,
+      color: Colors.secondary,
+      textAlign: 'right',
+      fontWeight: "bold",
+      marginLeft: 20,
+    },
+    
   
 })

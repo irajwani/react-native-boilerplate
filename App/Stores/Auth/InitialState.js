@@ -6,6 +6,7 @@ export const INITIAL_STATE = {
     uid: '',
     profile: {
         cards: [],
+        customerId: "",
         profile: {
             photoURL: "",
             displayName: ""

@@ -16,7 +16,7 @@ const Reward = ({reward, onRewardPress}) => (
             <Text style={styles.rewardDetails}>Details....</Text>
         </View>
 
-        <TouchableOpacity disabled={reward.hasUsed ? true : false} style={styles.redeemButton} onPress={onRewardPress}>
+        <TouchableOpacity disabled={reward.hasUsed ? true : false} style={[styles.redeemButton, {backgroundColor: reward.hasUsed ? Colors.grey : Colors.secondary}]} onPress={onRewardPress}>
             <Text style={[styles.redeemText]}>{reward.hasUsed ? "REDEEMED" : "REDEEM"}</Text>
         </TouchableOpacity>
         
@@ -94,13 +94,13 @@ const styles = StyleSheet.create({
             redeemButton: {
                 flex: 0.3,
                 margin: 10,
-                backgroundColor: Colors.secondary,
                 ...Helpers.center,
-                ...shadowStyles.blackShadow,
+                ...shadowStyles.lowerGreyShadow,
             },
 
                 redeemText: {
                     ...Fonts.style.small,
-                    color: '#fff'
+                    color: Colors.black,
+                    fontWeight: "400",
                 },
 })

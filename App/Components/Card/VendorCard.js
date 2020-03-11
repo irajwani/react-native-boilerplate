@@ -22,21 +22,20 @@ export default ({vendor, myCards, onPress, handleWalletChange}) => {
             <ProgressiveImage source={{uri: vendor.logo}} thumbnailSource={Images.blankAvatar} style={styles.image}/>
         </View>
 
-        <View style={styles.textContainer}>
-
-            <TouchableOpacity style={styles.button} onPress={handleWalletChange}>
-                
-                <View style={styles.buttonIconContainer}>
-                    {cardNotAdded && <Plus/>}
-                </View>
-                <View style={styles.buttonTextContainer}>
+        <View style={styles.bodyContainer}>
+            <View style={styles.nameContainer}>
+                <Text style={styles.name}>{vendor.name}</Text>
+                <TouchableOpacity style={[styles.button, {backgroundColor: cardNotAdded ? Colors.primary : Colors.grey}]} onPress={handleWalletChange}>
                     <Text style={styles.buttonText}>{cardNotAdded ? "Add to Wallet" : "Added"}</Text>
-                </View>
-                
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.branchContainer}>
+                <Text style={styles.branch}>{vendor.branch}</Text>
+            </View>
+            
 
-            <Text style={styles.name}>{vendor.name}</Text>
-            <Text style={styles.branch}>{vendor.branch}</Text>
+            
+            
         </View>
         
     </TouchableOpacity>
@@ -47,10 +46,9 @@ const styles = StyleSheet.create({
     card: {
         // width: "100%",
         // height: Metrics.screenHeight/4.7,
-        flex: 0.33,
+        flex: 0.45,
         margin: 5,
         ...shadowStyles.whiteCard,
-        ...borderStyles.mediumBorder,
         backgroundColor: 'white'
         
     },
@@ -58,64 +56,55 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 0.65,
         ...Helpers.center,
-        ...borderStyles.mediumBottomBorder
+        // ...borderStyles.mediumBottomBorder
     },
         image: {
-            width: 90,
-            height: 90
+            width: 105,
+            height: 105,
         },
 
-    textContainer: {
+    bodyContainer: {
         flex: 0.35,
-        justifyContent: 'space-between',
-        marginVertical: 2,
+        marginTop: 15,
         marginHorizontal: 5,
-        // ...shadowStyles.whiteCard
 
     },
-
-        name: {
-            ...Fonts.style.h4,
-            fontWeight: "500"
+        nameContainer: {
+            flexDirection: 'row',
+            flex: 0.8,
+            // alignItems: 'flex-start',
+            justifyContent: 'space-between'
         },
 
-        branch: {
-            ...Fonts.style.small,
+            name: {
+                ...Fonts.style.h4,
+                fontWeight: "500"
+            },
+
+        branchContainer: {
+            flex: 0.2,
+            justifyContent: 'flex-end',
         },
+
+            branch: {
+                ...Fonts.style.small,
+                color: Colors.text
+            },
 
         button: {
-            height: 40,
-            flexDirection: 'row',
-            width: "48%",
-            top: -20,
-            right: -5, //to account for margin imposed by Parent
-            position: 'absolute',
-            zIndex: 1,
+            width: 90,
+            ...Helpers.center,
+            ...shadowStyles.whiteCard,
             
-            ...shadowStyles.lowerBlackShadow,
-            alignSelf: 'flex-end',
-            backgroundColor: '#fff',
+            borderRadius: 20,
+            padding: 5
 
         },
 
-            buttonIconContainer: {
-                backgroundColor: Colors.primary,
-                ...Helpers.center,
-                flex: 0.3,
-                
-                
-
-            },
-
-            buttonTextContainer: {
-                ...Helpers.center,
-                flex: 0.7,
-                ...borderStyles.mediumBorder,
-                borderLeftWidth: 0,
-                borderRightWidth: 0,
-            },
                 buttonText: {
-                    ...Fonts.style.small
+                    ...Fonts.style.small,
+                    color: Colors.white,
+                    fontWeight: "600"
                 }
 
 

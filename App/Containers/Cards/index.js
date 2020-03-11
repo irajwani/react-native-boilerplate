@@ -13,6 +13,7 @@ import Loading from '../../Components/ActivityIndicator/Loading'
 import HeaderRow from '../../Components/HeaderRow'
 import { Colors } from '../../Theme'
 import styles from './styles'
+import shadowStyles from '../../StyleSheets/shadowStyles'
 
 
 class Cards extends Component {
@@ -28,9 +29,9 @@ class Cards extends Component {
     render() {
         console.tron.log(this.props.uid);
         return (
-            <Container>
+            <Container style={{...shadowStyles.lowerBlackShadow}}>
 
-                <HeaderRow backgroundColor={Colors.black}>
+                <HeaderRow backgroundColor={Colors.primary} shadow>
                     <Text style={styles.headerText}>Browse Cards</Text>
                 </HeaderRow>
                 
@@ -58,7 +59,7 @@ class Cards extends Component {
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
     vendors: state.vendor.vendors,
-    // myCards: state.auth.profile.cards,
+    myCards: state.auth.profile.cards,
 })
 
 const mapDispatchToProps = (dispatch) => ({

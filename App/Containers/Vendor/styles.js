@@ -4,7 +4,7 @@ import shadowStyles from '../../StyleSheets/shadowStyles';
 import borderStyles from '../../StyleSheets/borderStyles';
 import viewStyles from '../../StyleSheets/viewStyles';
 
-let cardWidth = Metrics.screenWidth - 10, cardHeight = 150;
+let cardWidth = Metrics.screenWidth - 20, cardHeight = 150;
 
 
 export default StyleSheet.create({
@@ -21,7 +21,7 @@ export default StyleSheet.create({
 
     bodyContainer: {
         flex: 0.8,
-        marginHorizontal: 5,
+        marginHorizontal: Metrics.baseMargin,
     },
 
         logoContainer: {
@@ -53,8 +53,9 @@ export default StyleSheet.create({
                 borderRadius: 20,
                 // ...borderStyles.thinBorder,
                 paddingVertical: 10,
-                ...shadowStyles.whiteCard,
+                ...shadowStyles.lowerGreyShadow,
                 backgroundColor: Colors.primary,
+                marginBottom: 15,
                 // width: cardWidth,
                 // height: 0.6*Metrics.screenHeight,
             },
@@ -75,9 +76,31 @@ export default StyleSheet.create({
 
                         visitNumber: {
                             ...Fonts.style.normal,
-                            color: Colors.number,
+                            color: Colors.black,
                         },
         
+            visitRewardContainer: {
+                marginTop: 5,
+                flexDirection: 'row',
+                borderWidth: 2,
+                borderColor: Colors.lightgrey,
+                // borderRadius: 15,
+            },
+
+                visitContainer: {
+                    flex: 0.2,
+                    backgroundColor: Colors.primary,
+                    borderRightWidth: 2,
+                    borderRightColor: Colors.lightgrey,
+                    ...Helpers.center
+                },
+
+                rewardContainer: {
+                    flex: 0.8,
+                    justifyContent: 'center',
+                    paddingHorizontal: 10
+                },
+
         staticRewards: {
             marginTop: 20,
             marginBottom: 20
@@ -90,7 +113,6 @@ export default StyleSheet.create({
                 backgroundColor: Colors.secondary,
                 ...shadowStyles.whiteCard,
                 ...Helpers.center,
-
                 marginVertical: 5,
             },
 
@@ -101,13 +123,15 @@ export default StyleSheet.create({
                 
         addressContainer: {
             paddingVertical: 10,
+            alignItems: 'flex-start'
             // ...Helpers.center,
         },          
 
             address: {
                 ...Fonts.style.medium,
                 textAlign: 'center',
-                color: Colors.number
+                color: Colors.text,
+                fontWeight: "300"
             }
 
 

@@ -44,14 +44,15 @@ class SelectPictures extends Component {
           cameraType: 'back',
           mediaType: 'photo',
       }
-
-        BasicImagePicker.showImagePicker(options, (response) => {
+        
+        BasicImagePicker.default.showImagePicker(options, (response) => {
             if(response.didCancel) {
                 return null
             }   
             else {
-                const picture = [response.uri];
-                this.props.navigation.navigate(`${navToComponent}`, {pictureuris: picture} );
+                console.log(response.uri);
+                const picture = response.uri;
+                this.props.navigation.navigate('Register', {pictureuris: picture} );
                 
             }
             
@@ -165,33 +166,33 @@ class SelectPictures extends Component {
     
   // }
 
-  launchImagePickerCamera = (navToComponent) => {
-    // BasicImagePicker.openCamera({
-    //   width: 300,
-    //   height: 400,
-    //   cropping: true,
-    // }).then(image => {
-    //   console.log(image);
-    //   // let pictureuris = [image.uri];
-    //   // this.props.navigation.navigate(`${navToComponent}`, {pictureuris: pictureuris});
-    // });
+  // launchImagePickerCamera = (navToComponent) => {
+  //   // BasicImagePicker.openCamera({
+  //   //   width: 300,
+  //   //   height: 400,
+  //   //   cropping: true,
+  //   // }).then(image => {
+  //   //   console.log(image);
+  //   //   // let pictureuris = [image.uri];
+  //   //   // this.props.navigation.navigate(`${navToComponent}`, {pictureuris: pictureuris});
+  //   // });
 
 
 
-    const options = {
-      title: null,
-      cancelButtonTitle: null,
-      takePhotoButtonTitle: null,
-      chooseFromLibraryButtonTitle: null,
-      cameraType: 'back',
-      mediaType: 'photo',
+  //   const options = {
+  //     title: null,
+  //     cancelButtonTitle: null,
+  //     takePhotoButtonTitle: null,
+  //     chooseFromLibraryButtonTitle: null,
+  //     cameraType: 'back',
+  //     mediaType: 'photo',
 
-    }
-    BasicImagePicker.launchCamera(options, (response) => {
-      const pictureuris = [response.uri];
-      this.props.navigation.navigate(`${navToComponent}`, {pictureuris: pictureuris});
-    })
-  }
+  //   }
+  //   BasicImagePicker.launchCamera(options, (response) => {
+  //     const pictureuris = [response.uri];
+  //     this.props.navigation.navigate(`${navToComponent}`, {pictureuris: pictureuris});
+  //   })
+  // }
 
   requestPhotosPermission = async (navToComponent) => {
     try {

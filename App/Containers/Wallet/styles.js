@@ -21,7 +21,7 @@ export default StyleSheet.create({
             position: 'absolute',
             alignSelf: 'center',
             zIndex: 1,
-            ...shadowStyles.blackShadow
+            ...shadowStyles.greyShadow
         },
 
             profilePicture: {
@@ -36,6 +36,7 @@ export default StyleSheet.create({
             flex: 0.6,
             alignItems: 'center',
             justifyContent: 'center',
+            marginTop: 25,
         },
 
             profileText: {
@@ -52,18 +53,17 @@ export default StyleSheet.create({
                 flex: 0.33333,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
-                paddingHorizontal: 10,
-                paddingVertical: 20,
             },
 
                 valueContainer: {
                     margin: 5,
                     ...Helpers.center,
+                    
                 },
 
-                    number: {...Fonts.style.h1, fontWeight: "800"},
+                    number: {...Fonts.style.h1, fontWeight: "300"},
 
-                    title: {...Fonts.style.normal, fontWeight: "800", textAlign: 'center'},
+                    title: {...Fonts.style.normal, fontWeight: "300", textAlign: 'center'},
 
     footerContainer: {
         flex: 0.2,
@@ -80,8 +80,8 @@ export default StyleSheet.create({
             padding: 15,
             borderTopRightRadius: 15,
             borderTopLeftRadius: 15,
-            backgroundColor: Colors.primary,
-            ...shadowStyles.blackShadow,
+            backgroundColor: Colors.secondary,
+            ...shadowStyles.greyShadow,
             
         },
 

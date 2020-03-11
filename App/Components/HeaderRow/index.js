@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from "react-native";
+import shadowStyles from '../../StyleSheets/shadowStyles';
 
-export default ({children, flex = 0.1, backgroundColor = "transparent"}) => (
-    <View style={[styles.headerContainer, {flex, backgroundColor}]}>
+export default ({children, flex = 0.1, backgroundColor = "transparent", justifyContent = 'flex-start', style = null}) => (
+    <View style={[styles.headerContainer, {flex, backgroundColor, justifyContent}, style ? style : null]}>
         {children}
     </View>
 )
@@ -11,9 +12,8 @@ export default ({children, flex = 0.1, backgroundColor = "transparent"}) => (
 const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 10,
+        // paddingVertical: 10,
         paddingHorizontal: 12
     },
 })

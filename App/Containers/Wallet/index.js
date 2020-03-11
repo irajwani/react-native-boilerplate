@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Text, View, Animated, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import Container from '../../Components/Container';
 
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase'
 import NavigationService from '../../Services/NavigationService.js';
 import styles from './styles';
-import { Fonts, Images } from '../../Theme';
+import { Fonts, Images, Colors } from '../../Theme';
 import HeaderRow from '../../Components/HeaderRow'
 import VendorCard from '../../Components/Card/VendorCard';
 import ProgressiveImage from '../../Components/Image/ProgressiveImage';
@@ -14,6 +15,9 @@ import CardList from '../../Components/List/CardList';
 
 import VendorActions from '../../Stores/Vendor/Actions'
 import AuthActions from '../../Stores/Auth/Actions'
+import shadowStyles from '../../StyleSheets/shadowStyles';
+
+let {LogOut, Gear} = Images;
 
 let stats = [
     {title: 'Number Of Stamps', number: 12},
@@ -31,13 +35,16 @@ class Wallet extends Component {
 
             isDrawerActive: false,
             drawerHeight: new Animated.Value(0),
+
+            isExitVisible: false,
         }
     }
 
     async componentDidMount() {
-        if(this.props.uid) {
-            await this.props.getProfile(this.props.uid);
-        }
+        console.log(JSON.stringify(this.props.auth))
+        // if(this.props.uid) {
+        //     await this.props.getProfile(this.props.uid);
+        // }
         
         // this.props.getVendors();
     }
@@ -59,6 +66,8 @@ class Wallet extends Component {
         
     }
 
+
+
     logOut = () => {
         firebase.auth().signOut();
         // .then(() => {
@@ -66,15 +75,62 @@ class Wallet extends Component {
         // })
     }
 
+    toggleExitModal = () => this.setState({isExitVisible: !this.state.isExitVisible})
+
+    renderExitModal = () => (
+        
+        
+        <Modal
+            rounded={false}
+            modalStyle={{...shadowStyles.blackShadow, }}
+            modalTitle={<ModalTitle hasTitleBar={false} title="Log Out" titleTextStyle={{...Fonts.style.medium, color: Colors.primary, fontWeight: "400"}}/>}
+            visible={this.state.isExitVisible}
+            onTouchOutside={this.toggleExitModal}
+            modalAnimation={new SlideAnimation({
+            slideFrom: 'bottom',
+            })}
+            swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
+            swipeThreshold={200} // default 100
+            onSwipeOut={this.toggleExitModal}
+            footer={
+            <ModalFooter bordered={false} >
+            <ModalButton
+                text="YES"
+                textStyle={{...Fonts.style.medium,color: Colors.primary}}
+                onPress={() => {
+                    this.toggleExitModal();
+                    this.logOut();
+                }}
+            />
+            <ModalButton
+                text="NO"
+                textStyle={{...Fonts.style.medium,color: Colors.primary}}
+                onPress={this.toggleExitModal}
+            />
+            </ModalFooter>
+            }
+        >
+            <ModalContent>
+                <Text>Are you sure you want to log out?</Text>
+            </ModalContent>
+        </Modal>
+              
+
+    )
+
     render() {
         
         // console.tron.log(this.props.uid)
         return (
             <Container>
                 <View style={styles.gradientBanner}>
-                    <HeaderRow flex={0.25}>
-                        <Text style={{...Fonts.style.big}}>Profile</Text>
-                        <Text onPress={this.logOut}>Log Out</Text>
+                    <HeaderRow flex={0.25} justifyContent={'flex-end'} style={{paddingVertical: 5,}}>
+                        <View style={{marginHorizontal: 5}}>
+                            <Gear onPress={()=>NavigationService.navigate('Settings')}/>
+                        </View>
+                        {/* <Text style={{...Fonts.style.big}}>Profile</Text> */}
+                        <LogOut onPress={this.toggleExitModal}/>
+                        
                     </HeaderRow>
                 </View>
 
@@ -86,6 +142,7 @@ class Wallet extends Component {
 
                     <View style={styles.profileTextContainer}>
                         <Text style={styles.profileText}>{this.props.displayName}</Text>
+                        <Text style={styles.profileText}>USER ID: {this.props.customerId}</Text>
                     </View>
                     
                     <View style={styles.statsContainer}>
@@ -107,7 +164,7 @@ class Wallet extends Component {
 
                 <Animated.View style={styles.footerContainer}>
                     <TouchableOpacity onPress={this.toggleDrawer} style={styles.drawerHeader}>
-                        <Text style={{...Fonts.style.h4, fontWeight: "300"}}>My Cards</Text>
+                        <Text style={{...Fonts.style.h3, fontWeight: "300"}}>My Cards</Text>
                     </TouchableOpacity>
 
                     {this.props.myCards == undefined ?
@@ -135,6 +192,7 @@ class Wallet extends Component {
                     
                 </Animated.View>
 
+                {this.renderExitModal()}
             </Container>
         )
     }
@@ -142,14 +200,16 @@ class Wallet extends Component {
 
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
-    // myCards: state.auth.profile.cards,
-    // photoURL: state.auth.profile.profile.photoURL,
-    // displayName: state.auth.profile.profile.displayName,
+    auth: state.auth,
+    customerId: state.auth.profile.customerId,
+    myCards: state.auth.profile.cards,
+    photoURL: state.auth.profile.profile.photoURL,
+    displayName: state.auth.profile.profile.displayName,
     vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
+    // getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
     // getVendors: () => dispatch(VendorActions.getVendorsRequest()),
 
 

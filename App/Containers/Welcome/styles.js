@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import { Fonts, Helpers, Colors, Metrics } from '../../Theme';
+import shadowStyles from '../../StyleSheets/shadowStyles';
 
 export default StyleSheet.create({
     container: {
@@ -7,49 +8,69 @@ export default StyleSheet.create({
     },
 
     headerContainer: {
-      flex: 0.4,
-      ...Helpers.center,  
+      flex: 0.2,
+      ...Helpers.center,
+      
     },
 
         
         headerText: {
-            ...Fonts.style.h1,
-            color: Colors.secondary,
+            ...Fonts.style.h0,
+            color: Colors.primary,
             letterSpacing: 1.7,
             fontWeight: "700",
-            bottom: 13,
+            // bottom: 13,
         },
 
     bodyContainer: {
-        flex: 0.45,
-        marginHorizontal: 10,
-        
+        flex: 0.7,
+        // alignSelf: 'center',
+        marginHorizontal: Metrics.baseMargin,
+        padding: 10,
+        backgroundColor: Colors.white,
+        borderRadius: 10,
+        ...shadowStyles.whiteShadow,
     },
 
-        forgotPassContainer: {
-            alignItems: 'flex-end'
+        authActionsContainer: { 
+            
+            flexDirection: 'row',
+            marginBottom: 15,
+            justifyContent: 'space-between'
+            
         },
 
-            forgotPass: {
-                ...Fonts.style.normal,
-                fontWeight: "600"
+            rememberMeContainer: { 
+                // flex: 0.4, 
+                flexDirection: 'row', 
+                justifyContent: 'space-evenly', alignItems: 'center',
+                
+            },
+        
+            forgotPasswordContainer: {
+                // flex: 0.6,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                
+                
             },
 
         buttonContainer: {
-            marginTop: 15,
+            // marginTop: 15,
             ...Helpers.center,
         },
 
 
 
     footerContainer: {
-        flex: 0.15,
+        flex: 0.1,
         ...Helpers.center
     },
 
         footer: {
-            ...Fonts.style.normal,
-            fontWeight: "500"
+            ...Fonts.style.big,
+            fontWeight: "bold"
         },
         
 

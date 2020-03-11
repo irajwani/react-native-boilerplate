@@ -1,4 +1,7 @@
 import React from 'react';
+
+import {View} from 'react-native';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import Colors from './Colors';
@@ -19,7 +22,8 @@ export default {
   
   blur: require(`${path}/blur.png`),
 
-  loginBg: require(`${path}/loginBg.jpg`),
+  tutBg: require(`${path}/SilkBg.jpg`),
+  loginBg: require(`${path}/loginBg.jpeg`),
 
   gift: require(`${path}/Gift.png`),
   stamp: require(`${path}/Stamp.png`),
@@ -28,32 +32,37 @@ export default {
    
 
   //Tabs
-  Wallet: ({size, focused}) => (
-    <Icon 
-      name={focused ? 'wallet' : 'wallet-outline'}
-      size={size}
-      color={Colors.primary}
-      
-    />
-  ),
 
-  Cards: ({size, focused}) => (
-    <Icon 
-      name={focused ? 'cards' : 'cards-outline'}
-      size={size}
-      color={Colors.primary}
+  wallet: require(`${path}/Wallet.png`),
+  cards: require(`${path}/Cards.png`),
+  rewards: require(`${path}/Rewards.png`),
+  
+  // Wallet: ({size, focused}) => (
+  //   <Icon 
+  //     name={focused ? 'wallet' : 'wallet-outline'}
+  //     size={size}
+  //     color={Colors.primary}
       
-    />
-  ),
+  //   />
+  // ),
 
-  Gift: ({size, focused}) => (
-    <Icon 
-      name={focused ? 'gift' : 'gift-outline'}
-      size={size}
-      color={Colors.primary}
+  // Cards: ({size, focused}) => (
+  //   <Icon 
+  //     name={focused ? 'cards' : 'cards-outline'}
+  //     size={size}
+  //     color={Colors.primary}
       
-    />
-  ),
+  //   />
+  // ),
+
+  // Gift: ({size, focused}) => (
+  //   <Icon 
+  //     name={focused ? 'gift' : 'gift-outline'}
+  //     size={size}
+  //     color={Colors.primary}
+      
+  //   />
+  // ),
 
   //Other Icons
   Reward: () => (
@@ -69,8 +78,18 @@ export default {
     <Icon 
       name='arrow-left'
       size={35}
-      color={'black'}
+      color={Colors.white}
       onPress={onPress}
+    />
+    
+  ),
+
+  Eye: ({off = false}) => (
+    <Icon 
+      name={!off ? 'eye' : 'eye-off'}
+      size={20}
+      color={Colors.secondary}
+      
     />
     
   ),
@@ -84,12 +103,70 @@ export default {
     />
   ),
 
+  Gear: ({onPress}) => (
+    <FontAwesomeIcon 
+      name='cog'
+      size={32}
+      color={Colors.black}
+      onPress={onPress}
+    />
+    
+),
+
+  LogOut: ({onPress}) => (
+      <Icon 
+        name='door-open'
+        size={32}
+        color={Colors.black}
+        onPress={onPress}
+      />
+      
+  ),
+
+  
+
+  // LogOut: ({onPress}) => (
+  //   <View style={{flexDirection: 'row', alignItems: 'center'}}>
+  //     <View style={{position: "absolute", left: 2}}>
+  //       <Icon 
+  //         name='door-open'
+  //         size={30}
+  //         color={Colors.black}
+  //         onPress={onPress}
+  //       />
+  //     </View>
+  //     <Icon 
+  //       name='arrow-right'
+  //       size={20}
+  //       color={Colors.white}
+  //       onPress={onPress}
+  //     />
+  //   </View>
+  // ),
+
   Plus: () => (
     <Icon 
       name='plus'
       size={30}
       color={Colors.white}
       
+    />
+  ),
+
+  Check: () => (
+    <Icon
+    name="check"
+    size={22}
+    color={Colors.black} 
+    />
+  ),
+
+  Facebook: ({onPress}) => (
+    <Icon 
+      name='facebook'
+      size={20}
+      color={Colors.black}
+      onPress={onPress}
     />
   )
 }

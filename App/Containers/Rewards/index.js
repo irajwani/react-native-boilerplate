@@ -37,7 +37,7 @@ class Rewards extends Component {
         <Modal
           rounded={false}
           modalStyle={{...shadowStyles.blackShadow, }}
-          modalTitle={<ModalTitle hasTitleBar={false} title="Redeem Gift" titleTextStyle={{...Fonts.style.medium, color: Colors.secondary, fontWeight: "600"}}/>}
+        //   modalTitle={<ModalTitle hasTitleBar={false} title="Redeem Gift" titleTextStyle={{...Fonts.style.medium, color: Colors.secondary, fontWeight: "600"}}/>}
           visible={this.state.isVisible}
           onTouchOutside={this.toggleConfirmationModal}
           modalAnimation={new SlideAnimation({
@@ -47,7 +47,7 @@ class Rewards extends Component {
           swipeThreshold={200} // default 100
           onSwipeOut={this.toggleConfirmationModal}
           footer={
-          <ModalFooter bordered={false} >
+          <ModalFooter bordered={false}>
             <ModalButton
               text="YES"
               textStyle={{...Fonts.style.medium,color: Colors.primary}}
@@ -62,12 +62,8 @@ class Rewards extends Component {
           }
         >
           <ModalContent>
-            
-                <Text>Are you sure you wish to use this reward?</Text>
-            
-
-            
-            
+                <Text style={styles.modalTitle}>Redeem Gift</Text>
+                <Text style={styles.modalText}>Are you sure you wish to use this reward?</Text>
           </ModalContent>
         </Modal>
           
@@ -78,7 +74,7 @@ class Rewards extends Component {
         return (
             <Container>
 
-                <HeaderRow backgroundColor={Colors.black}>
+                <HeaderRow backgroundColor={Colors.primary} shadow>
                     <Text style={styles.headerText}>My Rewards</Text>
                 </HeaderRow>
 
