@@ -26,7 +26,7 @@ const AuthInput = ({placeholder, onChangeText, value, secureTextEntry, keyboardT
         
         autoCorrect={false}
         autoCapitalize={'none'}
-        clearButtonMode={'while-editing'}
+        clearButtonMode={secureTextEntry ? 'never' : 'while-editing'}
         underlineColorAndroid={"transparent"}
         keyboardType={keyboardType ? keyboardType : 'default'}
         

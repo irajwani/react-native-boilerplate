@@ -4,8 +4,12 @@ import {View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+
+import * as Animatable from 'react-native-animatable';
+
 import Colors from './Colors';
 
+const AnimatableIcon = Animatable.createAnimatableComponent(Icon);
 
 const path = '../Assets/Images'
 
@@ -72,6 +76,24 @@ export default {
       color={Colors.black}
       
     />
+  ),
+
+  AnimatedBackArrow: ({color, onPress}) => (
+    <AnimatableIcon
+      name='arrow-left'
+      size={28}
+      style={{color: color}}
+      onPress={onPress}
+      />
+  ),
+
+  RightArrow: () => (
+    <Icon 
+      name='arrow-right'
+      size={48}
+      color={Colors.white}
+    />
+    
   ),
 
   BackArrow: ({onPress}) => (
@@ -144,6 +166,8 @@ export default {
   //   </View>
   // ),
 
+
+
   Plus: () => (
     <Icon 
       name='plus'
@@ -168,5 +192,27 @@ export default {
       color={Colors.black}
       onPress={onPress}
     />
-  )
+  ),
+
+  Phone: () => (
+    <Icon
+    name="phone"
+    size={18}
+    color={Colors.white} 
+    />
+  ),
+
+  Place: () => (
+    <Icon
+    name="home"
+    size={18}
+    color={Colors.white} 
+    />
+  ),
+
+
+
+
+
+
 }

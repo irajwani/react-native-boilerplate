@@ -64,13 +64,15 @@ export default StyleSheet.create({
 
 
     footerContainer: {
+        flexDirection: 'row',
         flex: 0.1,
         ...Helpers.center
     },
 
         footer: {
             ...Fonts.style.big,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            
         },
         
 

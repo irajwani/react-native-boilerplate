@@ -41,7 +41,7 @@ const background = {
     white: '#fff',
     black: '#000',
     grey: '#989898',
-    lightgrey: "#e3dede",
+    lightgrey: '#e4e4e4',
     containerBackground: '#F2F2F2',
   }
   

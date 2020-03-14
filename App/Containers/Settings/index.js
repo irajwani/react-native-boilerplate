@@ -31,6 +31,11 @@ export default class Settings extends Component {
         {text: "Log out", icon: "logout-variant", onPress: () => this.toggleExitModal() },
     ]
 
+    logOut = () => {
+        this.toggleExitModal();
+        firebase.auth().signOut();
+    }
+
     toggleDocumentModal = (doc = 'contact') => {
         console.log('pressed');
         this.setState({isDocumentVisible: !this.state.isDocumentVisible, document: doc == "privacy" ? privacy : contact});

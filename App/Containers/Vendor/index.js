@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { Animated, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import Container from '../../Components/Container'
 import HeaderNav from '../../Components/HeaderNav'
 import ProgressiveImage from '../../Components/Image/ProgressiveImage'
@@ -7,19 +7,41 @@ import ProgressiveImage from '../../Components/Image/ProgressiveImage'
 import NavigationService from '../../Services/NavigationService';
 import {connect} from 'react-redux';
 import styles from './styles';
-import { Images, Fonts, Colors } from '../../Theme'
+import { Images, Fonts, Colors, Metrics } from '../../Theme'
 import Label from '../../Components/Text/Label'
 
-let {BackArrow} = Images;
+let {AnimatedBackArrow, BackArrow, RightArrow, Phone, Place} = Images;
 
 let stampSize = 25;
+const inputRange = [0, 160, 280];
+
+let numTriangles = Array(Number(40)).fill(1);
+
+const WavyView = ({text, detail = false}) => (
+    <View style={{
+        marginBottom: 3,
+    }}>
+        <View style={{flexDirection: 'row', backgroundColor: Colors.secondary, padding: 5, justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', position: 'absolute', zIndex: -222, bottom: -3}}>
+                {numTriangles.map((num, index) => <View style={styles.semiCircle}/>)}
+            </View>
+            <Label text={text}/>
+            {detail && <Label text={detail}/>}
+        </View>
+        
+        
+    </View>
+)
 
 class Vendor extends Component {
 
     constructor(props) {
         super(props);
         let {params} = this.props.navigation.state;
-        this.state = params.vendor;
+        this.state = {
+            ...params.vendor, 
+            scrollY: new Animated.Value(0)
+        };
         // console.tron.log(this.state);
     }
 
@@ -28,8 +50,9 @@ class Vendor extends Component {
         
         return (
         <View style={styles.visitRewards}>
+            
+            <WavyView text={"Stamps collected"} detail={`${0}/10`}/>
 
-            <Label text={"Loyalty card"}/>
 
             <View style={
                 [styles.loyaltyCard, 
@@ -42,18 +65,20 @@ class Vendor extends Component {
                             {visitRewards[key].text ? 
                                 <Image source={Images.gift} style={{width: stampSize, height: stampSize}}/>
                             :
-                                <Text style={styles.visitNumber}>{index+1}</Text>
+                                <Text style={[styles.visitNumber, {color: Colors.secondary}]}>{index+1}</Text>
                             }
                         </TouchableOpacity>
                     </View>
                 ))}
             </View>
 
+            <WavyView text={"Treets"} />
+
             {Object.keys(visitRewards).map((key, index) => 
                 visitRewards[key].text ? (
                     <View style={styles.visitRewardContainer}>
                         <View style={styles.visitContainer}>
-                            <Text style={{...Fonts.style.normal, color: Colors.white}}>{index+1}</Text>
+                            <Text style={{...Fonts.style.h3, fontWeight: "bold", color: Colors.white}}>{index+1}</Text>
                             <Text style={{...Fonts.style.small, color: Colors.white}}>Stamps</Text>
                         </View>
                         <View style={styles.rewardContainer}>
@@ -73,12 +98,26 @@ class Vendor extends Component {
         let {staticRewards} = this.state;
         return (
         <View style={styles.staticRewards}>
-            <Label text={"Deals Offered"}/>
+            <WavyView text={"Exclusive deals"}/>
             {Object.keys(staticRewards).map((key, index) => (
                 staticRewards[key].text ?
-                <TouchableOpacity style={styles.dealContainer} key={key}>
+                <View style={[styles.dealContainer, index == 0 ? {marginTop: 5} : null, index == Object.keys(staticRewards).length - 1 ? {marginBottom: 5} : null]} key={key}>
+                    <View style={styles.dealIconContainer}>
+                        <View style={styles.circle}>
+                            <RightArrow />
+                        </View>
+                    </View>
+                    <View style={styles.dealTextContainer}>
                         <Text style={styles.deal}>{staticRewards[key].text}</Text>
-                </TouchableOpacity>
+                    </View>
+                    
+                    <View style={styles.dealButtonContainer}>
+                        <TouchableOpacity style={styles.dealButton} onPress={()=>console.log('pressed')}>
+                            <Text style={styles.dealButtonText}>Treet!</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
+                </View>
                 :
                 null
             ))}
@@ -86,57 +125,111 @@ class Vendor extends Component {
     )}   
 
     renderContactDetail = (title, text) => (
-        <Text style={{...styles.address, fontWeight: "600", color: 'black'}}>
-        {title} <Text style={styles.address}>{text}</Text>
-        </Text>
+        
+        <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 5}}>
+            <View style={styles.purpleCircle}>
+                {title == "Phone:" ? <Phone/> : <Place/>}
+            </View>
+            <Text style={styles.address}>{text}</Text>
+        </View>
+        
+        
     )
 
     renderAddress = (address, phone) => (
+        <>
+        <WavyView text={"Contact"}/>
         <View style={styles.addressContainer}>
-            <Label text={"Contact"}/>
+            
             {this.renderContactDetail("Address:", address)}
             {this.renderContactDetail("Phone:", phone)}
         </View>
+        </>
     )
 
-    render() {
+    _getHeaderColor = () => {
+        const {scrollY} = this.state;
+    
+        return scrollY.interpolate({
+            inputRange,
+            outputRange: ['transparent', Colors.primary, Colors.primary],
+            extrapolate: 'clamp',
+            useNativeDriver: true
+        });
+      }
+    
+      _getArrowColor = () => {
+        const {scrollY} = this.state;
+    
+        return scrollY.interpolate({
+            inputRange,
+            outputRange: [Colors.secondary, Colors.lightgrey, Colors.white],
+            extrapolate: 'clamp',
+            useNativeDriver: true
+        });
+      }
+    
+      _getHeaderOpacity = () => {
+          const {scrollY} = this.state;
+    
+          return scrollY.interpolate({
+              inputRange,
+              outputRange: [0, 0.3, 1],
+              extrapolate: 'clamp',
+              useNativeDriver: true
+          });
+    
+      };
 
-        let {logo} = this.state;
+    render() {
+        const headerOpacity = this._getHeaderOpacity();
+        const headerColor = this._getHeaderColor();
+        const arrowColor = this._getArrowColor();
+
+        let {logo, name} = this.state;
 
         return (
-            <ScrollView>
-
-                <HeaderNav
-                absolute 
-                left={() => <BackArrow onPress={() => NavigationService.goBack()}/>}
-                text={""}
-                right={() => (<View></View>)}
+            <Container>
+            <Animated.View style={[styles.headerContainer, {backgroundColor: headerColor, opacity: headerOpacity}]}>
+                <AnimatedBackArrow
+                color={arrowColor}
+                onPress={() => NavigationService.goBack()}
                 />
 
-                <Container>
-                    <View style={styles.bannerContainer}>
-                        <ProgressiveImage thumbnailSource={Images.glass} source={Images.blur} style={styles.banner}/>
-                    </View>
-
-                    <View style={styles.bodyContainer}>
-
-                        <View style={styles.logoContainer}>
-                            <ProgressiveImage thumbnailSource={Images.smallProfile} source={{uri: logo}} style={styles.logo}/>
-                        </View>
-
-                        {this.renderVisitRewards()}
-                        {this.renderStaticRewards()}
-                        {this.renderAddress(this.state.branch, this.state.branch)}
-                    </View>
-
-
-                </Container>
-
-
-
+                <Animated.Text style={{...styles.header, color: arrowColor}}>{name}</Animated.Text>
+                    
                 
+            </Animated.View>
+            <Animated.ScrollView
+             onScroll={Animated.event(
+                [
+                {
+                    nativeEvent: {contentOffset: {y: this.state.scrollY}}
+                }
+                ]
+            )}
+            style={styles.scrollContainer} 
+            contentContainerStyle={styles.contentContainer}
+            >
+                
+                <View style={styles.bannerContainer}>
+                    <ProgressiveImage thumbnailSource={Images.glass} source={Images.blur} style={styles.banner}/>
+                    <View style={styles.logoContainer}>
+                        <ProgressiveImage thumbnailSource={Images.smallProfile} source={{uri: logo}} style={styles.logo}/>
+                    </View>
+                    
+                </View>
 
-            </ScrollView>
+                <View style={styles.bodyContainer}>
+
+                    {this.renderVisitRewards()}
+                    {this.renderStaticRewards()}
+                    {this.renderAddress(this.state.branch, this.state.branch)}
+                </View>
+
+
+            </Animated.ScrollView>
+            </Container>
 
             
         )
@@ -156,3 +249,10 @@ export default connect(
 mapStateToProps,
 mapDispatchToProps
 )(Vendor)
+
+{/* <HeaderNav
+                absolute 
+                left={() => <BackArrow onPress={() => NavigationService.goBack()}/>}
+                text={""}
+                right={() => (<View></View>)}
+                /> */}

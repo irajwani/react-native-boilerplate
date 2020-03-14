@@ -3,6 +3,6 @@ export const INITIAL_STATE = {
     // message: false,
     errorMessage: null,
     
-    
-     
+    rewardRedeemed: {},
+    redeemStatus: false,
 }

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     },
 
         label: {
-            ...Fonts.style.h4,
+            ...Fonts.style.normal,
             fontWeight: "400",
             textTransform: "uppercase"
         }

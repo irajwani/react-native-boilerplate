@@ -25,9 +25,29 @@ class Rewards extends Component {
         await this.props.getRewards(this.props.uid);
     }
 
+    componentDidUpdate = (prevProps) => {
+      if(this.props.redeemStatus == 'done') {
+        this.props.getRewards(this.props.uid);
+      }
+    }
+
+    redeemReward = () => {
+      let {vendorUid, visitNumber} = this.state;
+      let {uid} = this.props;
+
+      let rewardRedeemed = {
+        uid,
+        vendorUid,
+        visitNumber
+      }
+
+      this.props.redeemReward(rewardRedeemed);
+      this.toggleConfirmationModal();
+    }
+
     onRewardPress = (vendorUid, visitNumber) => {
-        this.toggleConfirmationModal()
-        // console.log(vendorUid);
+        console.log(vendorUid, visitNumber);
+        this.setState({isVisible: !this.state.isVisible, vendorUid, visitNumber});
     }
 
     toggleConfirmationModal = () => this.setState({isVisible: !this.state.isVisible})
@@ -51,7 +71,7 @@ class Rewards extends Component {
             <ModalButton
               text="YES"
               textStyle={{...Fonts.style.medium,color: Colors.primary}}
-              onPress={this.toggleConfirmationModal}
+              onPress={this.redeemReward}
             />
             <ModalButton
               text="NO"
@@ -99,12 +119,15 @@ class Rewards extends Component {
 
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
+
     rewards: state.reward.rewards,
+    redeemStatus: state.reward.redeemStatus
     
 })
 
 const mapDispatchToProps = (dispatch) => ({
     getRewards: (uid) => dispatch(RewardActions.getRewardsRequest(uid)),
+    redeemReward: (rewardRedeemed) => dispatch(RewardActions.redeemRewardRequest(rewardRedeemed)),
     
 })
 

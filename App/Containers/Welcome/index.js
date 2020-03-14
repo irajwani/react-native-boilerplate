@@ -194,7 +194,8 @@ export class Welcome extends Component {
                 </View>
 
                 <View style={styles.footerContainer}>
-                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.primary}]}>Sign Up</Text>
+                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.white}]}>Sign</Text>
+                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.primary}]}>Up</Text>
                 </View>
                 
             </ImageBackground>

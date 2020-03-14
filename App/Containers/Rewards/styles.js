@@ -15,6 +15,7 @@ export default StyleSheet.create({
         modalTitle: {
             ...Fonts.style.big,
             color: Colors.primary,
+            marginBottom: 8,
 
         },
 

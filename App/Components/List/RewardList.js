@@ -16,7 +16,10 @@ const Reward = ({reward, onRewardPress}) => (
             <Text style={styles.rewardDetails}>Details....</Text>
         </View>
 
-        <TouchableOpacity disabled={reward.hasUsed ? true : false} style={[styles.redeemButton, {backgroundColor: reward.hasUsed ? Colors.grey : Colors.secondary}]} onPress={onRewardPress}>
+        <TouchableOpacity disabled={reward.hasUsed ? true : false} 
+        style={[styles.redeemButton, {backgroundColor: reward.hasUsed ? Colors.grey : Colors.secondary}]} 
+        onPress={onRewardPress}
+        >
             <Text style={[styles.redeemText]}>{reward.hasUsed ? "REDEEMED" : "REDEEM"}</Text>
         </TouchableOpacity>
         
@@ -38,7 +41,7 @@ const RewardList = ({rewards, onRewardPress, style = null}) => (
         keyExtractor={(item, index) => index}
         numColumns={1}
     />
-    )
+)
 
     
 export default RewardList

@@ -26,7 +26,11 @@ function getRewards(payload) {
   return apiClient.get(`/getRewards/?uid=${payload.uid}`).then(fulfilled)
 }
 
+function redeemReward(payload) {
+  return apiClient.post('/redeemReward', payload).then(fulfilled)
+}
 
-export const vendorService = {
-  getRewards
+export const rewardService = {
+  getRewards,
+  redeemReward,
 }

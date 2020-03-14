@@ -14,16 +14,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center', alignItems: 'center', 
         backgroundColor: Colors.secondary, 
         width: Metrics.screenWidth/1.5,
-        paddingVertical: 10, 
+        paddingVertical: 8, 
         borderRadius: 30,
         ...shadowStyles.greyShadow
         
     },
 
     text: {
-        ...Fonts.style.big,
+        ...Fonts.style.normal,
         fontWeight: "600",
-        color: Colors.black
+        color: Colors.white
     }
 })
 
