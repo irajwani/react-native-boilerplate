@@ -56,6 +56,11 @@ export default StyleSheet.create({
                 
             },
 
+                forgotPassword: {
+                    ...Fonts.style.normal,
+                    marginVertical: 10,
+                },
+
         buttonContainer: {
             // marginTop: 15,
             ...Helpers.center,
@@ -74,6 +79,18 @@ export default StyleSheet.create({
             fontWeight: "bold",
             
         },
+
+    //Alert
+    modalTitle: {
+        ...Fonts.style.big,
+        color: Colors.primary,
+        marginBottom: 8,
+
+    },
+
+    modalText: {
+        ...Fonts.style.normal,
+    },
         
 
 

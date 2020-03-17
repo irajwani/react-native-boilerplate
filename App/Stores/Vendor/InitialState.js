@@ -5,6 +5,6 @@ export const INITIAL_STATE = {
     // message: false,
     errorMessage: null,
     
-    
+    addStatus: false,
      
 }

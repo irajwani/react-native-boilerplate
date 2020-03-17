@@ -39,6 +39,26 @@ export const redeemRewardFailure = (state, { errorMessage }) => ({
   redeemStatus: 'done'
 })
 
+export const redeemStaticRewardRequest = (state, {rewardRedeemed}) => ({
+  ...state,
+  rewardRedeemed,
+  redeemStatus: 'pending'
+})
+
+export const redeemStaticRewardSuccess = (state, {message}) => {
+  console.log(message);
+  return {
+    ...state,
+    redeemStatus: 'done'
+  }
+}
+
+export const redeemStaticRewardFailure = (state, { errorMessage }) => ({
+  ...state,
+  errorMessage,
+  redeemStatus: 'done'
+})
+
 export const reducer = createReducer(INITIAL_STATE, {
 
   [RewardTypes.GET_REWARDS_REQUEST]: getRewardsRequest,
@@ -48,5 +68,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [RewardTypes.REDEEM_REWARD_REQUEST]: redeemRewardRequest,
   [RewardTypes.REDEEM_REWARD_SUCCESS]: redeemRewardSuccess,
   [RewardTypes.REDEEM_REWARD_FAILURE]: redeemRewardFailure,
+
+  [RewardTypes.REDEEM_STATIC_REWARD_REQUEST]: redeemStaticRewardRequest,
+  [RewardTypes.REDEEM_STATIC_REWARD_SUCCESS]: redeemStaticRewardSuccess,
+  [RewardTypes.REDEEM_STATIC_REWARD_FAILURE]: redeemStaticRewardFailure,
   
 })

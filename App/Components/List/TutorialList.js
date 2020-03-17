@@ -96,8 +96,8 @@ class TutorialList extends Component {
   
     return (
 
-      <Container>
-      <ImageBackground source={Images.tutBg} style={styles.container}>
+      <Container style={{backgroundColor: Colors.primary}}>
+      
         <View style = {styles.headerContainer}>
           {showSkip && 
           <TouchableOpacity style={styles.skipButton} onPress={this.props.handleSkip}>
@@ -123,7 +123,7 @@ class TutorialList extends Component {
         </TouchableOpacity>
 
         
-      </ImageBackground>
+      
       </Container>
     )
   

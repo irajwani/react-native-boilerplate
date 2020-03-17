@@ -8,7 +8,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { withNavigation } from 'react-navigation';
 
 import { Colors, Images } from '../../Theme';
- 
+
+let pictureSize = 88;
 const NothingHere = () => (
   <Svg height={"100%"} width={"100%"} viewBox="0 0 400 400">
       <Path 
@@ -81,14 +82,14 @@ class SelectPictures extends Component {
 
   cameraOrGallery(index, navToComponent) {
       //iOS only function
-    if (index === 0) {
-      // this.setState({cameraToggle: true});
-      this.launchCamera(navToComponent);
+    // if (index === 0) {
+    //   // this.setState({cameraToggle: true});
+    //   this.launchCamera(navToComponent);
 
-    }
+    // }
     //request photos permission on lower versions of android to launch gallery
     //On iOS and sufficiently high versions of Android, just open gallery
-    if (index == 1) {
+    if (index == 0) {
       this.launchGallery(navToComponent);
       // Platform.OS == "android" ? Platform.Version <= 22 ? this.launchGallery(navToComponent) : this.requestPhotosPermission(navToComponent) : this.launchGallery(navToComponent);
     }
@@ -274,9 +275,10 @@ class SelectPictures extends Component {
         <ActionSheet
         ref={o => this.ActionSheet = o}
         title={'Method to Select Picture:'}
-        options={['Camera', 'Photo Library', 'cancel']}
-        cancelButtonIndex={2}
-        // destructiveButtonIndex={1}
+        options={['Photo Library', 'cancel']}
+        // options={['Camera', 'Photo Library', 'cancel']}
+        cancelButtonIndex={1}
+        destructiveButtonIndex={1}
         onPress={(index) => { this.cameraOrGallery(index, this.props.navToComponent) }}
         
         />
@@ -347,16 +349,16 @@ const styles = StyleSheet.create( {
   },
 
   mainPictureCP: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
+    width: pictureSize,
+    height: pictureSize,
+    borderRadius: pictureSize/2,
     backgroundColor: '#fff'
   },
 
   mainPictureBlank: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: pictureSize,
+    height: pictureSize,
+    borderRadius: pictureSize/2,
   },
 
   otherPicturesRow: {

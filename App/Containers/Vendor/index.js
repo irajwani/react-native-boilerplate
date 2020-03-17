@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import { Animated, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
+
+import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
+
 import Container from '../../Components/Container'
 import HeaderNav from '../../Components/HeaderNav'
 import ProgressiveImage from '../../Components/Image/ProgressiveImage'
 
 import NavigationService from '../../Services/NavigationService';
+
 import {connect} from 'react-redux';
+import RewardActions from '../../Stores/Reward/Actions'
+
 import styles from './styles';
 import { Images, Fonts, Colors, Metrics } from '../../Theme'
 import Label from '../../Components/Text/Label'
+
+import shadowStyles from '../../StyleSheets/shadowStyles';
 
 let {AnimatedBackArrow, BackArrow, RightArrow, Phone, Place} = Images;
 
@@ -40,7 +48,13 @@ class Vendor extends Component {
         let {params} = this.props.navigation.state;
         this.state = {
             ...params.vendor, 
-            scrollY: new Animated.Value(0)
+            presentDate: new Date,
+
+            scrollY: new Animated.Value(0),
+
+            //Confirmation modal
+            staticReward: {},
+            isVisible: false,
         };
         // console.tron.log(this.state);
     }
@@ -93,6 +107,27 @@ class Vendor extends Component {
         
     )}
 
+    toggleConfirmationModal = () => this.setState({isVisible: !this.state.isVisible})
+
+    redeemStaticReward = () => {
+        let {staticReward, uid} = this.state;
+
+        let rewardRedeemed = {
+            reward: staticReward,
+            vendorUid: uid,
+            uid: this.props.uid
+        }
+    
+        this.props.redeemStaticReward(rewardRedeemed);
+        this.toggleConfirmationModal();
+        
+    }
+
+    isRedeemDisabled = () => {
+        let {presentDate} = this.state;
+
+    }
+
     renderStaticRewards = () => {
         //TODO: maybe scrollview here
         let {staticRewards} = this.state;
@@ -112,7 +147,13 @@ class Vendor extends Component {
                     </View>
                     
                     <View style={styles.dealButtonContainer}>
-                        <TouchableOpacity style={styles.dealButton} onPress={()=>console.log('pressed')}>
+                        <TouchableOpacity 
+                        // disabled={() => this.isRedeemDisabled(staticRewards[key])}
+                        disabled={false}
+                        style={styles.dealButton} 
+                        onPress={() => {
+                            this.setState({staticReward: staticRewards[key], isVisible: true})
+                        }}>
                             <Text style={styles.dealButtonText}>Treet!</Text>
                         </TouchableOpacity>
                     </View>
@@ -145,6 +186,41 @@ class Vendor extends Component {
             {this.renderContactDetail("Phone:", phone)}
         </View>
         </>
+    )
+
+    renderConfirmationModal = () => (
+        <Modal
+          rounded={false}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin}}
+        //   modalTitle={<ModalTitle hasTitleBar={false} title="Redeem Gift" titleTextStyle={{...Fonts.style.medium, color: Colors.secondary, fontWeight: "600"}}/>}
+          visible={this.state.isVisible}
+          onTouchOutside={this.toggleConfirmationModal}
+          modalAnimation={new SlideAnimation({
+            slideFrom: 'bottom',
+          })}
+          swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
+          swipeThreshold={200} // default 100
+          onSwipeOut={this.toggleConfirmationModal}
+          footer={
+          <ModalFooter bordered={false}>
+            <ModalButton
+              text="YES"
+              textStyle={{...Fonts.style.medium,color: Colors.primary}}
+              onPress={this.redeemStaticReward}
+            />
+            <ModalButton
+              text="NO"
+              textStyle={{...Fonts.style.medium,color: Colors.primary}}
+              onPress={this.toggleConfirmationModal}
+            />
+          </ModalFooter>
+          }
+        >
+          <ModalContent>
+                <Text style={styles.modalTitle}>Redeem Gift</Text>
+                <Text style={styles.modalText}>Are you sure you wish to use this reward?</Text>
+          </ModalContent>
+        </Modal>
     )
 
     _getHeaderColor = () => {
@@ -187,6 +263,7 @@ class Vendor extends Component {
         const arrowColor = this._getArrowColor();
 
         let {logo, name} = this.state;
+        console.log(Object.values(this.state));
 
         return (
             <Container>
@@ -229,6 +306,7 @@ class Vendor extends Component {
 
 
             </Animated.ScrollView>
+            {this.renderConfirmationModal()}
             </Container>
 
             
@@ -238,11 +316,13 @@ class Vendor extends Component {
 
 
 const mapStateToProps = (state) => ({
+    uid: state.auth.uid
     // vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    // markVisit: () => dispatch(VendorActions.getVendorsRequest()),
+    redeemStaticReward: (rewardRedeemed) => dispatch(RewardActions.redeemStaticRewardRequest(rewardRedeemed)),
+    
 })
 
 export default connect(

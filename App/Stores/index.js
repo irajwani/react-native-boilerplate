@@ -14,7 +14,7 @@ export default () => {
     auth: authReducer,
     vendor: vendorReducer,
     reward: rewardReducer,
-    // deals: dealsReducer,
+    
     
   })
 

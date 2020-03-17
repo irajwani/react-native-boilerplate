@@ -26,10 +26,13 @@ export const storeUid = (state, {uid}) => ({
   uid,
 })
 
-export const getProfileRequest = (state, {uid}) => ({
-  ...state,
-  // uid,
-})
+export const getProfileRequest = (state, {uid}) => {
+  console.log('IntiateGetProfileRequest');
+  return {
+    ...state,
+    uid,
+  }
+}
 
 export const getProfileSuccess = (state, {message}) => {
   return {

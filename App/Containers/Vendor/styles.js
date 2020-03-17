@@ -200,7 +200,17 @@ export default StyleSheet.create({
                 marginLeft: 5,
             },
 
+        //Confirmation Modal
+        modalTitle: {
+            ...Fonts.style.big,
+            color: Colors.primary,
+            marginBottom: 8,
 
+        },
+
+        modalText: {
+            ...Fonts.style.normal,
+        },
 
 
 

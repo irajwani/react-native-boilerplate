@@ -9,6 +9,10 @@ const { Types, Creators } = createActions({
   redeemRewardSuccess: ['message'],
   redeemRewardFailure: ['errorMessage'],
 
+  redeemStaticRewardRequest: ['payload'],
+  redeemStaticRewardSuccess: ['message'],
+  redeemStaticRewardFailure: ['errorMessage'],
+
 
 })
 

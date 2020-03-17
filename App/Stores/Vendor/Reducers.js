@@ -23,19 +23,22 @@ export const getVendorsFailure = (state, { errorMessage }) => ({
 export const addCardRequest = (state, {uid, vendorUid}) => ({
   ...state,
   uid,
-  vendorUid
+  vendorUid,
+  addStatus: 'pending'
 })
 
 export const addCardSuccess = (state, {message}) => {
   return {
     ...state,
     message,
+    addStatus: 'done'
   }
 }
 
 export const addCardFailure = (state, { errorMessage }) => ({
   ...state,
   errorMessage,
+  addStatus: 'done'
 })
 
 

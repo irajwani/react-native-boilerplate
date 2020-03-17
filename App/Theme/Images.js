@@ -96,11 +96,11 @@ export default {
     
   ),
 
-  BackArrow: ({onPress}) => (
+  BackArrow: ({onPress, color = Colors.white}) => (
     <Icon 
       name='arrow-left'
       size={35}
-      color={Colors.white}
+      color={color}
       onPress={onPress}
     />
     

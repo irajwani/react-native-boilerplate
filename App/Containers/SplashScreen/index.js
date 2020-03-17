@@ -88,7 +88,8 @@ class SplashScreen extends React.Component {
             
             //If you want to re-enable presence checker in future
             if(user) {
-              // console.log(user)
+              console.log("HERE")
+              console.log(user);
               await this.props.storeUid(user.uid);
               
               var cT = new Date(user.metadata.creationTime);
@@ -99,12 +100,17 @@ class SplashScreen extends React.Component {
 
               if(seconds_dif < 10) {
                 console.log('person signed up')
+                console.log("Debugging why this func wasnt invoked");
+                this.props.getProfile(user.uid);
               }
               else {
+                console.log("Debugging why this func wasnt invoked");
+                this.props.getProfile(user.uid);
                 NavigationService.navigate('AppStack');
+                
               }
 
-              this.props.getProfile(user.uid);
+              
 
 
 

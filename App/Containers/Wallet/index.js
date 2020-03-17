@@ -40,14 +40,14 @@ class Wallet extends Component {
         }
     }
 
-    async componentDidMount() {
-        console.log(JSON.stringify(this.props.auth))
-        // if(this.props.uid) {
-        //     await this.props.getProfile(this.props.uid);
-        // }
+    // async componentDidMount() {
+    //     console.log(JSON.stringify(this.props.auth))
+    //     // if(this.props.uid) {
+    //     //     await this.props.getProfile(this.props.uid);
+    //     // }
         
-        // this.props.getVendors();
-    }
+    //     // this.props.getVendors();
+    // }
 
     toggleDrawer = () => {
       
@@ -58,7 +58,7 @@ class Wallet extends Component {
             {
               duration: 300,
               toValue: this.state.isDrawerActive ? 300 : 0,
-              friction: 10
+              friction: 7
             }
           )
           .start();
@@ -200,7 +200,7 @@ class Wallet extends Component {
 
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
-    auth: state.auth,
+    // auth: state.auth,
     customerId: state.auth.profile.customerId,
     myCards: state.auth.profile.cards,
     photoURL: state.auth.profile.profile.photoURL,

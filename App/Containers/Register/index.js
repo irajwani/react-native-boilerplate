@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, View, ScrollView, Text, Keyboard, KeyboardAvoidingView } from 'react-native'
+import { Image, View, ScrollView, TouchableOpacity, Text, Keyboard, KeyboardAvoidingView, Modal, Linking, SafeAreaView } from 'react-native'
 
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -16,10 +16,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import styles from './styles';
 import SelectPictures from '../../Components/SelectPictures';
-import { Colors, Images, Helpers, Metrics } from '../../Theme';
+import { Colors, Images, Helpers, Metrics, Fonts, Strings } from '../../Theme';
 import Loading from '../../Components/ActivityIndicator/Loading';
 import HeaderNav from '../../Components/HeaderNav';
 
+const { EulaTop, EulaBottom, TsAndCs, PrivacyPolicy, EulaLink } = Strings;
 
 const {BackArrow, PasswordsMatch} = Images;
 
@@ -38,14 +39,18 @@ class Register extends Component {
         this.state = {
             isLoading: false,
 
-            email: 'saif@gmail.com',
+            email: 'sameer@gmail.com',
             pass: 'password',
             pass2: 'password',
 
-            firstName: 'Saif',
-            lastName: 'Shahid',
+            firstName: 'Sameer',
+            lastName: 'Dada',
 
-            phone: "0321239871",
+            phone: "0321256732",
+
+            modalVisible: false,
+            termsModalVisible: false,
+            privacyModalVisible: false,
         }
     }
 
@@ -78,6 +83,48 @@ class Register extends Component {
     componentWillUnmount() {
         this.keyboardDidShowListener.remove();
         this.keyboardDidHideListener.remove();
+    }
+
+    setModalVisible = (visible) => {
+        this.setState({modalVisible: visible});
+    }
+
+    //Invoked when you 'Accept' EULA as a Google User trying to sign up
+    createProfileForGoogleOrFacebookUser = async (user, pictureuri, socialPlatform) => {
+
+        console.log('Initiate FB or Google Sign Up')
+        this.setState({createProfileLoading: true});
+        if(socialPlatform == "google") {
+            const {idToken, accessToken} = user;
+            const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+            const socialUser = await firebase.auth().signInWithCredential(credential);
+            const {email, pass} = this.state
+            const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
+            console.log(credential);
+            firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
+                // console.log(usercred);
+                this.updateFirebase(this.state, pictureuri, mime='image/jpg',socialUser.uid, );
+                // console.log("Account linking success", usercred.user);
+            }, function(error) {
+                console.log("Account linking error", error);
+            });   
+        }
+        else {
+            const {accessToken} = user;
+            const credential = await firebase.auth.FacebookAuthProvider.credential(accessToken);
+            const socialUser = await firebase.auth().signInWithCredential(credential);
+            const {email, pass} = this.state
+            const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
+            console.log(credential);
+            firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
+                // console.log(usercred);
+                this.updateFirebase(this.state, pictureuri, mime='image/jpg',socialUser.uid, );
+                // console.log("Account linking success", usercred.user);
+            }, function(error) {
+                console.log("Account linking error", error);
+            });
+        }
+    
     }
 
     promiseToUploadPhoto = (uid, uri) => {
@@ -217,7 +264,6 @@ class Register extends Component {
 
             <View style={{
                 flexDirection: 'row', 
-                // borderWidth: this.state.pass && this.state.pass2 ? 0.5 : 0, borderColor: passwordConditionMet ? mantisGreen : flashOrange
             }}>
                 <View style={{flex: passwordConditionMet ? 1 : 0.85}}>
                     <AuthInput 
@@ -238,11 +284,62 @@ class Register extends Component {
         </>
     )
 
+    renderTermsModal = () => (
+        //   {/* Modal to show Terms and Conditions */}
+          <Modal
+          animationType="fade"
+          transparent={false}
+          visible={this.state.termsModalVisible}
+          onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+          }}
+          >
+              <SafeAreaView style={styles.modal}>
+                  <Text style={styles.modalHeader}>Terms & Conditions of Use</Text>
+                  <ScrollView contentContainerStyle={styles.licenseContainer}>
+                      <Text>{TsAndCs}</Text>
+                  </ScrollView>
+                  <Text onPress={() => { this.setState({modalVisible: true, termsModalVisible: false}) }} style={styles.gotIt}>
+                      Got It!
+                  </Text>
+              </SafeAreaView>
+          </Modal>
+      )
+    
+    renderPrivacyModal = () => (
+        // {/* Modal to show Privacy Policy */}
+        <Modal
+        animationType="fade"
+        transparent={false}
+        visible={this.state.privacyModalVisible}
+        onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+        }}
+        >
+            <SafeAreaView style={styles.modal}>
+                <Text style={styles.modalHeader}>Privacy Policy of Treet - loyalty cards</Text>
+                <ScrollView contentContainerStyle={styles.licenseContainer}>
+                    <Text>{PrivacyPolicy}</Text>
+                </ScrollView>
+                <Text onPress={() => { this.setState({modalVisible: true, privacyModalVisible: false}) }} style={styles.gotIt}>
+                    Got It!
+                </Text>
+            </SafeAreaView>
+        </Modal>
+    )
+
     
 
     render() {
         let {isLoading} = this.state;
         let {navigation} = this.props;
+
+        const {params} = navigation.state
+        var googleUser = params.googleUserBoolean ? true : false;
+        var facebookUser = params.facebookUserBoolean ? true : false;
+        //may be reusing booleans here, but this check on isUserGoogleUser? alright logically so far
+        var user = params.googleUserBoolean || params.facebookUserBoolean ? params.user : null;
+
         var pictureuris = navigation.getParam('pictureuris', "nothing here");
         var passwordConditionMet = (this.state.pass == this.state.pass2) && (this.state.pass.length > 0);
         var isDone = this.state.firstName && this.state.lastName && this.state.email && passwordConditionMet;
@@ -260,11 +357,11 @@ class Register extends Component {
 
                 <HeaderNav
                     left={() => (
-                        <BackArrow onPress={() => NavigationService.goBack()}/>
+                        <BackArrow onPress={() => NavigationService.goBack()} color={Colors.secondary}/>
                     )}
                     text={"Sign Up"}
                     right={() =>(
-                        <Text>right</Text>
+                        <View/>
                     )}
                 />
 
@@ -300,10 +397,64 @@ class Register extends Component {
                         text={"Sign Up"}
                         disabled={isDone ? false : true}
                         extraStyles={{backgroundColor: isDone ? Colors.secondary : Colors.grey}}
-                        onPress={() => this.createProfile(pictureuris)}
+                        onPress={() => this.setModalVisible(true)}
+                        // onPress={}
                     />
                 </View>
 
+                <Modal
+                animationType="slide"
+                transparent={false}
+                visible={this.state.modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                }}
+                >
+                <SafeAreaView style={styles.modal}>
+                    
+                    <Text style={styles.modalHeader}>End-User License Agreement for Treet: loyalty cards</Text>
+                    <ScrollView contentContainerStyle={styles.licenseContainer}>
+                        <Text style={styles.document}>{EulaTop}</Text>
+                        <Text style={{color: Colors.number}} onPress={() => Linking.openURL(EulaLink)}>{EulaLink}</Text>
+                        <Text style={styles.document}>{EulaBottom}</Text>
+                    </ScrollView>
+                    <View style={styles.documentOpenerContainer}>
+                        <Text style={styles.documentOpener} onPress={() => {this.setState({modalVisible: false, termsModalVisible: true})}}>
+                            Terms & Conditions
+                        </Text>
+                        <Text style={styles.documentOpener} onPress={() => {this.setState({modalVisible: false, privacyModalVisible: true})}}>
+                            See Privacy Policy
+                        </Text>
+                    </View>
+                    <View style={styles.decisionButtons}>
+                        <TouchableOpacity
+                            style={[styles.decisionButton, {backgroundColor: Colors.white}]}
+                            onPress={() => {this.setModalVisible(false); }} 
+                        >
+                            <Text style={{...Fonts.style.normal, color: Colors.black}}>Reject</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[styles.decisionButton, {backgroundColor: Colors.secondary}]}
+                            onPress={() => {
+                                googleUser ? 
+                                this.createProfileForGoogleOrFacebookUser(user, pictureuris == "nothing here" ? "" : pictureuris[0], 'google') 
+                                : 
+                                    facebookUser ? 
+                                        this.createProfileForGoogleOrFacebookUser(user, pictureuris[0], 'facebook') 
+                                        : 
+                                        this.createProfile(pictureuris) ;
+                            }} 
+                        >
+                            <Text style={{...Fonts.style.normal, color: Colors.white}}>Accept</Text>
+                        </TouchableOpacity>
+                    </View>
+        
+                </SafeAreaView>
+                </Modal>
+                
+                {this.renderTermsModal()}
+                {this.renderPrivacyModal()}
 
 
             </Container>

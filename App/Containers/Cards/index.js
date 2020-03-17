@@ -22,6 +22,12 @@ class Cards extends Component {
         await this.props.getVendors();
     }
 
+    componentDidUpdate = (prevProps) => {
+        if(this.props.addStatus == 'done') {
+          this.props.getVendors();
+        }
+    }
+
     handleWalletChange = (vendorUid) => {
         this.props.addCard(this.props.uid, vendorUid)
     }
@@ -58,8 +64,12 @@ class Cards extends Component {
 
 const mapStateToProps = (state) => ({
     uid: state.auth.uid,
+    
     vendors: state.vendor.vendors,
+    addStatus: state.vendor.addStatus,
+    
     myCards: state.auth.profile.cards,
+    
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,21 +4,18 @@ import { Text, View, FlatList, Animated, TouchableOpacity, StyleSheet } from 're
 import VendorCard from "../Card/VendorCard"
 import { Helpers, Fonts } from '../../Theme';
 
-
-    
-    
 const CardList = ({vendors, myCards, onPress, handleWalletChange, style = null}) => (
-        <Animated.FlatList 
-            style={[styles.cardsContainer, style]}
-            contentContainerStyle={styles.cardsContentContainer}
-            data={vendors}
-            showsVerticalScrollIndicator={true}
-            renderItem={(item, index) => <VendorCard myCards={myCards} vendor={item.item} onPress={() => onPress(item.item)} handleWalletChange={() => handleWalletChange(item.item.uid)}/>}
-            // renderItem={(item, index) => this.renderVendor(item.item, index)}
-            keyExtractor={(item, index) => index}
-            numColumns={1}
-        />
-    )
+    <Animated.FlatList 
+        style={[styles.cardsContainer, style]}
+        contentContainerStyle={styles.cardsContentContainer}
+        data={vendors}
+        showsVerticalScrollIndicator={true}
+        renderItem={(item, index) => <VendorCard myCards={myCards} vendor={item.item} onPress={() => onPress(item.item)} handleWalletChange={() => handleWalletChange(item.item.uid)}/>}
+        // renderItem={(item, index) => this.renderVendor(item.item, index)}
+        keyExtractor={(item, index) => index}
+        numColumns={1}
+    />
+)
 
     
 export default CardList

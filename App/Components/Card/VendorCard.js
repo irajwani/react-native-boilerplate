@@ -25,7 +25,9 @@ export default ({vendor, myCards, onPress, handleWalletChange}) => {
         <View style={styles.bodyContainer}>
             <View style={styles.nameContainer}>
                 <Text style={styles.name}>{vendor.name}</Text>
-                <TouchableOpacity style={[styles.button, {backgroundColor: cardNotAdded ? Colors.primary : Colors.secondary}]} onPress={handleWalletChange}>
+                <TouchableOpacity 
+                style={[styles.button, {backgroundColor: cardNotAdded ? Colors.primary : Colors.grey}]} 
+                onPress={handleWalletChange}>
                     <Text style={styles.buttonText}>{cardNotAdded ? "Add to Wallet" : "Added"}</Text>
                 </TouchableOpacity>
             </View>
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
         branchContainer: {
             flex: 0.2,
             justifyContent: 'flex-end',
+            marginTop: Metrics.baseMargin/2,
         },
 
             branch: {

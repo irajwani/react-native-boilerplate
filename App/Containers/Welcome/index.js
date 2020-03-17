@@ -1,18 +1,28 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, CheckBox } from 'react-native'
 
+import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
+
 import Container from '../../Components/Container'
 import TutorialList from '../../Components/List/TutorialList';
+
 import firebase from 'react-native-firebase';
+import {LoginManager, AccessToken, GraphRequest, GraphRequestManager} from 'react-native-fbsdk';
+
 import AuthButton from '../../Components/Button/AuthButton';
 import NavigationService from '../../Services/NavigationService';
 
+import shadowStyles from '../../StyleSheets/shadowStyles';
 import styles from './styles';
 // import Tutorial from '../Tutorial';
 import { Colors, Fonts, Images, Strings, Helpers, Metrics } from '../../Theme';
 import AuthInput from '../../Components/Input/AuthInput';
 import { connect } from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';;
+import AsyncStorage from '@react-native-community/async-storage';
+
+import Loading from '../../Components/ActivityIndicator/Loading';
+
+
 
 let {Check, Facebook} = Images;
 
@@ -33,6 +43,7 @@ let {Check, Facebook} = Images;
     },
  ]
 
+let forgotPasswordText = "Please enter the email you created an account with. Follow the instructions sent to your email to reset your password for Treet. Then log in with your new credentials.";
 
 export class Welcome extends Component {
 
@@ -41,11 +52,16 @@ export class Welcome extends Component {
 
         this.state = {
             newUser: true,
-
+            isLoading: false,
             email: '',
             pass: '',
 
             saveUsernamePass: true,
+
+            isAlertVisible: false,
+            error: '',
+
+            isFpVisible: false,
         }
         // console.log(props.navigation.state.params.newUser)
         // this.newUser = props.navigation.state.params.newUser;
@@ -87,14 +103,31 @@ export class Welcome extends Component {
         
     }
 
+    attemptSignUp = (socialUser, googleUserBoolean, facebookUserBoolean) => {
+        //check if user wishes to sign up through standard process (the former) or through google or through facebook so 3 cases
+        //
+        // console.log('attempting to sign up', socialUser);
+        !socialUser ? 
+            NavigationService.navigate('Register', {user: false, googleUserBoolean: false, facebookUserBoolean: false})
+        :
+            googleUserBoolean && !facebookUserBoolean ? 
+                NavigationService.navigate('Register', {user: socialUser, googleUserBoolean: true, facebookUserBoolean: false, pictureuris: [socialUser.user.photo]})
+            :
+                NavigationService.navigate('Register', {user: socialUser, googleUserBoolean: false, facebookUserBoolean: true, pictureuris: [socialUser.user.picture.data.url]})
+                //this.props.navigation.navigate('CreateProfile', {user, googleUserBoolean, pictureuris: [user.photoURL],})
+    }
+
     signIn = () => {
         let {email, pass} = this.state;
-        console.log(email)
+        this.setState({isLoading: true})
         firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then(()=>{
+            this.setState({isLoading: false})
+        })
         .then(() => {
-            console.log('signed in')
+            
             firebase.auth().onAuthStateChanged( (user) => {
-                console.log(user);
+                
                 if(user) {
                     this.state.saveUsernamePass ? AsyncStorage.multiSet([ ['previousEmail', email], ['previousPassword', pass] ]) : null;
                     NavigationService.navigate('AppStack')
@@ -104,7 +137,83 @@ export class Welcome extends Component {
         })
         .catch(err => {
             console.log('failed because' + err);
+            this.setState({isLoading: false, error: err, isAlertVisible: true});
         })
+    }
+
+    signInWithFacebook = () => {
+        this.setState({isLoading: true});
+
+        //Neat Trick: Define two functions (one for success, one for error), with a thenable based on the object returned from the Promise.
+        LoginManager.logOut();
+        LoginManager.logInWithPermissions(['email']).then(
+            (result) => {
+              
+              if (result.isCancelled) {
+                this.setState({isLoading: false});
+              } 
+              else {
+                
+                AccessToken.getCurrentAccessToken().then( (token) => {
+                    // console.log(data)
+                    const infoRequest = new GraphRequest(
+                        '/me?fields=name,picture,email',
+                        null,
+                        async (error, result) => {
+                            if(error) {
+                                alert('Error fetching data: ' + error.toString());
+                            }
+                            else {
+                                // console.log("GraphRequest was successful", result.picture.data.url);
+                                let {data} = await isUserRegistered(result.email);
+                                if(data.isRegistered) {
+                                    this.setState({isLoading: false}, () => {this.props.navigation.navigate('AppStack')});
+                                }
+                                else {
+                                    let socialInformation = {
+                                        accessToken: token.accessToken,
+                                        user: result
+                                    }
+                                    // alert('here')
+                                    this.setState({isLoading: false}, () => {this.attemptSignUp(socialInformation, false, true)})
+                                }
+                            }
+                        }
+                    );
+                    // Start the graph request.
+                    new GraphRequestManager().addRequest(infoRequest).start();
+
+
+                    // console.log("access token retrieved: " + data + data.accessToken);
+                    //Credential below throws an error if the associated email address already has an account within firebase auth
+
+                    // var credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+                    // console.log("the credential is:" + credential)
+                    // return firebase.auth().signInWithCredential(credential);
+
+                    
+
+                } )
+                
+                // .then( (currentUser) => {
+                //     console.log("Firebase User Is:" + currentUser);
+                //     this.successfulLoginCallback(currentUser, googleUserBoolean = false, facebookUserBoolean = true);
+                // })
+                // .catch( err => {
+                //     alert("The login failed because: " + err);
+                //     this.setState({loading: false});
+                // })
+
+
+                // .catch( (err) => alert('Login failed with error: ' + err))
+                // alert('Login was successful with permissions: '
+                //   + result.grantedPermissions.toString());
+              }
+            },
+            (error) => {
+              alert('Login failed because: ' + error);
+            }
+          );
     }
 
     toggleSaveUsernamePass = () => {
@@ -118,6 +227,99 @@ export class Welcome extends Component {
 
     toggleNewUser = () => {
         this.setState({newUser: !this.state.newUser})
+    }
+
+    toggleForgotPassword = () => this.setState({isFpVisible: !this.state.isFpVisible})
+
+    toggleAlert = () => this.setState({isAlertVisible: !this.state.isAlertVisible})
+
+    renderForgotPassword = () => ( 
+        <Modal
+          rounded={true}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin }}
+          modalTitle={<ModalTitle hasTitleBar={true} title="Forgot Password?" titleTextStyle={{...Fonts.style.big}}/>}
+          visible={this.state.isFpVisible}
+          onTouchOutside={this.toggleForgotPassword}
+          modalAnimation={new SlideAnimation({
+            slideFrom: 'bottom',
+          })}
+          swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
+          swipeThreshold={200} // default 100
+          onSwipeOut={this.toggleForgotPassword}
+          footer={
+          <ModalFooter bordered={false}>
+            <ModalButton
+              text="Close"
+              textStyle={{...Fonts.style.medium,color: Colors.primary}}
+              onPress={this.toggleForgotPassword}
+            />
+          </ModalFooter>
+          }
+        >
+          <ModalContent>
+
+            <Text style={styles.forgotPassword}>{forgotPasswordText}</Text>
+
+            <AuthInput 
+                placeholder={'Email'}
+                value={this.state.email}
+                onChangeText={email => this.setState({email})}
+                keyboardType={'email-address'}
+            />
+        
+            <AuthButton 
+            onPress={()=> {
+                firebase.auth().sendPasswordResetEmail(this.state.email)
+                .then( async () => {
+                    await this.toggleForgotPassword
+                    alert('Password Reset Email successfully sent! Please check your inbox for instructions on how to reset your password');
+                })
+                .catch( () => {
+                    alert('Please input a valid email address');
+                })
+            }}
+            text={"Send"}
+            extraStyles={{alignSelf: "center"}}
+            />
+
+            </ModalContent>
+        </Modal>
+            
+    )
+    
+
+    renderAlert = () => {
+        let {error} = this.state;
+        
+        return (
+        <Modal
+          rounded={false}
+          modalStyle={{...shadowStyles.blackShadow, }}
+        //   modalTitle={<ModalTitle hasTitleBar={false} title="Error!" titleTextStyle={{...Fonts.style.big, color: Colors.primary, fontWeight: "600"}}/>}
+          visible={this.state.isAlertVisible}
+          onTouchOutside={this.toggleAlert}
+          modalAnimation={new SlideAnimation({
+            slideFrom: 'bottom',
+          })}
+          swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
+          swipeThreshold={200} // default 100
+          onSwipeOut={this.toggleAlert}
+          footer={
+          <ModalFooter bordered={false}>
+            <ModalButton
+              text="Okay"
+              textStyle={{...Fonts.style.medium,color: Colors.primary}}
+              onPress={this.toggleAlert}
+            />
+          </ModalFooter>
+          }
+        >
+          <ModalContent>
+                <Text style={styles.modalTitle}>Error!</Text>
+                <Text style={styles.modalText}>{error.message}</Text>
+          </ModalContent>
+        </Modal>
+        )
     }
 
     renderRememberHelper = () => (
@@ -135,7 +337,7 @@ export class Welcome extends Component {
             </View>
             
             <TouchableOpacity 
-            onPress={this.toggleShowPasswordReset}
+            onPress={this.toggleForgotPassword}
             style={styles.forgotPasswordContainer}>
                 <Text style={{...Fonts.style.small, color: Colors.tertiary, fontWeight: "400"}}>Forgot Password?</Text>
             </TouchableOpacity>
@@ -175,6 +377,10 @@ export class Welcome extends Component {
                     
                     
 
+                    {this.state.isLoading ? 
+                    <Loading />
+                    :
+                    <>
                     <View style={styles.buttonContainer}>
                         <AuthButton
                             text={"Login"}
@@ -187,18 +393,23 @@ export class Welcome extends Component {
                             <Text style={{...Fonts.style.small, fontWeight: "bold", color: Colors.primary}}>Or login with</Text>
                         </View>
                         <View style={{...Helpers.center, flexDirection: 'row', padding: 0, }}>
-                            <Facebook />
+                            <Facebook onPress={() => this.signInWithFacebook()}/>
                         </View>
                     </View>
+                    </>
+                    }
                     
                 </View>
 
                 <View style={styles.footerContainer}>
-                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.white}]}>Sign</Text>
-                    <Text onPress={()=>NavigationService.navigate('Register')} style={[styles.footer, {color: Colors.primary}]}>Up</Text>
+                    <Text onPress={()=>{this.attemptSignUp(user = false, googleUserBoolean = false, facebookUserBoolean = false)}} style={[styles.footer, {color: Colors.white}]}>Sign</Text>
+                    <Text onPress={()=>{this.attemptSignUp(user = false, googleUserBoolean = false, facebookUserBoolean = false)}} style={[styles.footer, {color: Colors.primary}]}>Up</Text>
                 </View>
                 
             </ImageBackground>
+
+            {this.renderAlert()}
+            {this.renderForgotPassword()}
         </Container>
     )
 
