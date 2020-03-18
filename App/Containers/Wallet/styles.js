@@ -5,7 +5,6 @@ import { Helpers, Fonts, Colors } from '../../Theme';
 export default StyleSheet.create({
     gradientBanner: {
         flex: 0.25,
-        backgroundColor: 'powderblue',
         ...shadowStyles.lowerBlackShadow,
     },
 

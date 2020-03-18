@@ -123,7 +123,7 @@ class Wallet extends Component {
         // console.tron.log(this.props.uid)
         return (
             <Container>
-                <View style={styles.gradientBanner}>
+                <ImageBackground style={styles.gradientBanner} source={Images.walletBg}>
                     <HeaderRow flex={0.25} justifyContent={'flex-end'} style={{paddingVertical: 5,}}>
                         <View style={{marginHorizontal: 5}}>
                             <Gear onPress={()=>NavigationService.navigate('Settings')}/>
@@ -132,7 +132,7 @@ class Wallet extends Component {
                         <LogOut onPress={this.toggleExitModal}/>
                         
                     </HeaderRow>
-                </View>
+                </ImageBackground>
 
                 <View style={styles.bodyContainer}>
 

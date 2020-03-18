@@ -26,10 +26,32 @@ export function* redeemReward(payload) {
   }
 }
 
+export function* getVisitDetails(payload) {
+  const response = yield call(rewardService.getVisitDetails, payload)
+  
+  if (response.status === 200) {
+    yield put(RewardActions.getVisitDetailsSuccess(response.data));
+  } else {
+    yield put(RewardActions.getVisitDetailsFailure('S** happened'));
+  }
+}
+
+export function* isRewardRedeemable(payload) {
+  const response = yield call(rewardService.isRewardRedeemable, payload)
+  
+  if (response.status === 200) {
+    console.log(response.data);
+    yield put(RewardActions.isRewardRedeemableSuccess(response.data));
+  } else {
+    yield put(RewardActions.isRewardRedeemableFailure('S** happened'));
+  }
+}
+
 export function* redeemStaticReward(payload) {
   const response = yield call(rewardService.redeemStaticReward, payload)
   
   if (response.status === 200) {
+    console.log('redeemed static reward');
     console.log(response.data);
     yield put(RewardActions.redeemStaticRewardSuccess(response.data));
   } else {

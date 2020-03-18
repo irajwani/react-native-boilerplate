@@ -4,6 +4,7 @@ import {View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import * as Animatable from 'react-native-animatable';
 
@@ -28,6 +29,7 @@ export default {
 
   tutBg: require(`${path}/SilkBg.jpg`),
   loginBg: require(`${path}/loginBg.jpeg`),
+  walletBg: require(`${path}/walletBg.png`),
 
   gift: require(`${path}/Gift.png`),
   stamp: require(`${path}/Stamp.png`),
@@ -136,8 +138,8 @@ export default {
 ),
 
   LogOut: ({onPress}) => (
-      <Icon 
-        name='door-open'
+      <Ionicon 
+        name='ios-exit'
         size={32}
         color={Colors.black}
         onPress={onPress}

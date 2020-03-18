@@ -23,9 +23,9 @@ class Cards extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        if(this.props.addStatus == 'done') {
-          this.props.getVendors();
-        }
+        // if(this.props.addStatus == 'done') {
+        //   this.props.getVendors();
+        // }
     }
 
     handleWalletChange = (vendorUid) => {
@@ -42,7 +42,11 @@ class Cards extends Component {
                 </HeaderRow>
                 
                 
-                {this.props.vendors ?
+                {this.props.isLoading ?
+                    <View style={styles.cardsContainer}>
+                        <Loading/>
+                    </View>
+                    :
                     <CardList
                         vendors={this.props.vendors}
                         myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
@@ -50,10 +54,6 @@ class Cards extends Component {
                         onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
                         handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
                     />
-                :
-                    <View style={styles.cardsContainer}>
-                        <Loading/>
-                    </View>
                 }
                 
                 
@@ -67,6 +67,7 @@ const mapStateToProps = (state) => ({
     
     vendors: state.vendor.vendors,
     addStatus: state.vendor.addStatus,
+    isLoading: state.vendor.isLoading,
     
     myCards: state.auth.profile.cards,
     

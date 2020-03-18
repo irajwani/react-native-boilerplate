@@ -5,4 +5,12 @@ export const INITIAL_STATE = {
     
     rewardRedeemed: {},
     redeemStatus: false,
+
+    visitDetails: {
+        visitDate: "",
+        visitNumber: 0
+    },
+    isRewardRedeemable: false,
+
+    
 }

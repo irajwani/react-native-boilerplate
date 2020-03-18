@@ -30,8 +30,12 @@ function redeemReward(payload) {
   return apiClient.post('/redeemReward', payload).then(fulfilled)
 }
 
+function getVisitDetails(payload) {
+  return apiClient.get(`/getVisitDetails`, payload).then(fulfilled)
+}
+
 function isRewardRedeemable(payload) {
-  return apiClient.get(`/isRewardRedeemable?uid=${payload.uid}&vendorUid=${payload.vendorUid}`, payload).then(fulfilled)
+  return apiClient.get(`/isRewardRedeemable`, payload).then(fulfilled)
 }
 
 function redeemStaticReward(payload) {
@@ -41,6 +45,7 @@ function redeemStaticReward(payload) {
 export const rewardService = {
   getRewards,
   redeemReward,
+  getVisitDetails,
   isRewardRedeemable,
   redeemStaticReward,
 

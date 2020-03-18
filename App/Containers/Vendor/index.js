@@ -26,12 +26,13 @@ const inputRange = [0, 160, 280];
 let numTriangles = Array(Number(40)).fill(1);
 
 const WavyView = ({text, detail = false}) => (
-    <View style={{
+    <View
+    style={{
         marginBottom: 3,
     }}>
         <View style={{flexDirection: 'row', backgroundColor: Colors.secondary, padding: 5, justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', position: 'absolute', zIndex: -222, bottom: -3}}>
-                {numTriangles.map((num, index) => <View style={styles.semiCircle}/>)}
+                {numTriangles.map((num, index) => <View key={index} style={styles.semiCircle}/>)}
             </View>
             <Label text={text}/>
             {detail && <Label text={detail}/>}
@@ -55,9 +56,32 @@ class Vendor extends Component {
             //Confirmation modal
             staticReward: {},
             isVisible: false,
+
+            //Message modal
+            isMessageVisible: false,
         };
         // console.tron.log(this.state);
     }
+
+    async componentWillMount() {
+        let payload = {
+            uid: this.props.uid,
+            vendorUid: this.state.uid,
+        }
+        await this.props.getVisitDetails(payload);
+        await this.props.isRewardRedeemableFunction(payload);
+    }
+
+    // componentDidUpdate = (prevProps) => {
+    //     if(this.props.redeemStatus == 'done') {
+    //         let payload = {
+    //             uid: this.props.uid,
+    //             vendorUid: this.state.uid,
+    //         }   
+    //         this.props.isRewardRedeemable(payload);
+    //         // this.toggleMessageModal();
+    //     }
+    // }
 
     renderVisitRewards = () => {
         let {name, loyaltyCard, visitRewards} = this.state;
@@ -65,32 +89,38 @@ class Vendor extends Component {
         return (
         <View style={styles.visitRewards}>
             
-            <WavyView text={"Stamps collected"} detail={`${0}/10`}/>
+            <WavyView text={"Stamps collected"} detail={`${this.props.visitDetails.visitNumber}/10`}/>
 
 
             <View style={
                 [styles.loyaltyCard, 
                 // {backgroundColor: loyaltyCard.backgroundColor}
-                ]
-            }>
-                {Object.keys(visitRewards).map((key, index) => (
+                ]}
+            >
+                {Object.keys(visitRewards).map((key, index) => {
+                    let isFilled = index + 1 <= this.props.visitDetails.visitNumber ? true : false;
+                    return (
                     <View style={styles.stampContainer} key={key}>
-                        <TouchableOpacity style={styles.stamp}>
+                        <TouchableOpacity style={[styles.stamp, isFilled ? {backgroundColor: Colors.primary} : null]}>
                             {visitRewards[key].text ? 
-                                <Image source={Images.gift} style={{width: stampSize, height: stampSize}}/>
+                                isFilled ? 
+                                    <Text style={[styles.visitNumber, {color: isFilled ? Colors.white : Colors.secondary}]}>{index+1}</Text>
+                                :
+                                    <Image source={Images.gift} style={{width: stampSize, height: stampSize}}/>
                             :
-                                <Text style={[styles.visitNumber, {color: Colors.secondary}]}>{index+1}</Text>
+                                <Text style={[styles.visitNumber, {color: isFilled ? Colors.white : Colors.secondary}]}>{index+1}</Text>
                             }
                         </TouchableOpacity>
                     </View>
-                ))}
+                    )}
+                )}
             </View>
 
             <WavyView text={"Treets"} />
 
             {Object.keys(visitRewards).map((key, index) => 
                 visitRewards[key].text ? (
-                    <View style={styles.visitRewardContainer}>
+                    <View key={index} style={styles.visitRewardContainer}>
                         <View style={styles.visitContainer}>
                             <Text style={{...Fonts.style.h3, fontWeight: "bold", color: Colors.white}}>{index+1}</Text>
                             <Text style={{...Fonts.style.small, color: Colors.white}}>Stamps</Text>
@@ -109,6 +139,8 @@ class Vendor extends Component {
 
     toggleConfirmationModal = () => this.setState({isVisible: !this.state.isVisible})
 
+    toggleMessageModal = () => this.setState({isMessageVisible: !this.state.isMessageVisible})
+
     redeemStaticReward = () => {
         let {staticReward, uid} = this.state;
 
@@ -117,10 +149,10 @@ class Vendor extends Component {
             vendorUid: uid,
             uid: this.props.uid
         }
-    
+        console.log("Redeeming:")
+        console.log(rewardRedeemed);
         this.props.redeemStaticReward(rewardRedeemed);
         this.toggleConfirmationModal();
-        
     }
 
     isRedeemDisabled = () => {
@@ -148,13 +180,12 @@ class Vendor extends Component {
                     
                     <View style={styles.dealButtonContainer}>
                         <TouchableOpacity 
-                        // disabled={() => this.isRedeemDisabled(staticRewards[key])}
-                        disabled={false}
-                        style={styles.dealButton} 
+                        disabled={!this.props.isRewardRedeemable}
+                        style={[styles.dealButton, !this.props.isRewardRedeemable ? {borderColor: Colors.grey} : null]} 
                         onPress={() => {
                             this.setState({staticReward: staticRewards[key], isVisible: true})
                         }}>
-                            <Text style={styles.dealButtonText}>Treet!</Text>
+                            <Text style={[styles.dealButtonText, !this.props.isRewardRedeemable ? {color: Colors.grey} : null]}>Treet!</Text>
                         </TouchableOpacity>
                     </View>
                     
@@ -223,6 +254,39 @@ class Vendor extends Component {
         </Modal>
     )
 
+    renderMessageModal = () => {
+        let {staticReward} = this.state;
+        let {name} = staticReward
+        return ( 
+        <Modal
+          rounded={false}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin}}
+          visible={this.state.isMessageVisible}
+          onTouchOutside={this.toggleMessageModal}
+          modalAnimation={new SlideAnimation({
+            slideFrom: 'bottom',
+          })}
+          swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
+          swipeThreshold={200} // default 100
+          onSwipeOut={this.toggleMessageModal}
+          footer={
+          <ModalFooter bordered={false}>
+            <ModalButton
+              text="Okay"
+              textStyle={{...Fonts.style.medium,color: Colors.primary}}
+              onPress={this.toggleMessageModal}
+            />
+          </ModalFooter>
+          }
+        >
+          <ModalContent>
+                <Text style={styles.modalTitle}>Success</Text>
+                <Text style={styles.modalText}>You have availed the reward: {name}.</Text>
+          </ModalContent>
+        </Modal>
+        )
+    }
+
     _getHeaderColor = () => {
         const {scrollY} = this.state;
     
@@ -239,7 +303,7 @@ class Vendor extends Component {
     
         return scrollY.interpolate({
             inputRange,
-            outputRange: [Colors.secondary, Colors.lightgrey, Colors.white],
+            outputRange: [Colors.primary, Colors.lightgrey, Colors.white],
             extrapolate: 'clamp',
             useNativeDriver: true
         });
@@ -250,7 +314,7 @@ class Vendor extends Component {
     
           return scrollY.interpolate({
               inputRange,
-              outputRange: [0, 0.3, 1],
+              outputRange: [1, 0.3, 1],
               extrapolate: 'clamp',
               useNativeDriver: true
           });
@@ -263,7 +327,8 @@ class Vendor extends Component {
         const arrowColor = this._getArrowColor();
 
         let {logo, name} = this.state;
-        console.log(Object.values(this.state));
+        console.log('Can Redeem?');
+        console.log(this.props.isRewardRedeemable);
 
         return (
             <Container>
@@ -307,6 +372,7 @@ class Vendor extends Component {
 
             </Animated.ScrollView>
             {this.renderConfirmationModal()}
+            {this.renderMessageModal()}
             </Container>
 
             
@@ -316,13 +382,18 @@ class Vendor extends Component {
 
 
 const mapStateToProps = (state) => ({
-    uid: state.auth.uid
+    uid: state.auth.uid,
+    redeemStatus: state.reward.redeemStatus,
+    isLoading: state.reward.isLoading,
+    isRewardRedeemable: state.reward.isRewardRedeemable,
+    visitDetails: state.reward.visitDetails
     // vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
     redeemStaticReward: (rewardRedeemed) => dispatch(RewardActions.redeemStaticRewardRequest(rewardRedeemed)),
-    
+    isRewardRedeemableFunction: (payload) => dispatch(RewardActions.isRewardRedeemableRequest(payload)),
+    getVisitDetails: (payload) => dispatch(RewardActions.getVisitDetailsRequest(payload)),
 })
 
 export default connect(

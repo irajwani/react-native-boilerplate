@@ -25,11 +25,11 @@ class Rewards extends Component {
         await this.props.getRewards(this.props.uid);
     }
 
-    componentDidUpdate = (prevProps) => {
-      if(this.props.redeemStatus == 'done') {
-        this.props.getRewards(this.props.uid);
-      }
-    }
+    // componentDidUpdate = (prevProps) => {
+    //   if(this.props.redeemStatus == 'done') {
+    //     this.props.getRewards(this.props.uid);
+    //   }
+    // }
 
     redeemReward = () => {
       let {vendorUid, visitNumber} = this.state;

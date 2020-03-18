@@ -1,4 +1,5 @@
 export const INITIAL_STATE = {
+    isLoading: false,
     vendors: [],
     uid: '',
     vendorUid: '',

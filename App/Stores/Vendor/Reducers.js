@@ -4,12 +4,14 @@ import { VendorTypes } from './Actions'
 
 export const getVendorsRequest = (state) => ({
   ...state,
+  isLoading: true,
 })
 
 export const getVendorsSuccess = (state, {vendors}) => {
   return {
     ...state,
     vendors,
+    isLoading: false,
     
     // deals: [{title: 'Top Rated', deals}],
   }
@@ -17,6 +19,7 @@ export const getVendorsSuccess = (state, {vendors}) => {
 
 export const getVendorsFailure = (state, { errorMessage }) => ({
   ...state,
+  isLoading: false,
   errorMessage,
 })
 
@@ -24,21 +27,24 @@ export const addCardRequest = (state, {uid, vendorUid}) => ({
   ...state,
   uid,
   vendorUid,
-  addStatus: 'pending'
+  addStatus: 'pending',
+  isLoading: true,
 })
 
 export const addCardSuccess = (state, {message}) => {
   return {
     ...state,
     message,
-    addStatus: 'done'
+    addStatus: 'done',
+    isLoading: false,
   }
 }
 
 export const addCardFailure = (state, { errorMessage }) => ({
   ...state,
   errorMessage,
-  addStatus: 'done'
+  addStatus: 'done',
+  isLoading: false,
 })
 
 
