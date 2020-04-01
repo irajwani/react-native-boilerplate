@@ -89,21 +89,39 @@ class Register extends Component {
         this.setState({modalVisible: visible});
     }
 
+    updateFirebase = async (uid, uri) => {
+        let {email, firstName, lastName} = this.state;
+        let {createUser} = this.props;
+        
+        let url = await this.promiseToUploadPhoto(uid, uri);
+
+        let newUser = {
+            uid,
+            email,
+            picture: url,
+            name: firstName + " " + lastName, 
+            token
+        };
+        
+        createUser(newUser);
+        this.setState({isLoading: false, modalVisible: false});
+    }
+
     //Invoked when you 'Accept' EULA as a Google User trying to sign up
     createProfileForGoogleOrFacebookUser = async (user, pictureuri, socialPlatform) => {
 
         console.log('Initiate FB or Google Sign Up')
-        this.setState({createProfileLoading: true});
+        let {email, pass} = this.state;
         if(socialPlatform == "google") {
             const {idToken, accessToken} = user;
             const credential = await firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
             const socialUser = await firebase.auth().signInWithCredential(credential);
-            const {email, pass} = this.state
+            
             const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
             console.log(credential);
             firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
+                this.updateFirebase(socialUser.uid, pictureuri);
                 // console.log(usercred);
-                this.updateFirebase(this.state, pictureuri, mime='image/jpg',socialUser.uid, );
                 // console.log("Account linking success", usercred.user);
             }, function(error) {
                 console.log("Account linking error", error);
@@ -113,12 +131,12 @@ class Register extends Component {
             const {accessToken} = user;
             const credential = await firebase.auth.FacebookAuthProvider.credential(accessToken);
             const socialUser = await firebase.auth().signInWithCredential(credential);
-            const {email, pass} = this.state
+            
             const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
             console.log(credential);
             firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
                 // console.log(usercred);
-                this.updateFirebase(this.state, pictureuri, mime='image/jpg',socialUser.uid, );
+                this.updateFirebase(socialUser.uid, pictureuri);
                 // console.log("Account linking success", usercred.user);
             }, function(error) {
                 console.log("Account linking error", error);
@@ -167,29 +185,30 @@ class Register extends Component {
     }
 
     createProfile = (uri) => {
-        
-        console.log("Initaite profile creation");
-        // this.setState({isLoading: true})
+        //Person could arrive here through vanilla sign up, or after using social authentication such that they don't require further account creation
+        // console.log("Initaite profile creation");
+        this.setState({isLoading: true})
         let {email, pass, firstName, lastName} = this.state;
         let {createUser} = this.props;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
         .then(async () => {
-            console.log('created new firebase certified user');
+            // console.log('created new firebase certified user');
             let uid = firebase.auth().currentUser.uid;
             let url = await this.promiseToUploadPhoto(uid, uri);
             return {uid, url}
         })
-        .then(({uid, url}) => {
-            // let token = await AsyncStorage.getItem('fcmToken');
+        .then(async ({uid, url}) => {
+            let token = await AsyncStorage.getItem('fcmToken');
             let newUser = {
                 uid,
                 email,
                 picture: url,
                 name: firstName + " " + lastName, 
-                token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
+                token
+                // token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
             }
             createUser(newUser);
-            // this.setState({isLoading: false});
+            this.setState({isLoading: false, modalVisible: false});
         })
         .catch( error => {
             console.log(error)
@@ -438,10 +457,11 @@ class Register extends Component {
                             style={[styles.decisionButton, {backgroundColor: Colors.secondary}]}
                             onPress={() => {
                                 googleUser ? 
-                                this.createProfileForGoogleOrFacebookUser(user, pictureuris == "nothing here" ? "" : pictureuris[0], 'google') 
+                                // this.createProfileForGoogleOrFacebookUser(user, pictureuris == "nothing here" ? "" : pictureuris[0], 'google') 
+                                this.createProfileForGoogleOrFacebookUser(user, pictureuris, 'google') 
                                 : 
                                     facebookUser ? 
-                                        this.createProfileForGoogleOrFacebookUser(user, pictureuris[0], 'facebook') 
+                                        this.createProfileForGoogleOrFacebookUser(user, pictureuris, 'facebook') 
                                         : 
                                         this.createProfile(pictureuris) ;
                             }} 

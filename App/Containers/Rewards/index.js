@@ -25,11 +25,11 @@ class Rewards extends Component {
         await this.props.getRewards(this.props.uid);
     }
 
-    // componentDidUpdate = (prevProps) => {
-    //   if(this.props.redeemStatus == 'done') {
-    //     this.props.getRewards(this.props.uid);
-    //   }
-    // }
+    componentDidUpdate = (prevProps) => {
+      if(prevProps.redeemStatus != this.props.redeemStatus) {
+        this.props.getRewards(this.props.uid);
+      }
+    }
 
     redeemReward = () => {
       let {vendorUid, visitNumber} = this.state;
@@ -99,13 +99,15 @@ class Rewards extends Component {
                 </HeaderRow>
 
                 <View style={styles.cardsContainer}>
-                    {this.props.rewards ?
-                        <RewardList
-                            rewards={this.props.rewards}
-                            onRewardPress={this.onRewardPress}
-                        />
-                    :
+                    {this.props.isLoading ?
+                      <Container center>
                         <Loading/>
+                      </Container>
+                    :
+                      <RewardList
+                          rewards={this.props.rewards}
+                          onRewardPress={this.onRewardPress}
+                      />
                     }
                 </View>
 
@@ -121,7 +123,8 @@ const mapStateToProps = (state) => ({
     uid: state.auth.uid,
 
     rewards: state.reward.rewards,
-    redeemStatus: state.reward.redeemStatus
+    redeemStatus: state.reward.redeemStatus,
+    isLoading: state.reward.isLoading,
     
 })
 

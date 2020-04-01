@@ -10,9 +10,13 @@ export function* createUser(payload) {
   console.log(newUser);
   const response = yield call(authService.createUser, newUser);
   if (response.status === 200) {
-    console.log(JSON.stringify(response));
-    NavigationService.navigate('AppStack');
-    yield put(AuthActions.createUserSuccess(response.data));
+    console.log("Server has created user with data:")
+    console.log(JSON.stringify(response.data));
+    let {data} = response.data;
+    yield call(AuthActions.storeUid, data.uid);
+    yield put(AuthActions.getProfileSuccess(data));
+    yield put(AuthActions.createUserSuccess());
+    yield call(NavigationService.navigate, 'AppStack');
   } else {
     yield put(AuthActions.createUserFailure('S** happened'));
   }

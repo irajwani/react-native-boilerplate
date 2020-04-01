@@ -327,8 +327,8 @@ class Vendor extends Component {
         const arrowColor = this._getArrowColor();
 
         let {logo, name} = this.state;
-        console.log('Can Redeem?');
-        console.log(this.props.isRewardRedeemable);
+        // console.log('Can Redeem?');
+        // console.log(this.props.isRewardRedeemable);
 
         return (
             <Container>

@@ -11,7 +11,7 @@ import NavigationService from '../../Services/NavigationService';
 import CardList from '../../Components/List/CardList'
 import Loading from '../../Components/ActivityIndicator/Loading'
 import HeaderRow from '../../Components/HeaderRow'
-import { Colors } from '../../Theme'
+import { Colors, Helpers } from '../../Theme'
 import styles from './styles'
 import shadowStyles from '../../StyleSheets/shadowStyles'
 
@@ -43,17 +43,19 @@ class Cards extends Component {
                 
                 
                 {this.props.isLoading ?
-                    <View style={styles.cardsContainer}>
+                    <View style={[styles.cardsContainer, {...Helpers.center}]}>
                         <Loading/>
                     </View>
                     :
-                    <CardList
-                        vendors={this.props.vendors}
-                        myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
-                        //vendor input argument will be provided within CardList
-                        onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
-                        handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
-                    />
+                    <View style={styles.cardsContainer}>
+                        <CardList
+                            vendors={this.props.vendors}
+                            myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
+                            //vendor input argument will be provided within CardList
+                            onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
+                            handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
+                        />
+                    </View>
                 }
                 
                 

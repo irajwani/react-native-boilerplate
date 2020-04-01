@@ -10,6 +10,5 @@ export default StyleSheet.create({
     cardsContainer: {
         flex: 0.9,
         backgroundColor: '#fff',
-        ...Helpers.center
     }
 })
