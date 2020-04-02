@@ -36,21 +36,26 @@ class Register extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state; 
         this.state = {
             isLoading: false,
 
-            email: 'sameer@gmail.com',
-            pass: 'password',
-            pass2: 'password',
+            email: '',
+            pass: '',
+            pass2: '',
 
-            firstName: 'Sameer',
-            lastName: 'Dada',
+            firstName: params.name ? params.name.split(" ")[0] : '',
+            lastName:  params.name ? params.name.split(" ")[1] : '',
 
-            phone: "0321256732",
+            phone: "",
 
             modalVisible: false,
             termsModalVisible: false,
             privacyModalVisible: false,
+
+            isEditMode: params.isEditMode ? true : false,
+            uid: params.uid ? params.uid : '',
+            previousUri: params.uri ? params.uri : false,
         }
     }
 
@@ -65,12 +70,12 @@ class Register extends Component {
         );
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        // if (nextProps.registerStatus === true) {
-        //     console.tron.log('Reg complete, going to app')
-        //     NavigationService.navigate('AppStack')
-        // }
-    }
+    // UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+    //     if (nextProps.registerStatus === true) {
+    //         console.tron.log('Reg complete, going to app')
+    //         NavigationService.navigate('AppStack')
+    //     }
+    // }
 
     keyboardDidShow() {
         this.setState({keyboardShown: true})
@@ -100,6 +105,7 @@ class Register extends Component {
             email,
             picture: url,
             name: firstName + " " + lastName, 
+            phone,
             token
         };
         
@@ -184,11 +190,32 @@ class Register extends Component {
     })
     }
 
+    updateProfile = async (uri) => {
+        this.setState({isLoading: true});
+        let {uid, firstName, lastName, phone, previousUri} = this.state;
+        let {updateUser} = this.props;
+        let url;
+        if(uri != previousUri) {
+            url = await this.promiseToUploadPhoto(uid, uri);
+        }
+        else {
+            url = previousUri;
+        }
+        let data = {
+            uid,
+            picture: url,
+            name: firstName + " " + lastName, 
+            phone,
+        }
+        updateUser(data);
+        this.setState({isLoading: false});
+    }
+
     createProfile = (uri) => {
         //Person could arrive here through vanilla sign up, or after using social authentication such that they don't require further account creation
         // console.log("Initaite profile creation");
         this.setState({isLoading: true})
-        let {email, pass, firstName, lastName} = this.state;
+        let {email, pass, firstName, lastName, phone} = this.state;
         let {createUser} = this.props;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
         .then(async () => {
@@ -204,6 +231,7 @@ class Register extends Component {
                 email,
                 picture: url,
                 name: firstName + " " + lastName, 
+                phone,
                 token
                 // token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
             }
@@ -242,7 +270,7 @@ class Register extends Component {
                 </View>
             </View>
 
-            {this.renderAuthInputFields(passwordConditionMet)}
+            {!this.state.isEditMode && this.renderAuthInputFields(passwordConditionMet)}
 
             <AuthInput
                 placeholder={'Phone Number (Optional)'}
@@ -350,7 +378,7 @@ class Register extends Component {
     
 
     render() {
-        let {isLoading} = this.state;
+        let {isLoading, isEditMode} = this.state;
         let {navigation} = this.props;
 
         const {params} = navigation.state
@@ -360,8 +388,10 @@ class Register extends Component {
         var user = params.googleUserBoolean || params.facebookUserBoolean ? params.user : null;
 
         var pictureuris = navigation.getParam('pictureuris', "nothing here");
+        (this.state.previousUri && pictureuris == "nothing here") ? pictureuris = this.state.previousUri : null;
         var passwordConditionMet = (this.state.pass == this.state.pass2) && (this.state.pass.length > 0);
         var isDone = this.state.firstName && this.state.lastName && this.state.email && passwordConditionMet;
+        var isEditDone = this.state.firstName && this.state.lastName;
         if(isLoading) {
             return (
                 <Container center>
@@ -378,7 +408,7 @@ class Register extends Component {
                     left={() => (
                         <BackArrow onPress={() => NavigationService.goBack()} color={Colors.secondary}/>
                     )}
-                    text={"Sign Up"}
+                    text={isEditMode ? "Edit Profile" : "Sign Up"}
                     right={() =>(
                         <View/>
                     )}
@@ -412,13 +442,23 @@ class Register extends Component {
                 </ScrollView>
 
                 <View style={styles.buttonContainer}>
-                    <AuthButton
+                    {isEditMode ? 
+                        <AuthButton
+                        text={"Update"}
+                        disabled={isEditDone ? false : true}
+                        extraStyles={{backgroundColor: isEditDone ? Colors.secondary : Colors.grey}}
+                        onPress={() => this.updateUser(pictureuris)}
+                        
+                        />
+                    :    
+                        <AuthButton
                         text={"Sign Up"}
                         disabled={isDone ? false : true}
                         extraStyles={{backgroundColor: isDone ? Colors.secondary : Colors.grey}}
                         onPress={() => this.setModalVisible(true)}
-                        // onPress={}
-                    />
+                        
+                        />  
+                    }
                 </View>
 
                 <Modal
@@ -491,6 +531,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     createUser: (newUser) => dispatch(AuthActions.createUserRequest(newUser)),
+    updateUser: (data) => dispatch(AuthActions.updateUserRequest(data)),
 })
 
 export default connect(

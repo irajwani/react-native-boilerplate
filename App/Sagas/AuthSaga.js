@@ -35,4 +35,20 @@ export function* getProfile(payload) {
   }
 }
 
+export function* updateUser(payload) {
+  console.log('updating user');
+  const {data} = payload;
+  const response = yield call(authService.updateUser, data);
+  if (response.status === 200) {
+    
+    yield put(AuthActions.getProfileSuccess(response.data.data));
+    yield put(AuthActions.updateUserSuccess());
+    yield call(NavigationService.navigate, 'Wallet');
+    
+  } else {
+    yield put(AuthActions.updateUserFailure('S** happened'));
+  }
+  
+}
+
 // uid, username, fcmToken

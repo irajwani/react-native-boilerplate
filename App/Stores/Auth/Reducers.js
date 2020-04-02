@@ -44,7 +44,21 @@ export const getProfileFailure = (state, { errorMessage }) => ({
   errorMessage,
 })
 
+export const updateUserRequest = (state, {data}) => ({
+  ...state,
+  data,
+})
 
+export const updateUserSuccess = (state) => {
+  return {
+    ...state,
+  }
+}
+
+export const updateUserFailure = (state, { errorMessage }) => ({
+  ...state,
+  errorMessage,
+})
 
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -57,6 +71,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [AuthTypes.GET_PROFILE_SUCCESS]: getProfileSuccess,
 
   [AuthTypes.STORE_UID]: storeUid,
+
+  [AuthTypes.UPDATE_USER_REQUEST]: updateUserRequest,
+  [AuthTypes.UPDATE_USER_SUCCESS]: updateUserSuccess,
+  [AuthTypes.UPDATE_USER_FAILURE]: updateUserFailure,
 
   
 

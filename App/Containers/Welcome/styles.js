@@ -32,6 +32,15 @@ export default StyleSheet.create({
         ...shadowStyles.whiteShadow,
     },
 
+        logoContainer: {
+            ...Helpers.center,
+            marginBottom: 10
+        },
+            logo: {
+                width: 50,
+                height: 50
+            },
+
         authActionsContainer: { 
             
             flexDirection: 'row',

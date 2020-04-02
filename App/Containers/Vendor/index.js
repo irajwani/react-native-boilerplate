@@ -85,7 +85,7 @@ class Vendor extends Component {
 
     renderVisitRewards = () => {
         let {name, loyaltyCard, visitRewards} = this.state;
-        
+        console.log('stamps collected:', this.props.visitDetails.visitNumber);
         return (
         <View style={styles.visitRewards}>
             

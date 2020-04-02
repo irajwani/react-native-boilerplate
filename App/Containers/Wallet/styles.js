@@ -49,7 +49,7 @@ export default StyleSheet.create({
         },
 
             statContainer: {
-                flex: 0.33333,
+                flex: 0.5,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
             },

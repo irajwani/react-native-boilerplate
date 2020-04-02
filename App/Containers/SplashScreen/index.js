@@ -39,13 +39,13 @@ class SplashScreen extends React.Component {
 
     async getToken() {
       let fcmToken = await AsyncStorage.getItem('fcmToken');
-      console.log("Push Notifications TOken:");
-      console.log(fcmToken);
+      // console.log("Push Notifications TOken:");
+      // console.log(fcmToken);
       if (!fcmToken) {
           fcmToken = await firebase.messaging().getToken();
           if (fcmToken) {
-              console.log("Push Notifications TOken:");
-              console.log(fcmToken);
+              // console.log("Push Notifications TOken:");
+              // console.log(fcmToken);
               await AsyncStorage.setItem('fcmToken', fcmToken);
           }
         }
@@ -88,8 +88,8 @@ class SplashScreen extends React.Component {
             
             //If you want to re-enable presence checker in future
             if(user) {
-              console.log("HERE")
-              console.log(user);
+              // console.log("HERE")
+              // console.log(user);
               await this.props.storeUid(user.uid);
               
               var cT = new Date(user.metadata.creationTime);
@@ -99,24 +99,16 @@ class SplashScreen extends React.Component {
               seconds_dif = Math.abs(seconds_dif);
 
               if(seconds_dif < 10) {
-                console.log('person signed up')
-                console.log("Debugging why this func wasnt invoked");
+                // console.log('person signed up')
+                // console.log("Debugging why this func wasnt invoked");
                 this.props.getProfile(user.uid);
               }
               else {
-                console.log("Debugging why this func wasnt invoked");
+                // console.log("Debugging why this func wasnt invoked");
                 this.props.getProfile(user.uid);
                 NavigationService.navigate('AppStack');
                 
               }
-
-              
-
-
-
-              
-              
-
               
               // await this.updateAppUse();
               

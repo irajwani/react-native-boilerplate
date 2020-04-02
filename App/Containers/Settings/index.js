@@ -12,11 +12,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import firebase from 'react-native-firebase';
 import shadowStyles from '../../StyleSheets/shadowStyles';
 
+import { connect } from 'react-redux'
+
 let {privacy, contact} = Strings
 
 let {BackArrow} = Images;
 
-export default class Settings extends Component {
+class Settings extends Component {
     state = {
         document: contact,
         isDocumentVisible: false,
@@ -25,7 +27,7 @@ export default class Settings extends Component {
     }
 
     settings = [
-        {text: "Account", icon: "account", onPress: () => NavigationService.navigate('Register') },
+        {text: "Account", icon: "account", onPress: () => NavigationService.navigate('Register', {isEditMode: true, name: this.props.displayName, uid: this.props.uid, uri: this.props.photoURL}) },
         {text: "Privacy Policy", icon: "lock", onPress: () => this.toggleDocumentModal("privacy") },
         {text: "Help", icon: "help-circle", onPress: () => this.toggleDocumentModal("contact") },
         {text: "Log out", icon: "logout-variant", onPress: () => this.toggleExitModal() },
@@ -143,3 +145,19 @@ export default class Settings extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    uid: state.auth.uid,
+    photoURL: state.auth.profile.profile.photoURL,
+    displayName: state.auth.profile.profile.displayName,
+    
+})
+
+const mapDispatchToProps = (dispatch) => ({
+
+})
+
+export default connect(
+mapStateToProps,
+mapDispatchToProps
+)(Settings)

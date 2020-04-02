@@ -30,7 +30,12 @@ function getProfile(payload) {
   return apiClient.get(`/getProfile/?uid=${payload.uid}`).then(fulfilled)
 }
 
+function updateUser(payload) {
+  return apiClient.post(`/createUser`, payload).then(fulfilled)
+}
+
 export const authService = {
   createUser,
-  getProfile
+  getProfile,
+  updateUser
 }

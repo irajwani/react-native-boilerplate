@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, CheckBox } from 'react-native'
+import { Text, Image, View, SafeAreaView, TouchableOpacity, ImageBackground, StyleSheet, CheckBox } from 'react-native'
 
 import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 
@@ -356,8 +356,11 @@ export class Welcome extends Component {
 
                 <View style={styles.bodyContainer}>
 
-                    <Text style={{...Fonts.style.big, fontWeight: "500", textAlign: 'center'}}>Salaam</Text>
-                    <Text style={{...Fonts.style.small, textAlign: 'center', color: Colors.grey, marginBottom: 20}}>Please login to your account.</Text>
+                    
+
+                    <View style={styles.logoContainer}>
+                        <Image style={styles.logo} source={Images.logo}/>
+                    </View>
                     
                     <AuthInput
                         placeholder={'Email'}
@@ -441,3 +444,6 @@ export default connect(
 mapStateToProps,
 mapDispatchToProps
 )(Welcome)
+
+// {/* <Text style={{...Fonts.style.big, fontWeight: "500", textAlign: 'center'}}>Salaam</Text>
+//                     <Text style={{...Fonts.style.small, textAlign: 'center', color: Colors.grey, marginBottom: 20}}>Please login to your account.</Text> */}

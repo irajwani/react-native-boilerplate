@@ -40,6 +40,10 @@ class Wallet extends Component {
         }
     }
 
+    async componentDidMount() {
+        await this.props.getRewards(this.props.uid);
+    }
+
     // async componentDidMount() {
     //     console.log(JSON.stringify(this.props.auth))
     //     // if(this.props.uid) {
@@ -124,7 +128,7 @@ class Wallet extends Component {
         return (
             <Container>
                 <ImageBackground style={styles.gradientBanner} source={Images.walletBg}>
-                    <HeaderRow flex={0.25} justifyContent={'flex-end'} style={{paddingVertical: 5,}}>
+                    <HeaderRow flex={0.25} justifyContent={'space-between'} style={{paddingVertical: 5,}}>
                         <View style={{marginHorizontal: 5}}>
                             <Gear onPress={()=>NavigationService.navigate('Settings')}/>
                         </View>
@@ -146,7 +150,8 @@ class Wallet extends Component {
                     </View>
                     
                     <View style={styles.statsContainer}>
-                        {stats.map((stat, index) => (
+                        {[{title: 'Cards Added', number: this.props.myCards.length},{title: 'Rewards Earned', number: this.props.rewards.length},]
+                        .map((stat, index) => (
                             <View key={index} style={styles.statContainer}>
 
                                 <View style={styles.valueContainer}>
@@ -203,6 +208,7 @@ const mapStateToProps = (state) => ({
     // auth: state.auth,
     customerId: state.auth.profile.customerId,
     myCards: state.auth.profile.cards,
+    rewards: state.reward.rewards,
     photoURL: state.auth.profile.profile.photoURL,
     displayName: state.auth.profile.profile.displayName,
     vendors: state.vendor.vendors,

@@ -9,6 +9,10 @@ const { Types, Creators } = createActions({
   getProfileSuccess: ['message'],
   getProfileFailure: ['errorMessage'],
 
+  updateUserRequest: ['data'],
+  updateUserSuccess: ['message'],
+  updateUserFailure: ['errorMessage'],
+
   storeUid: ['uid'],
 
 })

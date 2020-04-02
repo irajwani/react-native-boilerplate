@@ -21,9 +21,7 @@ class Rewards extends Component {
         visitNumber: "",
     }
 
-    async componentDidMount() {
-        await this.props.getRewards(this.props.uid);
-    }
+    
 
     componentDidUpdate = (prevProps) => {
       if(prevProps.redeemStatus != this.props.redeemStatus) {

@@ -7,7 +7,7 @@ import { RewardTypes } from '../Stores/Reward/Actions'
 // import { VideoTypes } from '../Stores/Video/Actions'
 
 // import { startup } from './StartupSaga'
-import { createUser, getProfile } from './AuthSaga'
+import { createUser, getProfile, updateUser } from './AuthSaga'
 // import { getDeals } from './DealsSaga'
 import {getVendors, addCard} from './VendorSaga';
 import {getRewards, redeemReward, getVisitDetails, isRewardRedeemable, redeemStaticReward} from './RewardSaga';
@@ -23,6 +23,7 @@ export default function* root() {
     // Run the startup saga when the application starts
     takeLatest(AuthTypes.CREATE_USER_REQUEST, createUser),
     takeLatest(AuthTypes.GET_PROFILE_REQUEST, getProfile),
+    takeLatest(AuthTypes.UPDATE_USER_REQUEST, updateUser),
 
     takeLatest(VendorTypes.GET_VENDORS_REQUEST, getVendors),
     takeLatest(VendorTypes.ADD_CARD_REQUEST, addCard),
