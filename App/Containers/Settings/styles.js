@@ -34,4 +34,9 @@ export default StyleSheet.create({
                 marginTop: 10
             },
 
+            documentScroll: {
+                backgroundColor: '#fff',
+                padding: Metrics.baseMargin/2
+            }
+
 })

@@ -29,7 +29,7 @@ export default StyleSheet.create({
         padding: 10,
         backgroundColor: Colors.white,
         borderRadius: 10,
-        ...shadowStyles.whiteShadow,
+        ...shadowStyles.lowerBlackShadow,
     },
 
         logoContainer: {
@@ -37,8 +37,8 @@ export default StyleSheet.create({
             marginBottom: 10
         },
             logo: {
-                width: 50,
-                height: 50
+                width: 40,
+                height: 40
             },
 
         authActionsContainer: { 

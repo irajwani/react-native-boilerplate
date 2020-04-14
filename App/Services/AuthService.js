@@ -31,7 +31,7 @@ function getProfile(payload) {
 }
 
 function updateUser(payload) {
-  return apiClient.post(`/createUser`, payload).then(fulfilled)
+  return apiClient.post(`/updateUser`, payload).then(fulfilled)
 }
 
 export const authService = {

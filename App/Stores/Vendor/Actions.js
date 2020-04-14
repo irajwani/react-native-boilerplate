@@ -5,7 +5,7 @@ const { Types, Creators } = createActions({
   getVendorsSuccess: ['vendors'],
   getVendorsFailure: ['errorMessage'],
 
-  addCardRequest: ['uid', 'vendorUid'],
+  addCardRequest: ['uid', 'vendorUid', 'cardKey'],
   addCardSuccess: ['message'],
   addCardFailure: ['errorMessage'],
 

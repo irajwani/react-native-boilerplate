@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Image, View, ScrollView, TouchableOpacity, Text, Keyboard, KeyboardAvoidingView, Modal, Linking, SafeAreaView } from 'react-native'
+import { Image, View, ScrollView, TouchableOpacity, Text, Modal, Linking, SafeAreaView } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import RNFetchBlob from 'rn-fetch-blob';
 
 import Container from '../../Components/Container'
 import AuthInput from '../../Components/Input/AuthInput'
@@ -19,6 +19,8 @@ import SelectPictures from '../../Components/SelectPictures';
 import { Colors, Images, Helpers, Metrics, Fonts, Strings } from '../../Theme';
 import Loading from '../../Components/ActivityIndicator/Loading';
 import HeaderNav from '../../Components/HeaderNav';
+import Toast from '../../Components/Toast';
+let toastDuration = 4000;
 
 const { EulaTop, EulaBottom, TsAndCs, PrivacyPolicy, EulaLink } = Strings;
 
@@ -27,10 +29,6 @@ const {BackArrow, PasswordsMatch} = Images;
 let avatarUri = "https://firebasestorage.googleapis.com/v0/b/spreezy-643e2.appspot.com/o/Placeholders%2Fblank.jpg?alt=media&token=bf2ab9de-bcf7-4138-9bba-0e4e47f1ff73";
 let numbers = /^[0-9]+$/;
 
-// const Blob = RNFetchBlob.polyfill.Blob;
-// const fs = RNFetchBlob.fs;
-// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-// window.Blob = Blob;
 
 class Register extends Component {
 
@@ -38,7 +36,7 @@ class Register extends Component {
         super(props);
         let {params} = this.props.navigation.state; 
         this.state = {
-            isLoading: false,
+            uploadingPicture: false,
 
             email: '',
             pass: '',
@@ -53,22 +51,15 @@ class Register extends Component {
             termsModalVisible: false,
             privacyModalVisible: false,
 
+            showToast: false,
+            toast: "",
+
             isEditMode: params.isEditMode ? true : false,
             uid: params.uid ? params.uid : '',
             previousUri: params.uri ? params.uri : false,
         }
     }
 
-    componentDidMount = () => {
-        this.keyboardDidShowListener = Keyboard.addListener(
-            'keyboardDidShow',
-            this.keyboardDidShow.bind(this),
-        );
-        this.keyboardDidHideListener = Keyboard.addListener(
-            'keyboardDidHide',
-            this.keyboardDidHide.bind(this),
-        );
-    }
 
     // UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
     //     if (nextProps.registerStatus === true) {
@@ -77,18 +68,7 @@ class Register extends Component {
     //     }
     // }
 
-    keyboardDidShow() {
-        this.setState({keyboardShown: true})
-    }
     
-    keyboardDidHide() {
-        this.setState({keyboardShown: false})
-    }
-    
-    componentWillUnmount() {
-        this.keyboardDidShowListener.remove();
-        this.keyboardDidHideListener.remove();
-    }
 
     setModalVisible = (visible) => {
         this.setState({modalVisible: visible});
@@ -110,13 +90,13 @@ class Register extends Component {
         };
         
         createUser(newUser);
-        this.setState({isLoading: false, modalVisible: false});
+        this.setState({uploadingPicture: false, modalVisible: false});
     }
 
     //Invoked when you 'Accept' EULA as a Google User trying to sign up
     createProfileForGoogleOrFacebookUser = async (user, pictureuri, socialPlatform) => {
 
-        console.log('Initiate FB or Google Sign Up')
+        // console.log('Initiate FB or Google Sign Up')
         let {email, pass} = this.state;
         if(socialPlatform == "google") {
             const {idToken, accessToken} = user;
@@ -124,7 +104,7 @@ class Register extends Component {
             const socialUser = await firebase.auth().signInWithCredential(credential);
             
             const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
-            console.log(credential);
+            // console.log(credential);
             firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
                 this.updateFirebase(socialUser.uid, pictureuri);
                 // console.log(usercred);
@@ -139,7 +119,7 @@ class Register extends Component {
             const socialUser = await firebase.auth().signInWithCredential(credential);
             
             const linkWithEmailCredential = await firebase.auth.EmailAuthProvider.credential(email, pass);
-            console.log(credential);
+            // console.log(credential);
             firebase.auth().currentUser.linkAndRetrieveDataWithCredential(linkWithEmailCredential).then( (usercred) => {
                 // console.log(usercred);
                 this.updateFirebase(socialUser.uid, pictureuri);
@@ -166,7 +146,7 @@ class Register extends Component {
             }
 
             else {
-                console.log('user has chosen picture manually through photo lib or camera, store it on cloud and generate a URL for it.')
+                // console.log('user has chosen picture manually through photo lib or camera, store it on cloud and generate a URL for it.')
                 // let resizedImage = await ImageResizer.createResizedImage(uri,resizedWidth, resizedHeight,'JPEG',suppressionLevel);
                 // const uploadUri = Platform.OS === 'ios' ? resizedImage.uri.replace('file://', '') : resizedImage.uri
                 const uploadUri = Metrics.platform == "ios" ? uri.replace('file://', '') : uri
@@ -175,7 +155,7 @@ class Register extends Component {
                 firebase.storage().ref().child(`Users/${uid}/profile`)
                 .putFile(uploadUri, {contentType: mime})
                 .then(uploadTask => {
-                    console.log(uploadTask)
+                    // console.log(uploadTask)
                     resolve(uploadTask.downloadURL);
                 })
                 .catch((error) => {
@@ -191,7 +171,11 @@ class Register extends Component {
     }
 
     updateProfile = async (uri) => {
-        this.setState({isLoading: true});
+        this.setState({uploadingPicture: true, showToast: true, toast: `Updating user...`}, 
+        () => setTimeout(() => {
+            this.setState({showToast: false})
+        }, toastDuration))
+        console.log('updating profile')
         let {uid, firstName, lastName, phone, previousUri} = this.state;
         let {updateUser} = this.props;
         let url;
@@ -208,14 +192,18 @@ class Register extends Component {
             phone,
         }
         updateUser(data);
-        this.setState({isLoading: false});
+        this.setState({uploadingPicture: false});
     }
 
     createProfile = (uri) => {
+        let {email, pass, firstName, lastName, phone} = this.state;
         //Person could arrive here through vanilla sign up, or after using social authentication such that they don't require further account creation
         // console.log("Initaite profile creation");
-        this.setState({isLoading: true})
-        let {email, pass, firstName, lastName, phone} = this.state;
+        this.setState({uploadingPicture: true, showToast: true, toast: `Creating user: ${firstName + " " + lastName}. Please wait...`}, () => {
+            setTimeout(() => {
+                this.setState({showToast: false})
+            }, toastDuration)}
+        )
         let {createUser} = this.props;
         firebase.auth().createUserWithEmailAndPassword(email, pass)
         .then(async () => {
@@ -236,18 +224,21 @@ class Register extends Component {
                 // token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
             }
             createUser(newUser);
-            this.setState({isLoading: false, modalVisible: false});
+            this.setState({uploadingPicture: false, modalVisible: false});
         })
         .catch( error => {
-            console.log(error)
+            // console.log(error)
+            this.setState({uploadingPicture: false});
+            
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-            if (errorCode == 'auth/weak-password') {
-              alert('The password is too weak.');
-            }
+            // if (errorCode == 'auth/weak-password') {
+            //   alert('The password is too weak.');
+            alert(errorMessage);
         })
     }
+    
 
     renderProfileInputFields = (passwordConditionMet) => (
         <>
@@ -378,8 +369,8 @@ class Register extends Component {
     
 
     render() {
-        let {isLoading, isEditMode} = this.state;
-        let {navigation} = this.props;
+        let {uploadingPicture, isEditMode, showToast} = this.state;
+        let {navigation, isLoading} = this.props;
 
         const {params} = navigation.state
         var googleUser = params.googleUserBoolean ? true : false;
@@ -392,10 +383,11 @@ class Register extends Component {
         var passwordConditionMet = (this.state.pass == this.state.pass2) && (this.state.pass.length > 0);
         var isDone = this.state.firstName && this.state.lastName && this.state.email && passwordConditionMet;
         var isEditDone = this.state.firstName && this.state.lastName;
-        if(isLoading) {
+        if(isLoading || uploadingPicture) {
             return (
                 <Container center>
                     <Loading/>
+                    {showToast && <Toast text={this.state.toast}/>}
                 </Container>
             )
         }
@@ -419,27 +411,13 @@ class Register extends Component {
                     <SelectPictures navToComponent={'CreateProfile'} pictureuris={pictureuris} />
                 </View>
 
-                <ScrollView style={styles.fieldsContainer} contentContainerStyle={styles.fieldsContentContainer}>
+                <KeyboardAwareScrollView style={styles.fieldsContainer} contentContainerStyle={styles.fieldsContentContainer}>
 
 
-                {Metrics.platform == 'ios' ?
-                    <KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={80} enabled={this.state.keyboardShown ? true : false}>
-                          
+                    {this.renderProfileInputFields(passwordConditionMet)}
 
-                        {this.renderProfileInputFields(passwordConditionMet)}
 
-                    
-                    </KeyboardAvoidingView>
-                :
-                    <View>
-                        
-
-                        {this.renderProfileInputFields(passwordConditionMet)}
-
-                    </View>
-                }
-
-                </ScrollView>
+                </KeyboardAwareScrollView>
 
                 <View style={styles.buttonContainer}>
                     {isEditMode ? 
@@ -447,7 +425,7 @@ class Register extends Component {
                         text={"Update"}
                         disabled={isEditDone ? false : true}
                         extraStyles={{backgroundColor: isEditDone ? Colors.secondary : Colors.grey}}
-                        onPress={() => this.updateUser(pictureuris)}
+                        onPress={() => this.updateProfile(pictureuris)}
                         
                         />
                     :    
@@ -515,7 +493,7 @@ class Register extends Component {
                 
                 {this.renderTermsModal()}
                 {this.renderPrivacyModal()}
-
+                {showToast && <Toast text={this.state.toast}/>}
 
             </Container>
         )
@@ -523,6 +501,7 @@ class Register extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    isLoading: state.auth.isLoading,
     registerStatus: state.auth.registerStatus,
     // authErrorMessage: state.auth.authErrorMessage,
     newUser: state.auth.newUser,

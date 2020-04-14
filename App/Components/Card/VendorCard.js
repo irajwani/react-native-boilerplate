@@ -11,7 +11,8 @@ let {Plus} = Images;
 
 
 export default ({vendor, myCards, onPress, handleWalletChange}) => {
-    let cardNotAdded = !myCards.map((card) => card.vendorUid).includes(vendor.uid);
+    let cardNotAdded = !myCards.map((card) => card.cardKey).includes(vendor.cardKey);
+    console.log(cardNotAdded ? 'Can add card' : 'cannot add card');
     return (
     
     <TouchableOpacity 
@@ -20,7 +21,7 @@ export default ({vendor, myCards, onPress, handleWalletChange}) => {
     >
         <View style={[styles.imageContainer, {backgroundColor: vendor.loyaltyCard.backgroundColor}]}>
             <ProgressiveImage source={{uri: vendor.logo}} thumbnailSource={Images.blankAvatar} style={styles.image}/>
-        </View>
+        </View> 
 
         <View style={styles.bodyContainer}>
             <View style={styles.nameContainer}>

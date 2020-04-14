@@ -30,7 +30,7 @@ You authorized Developer to communicate with you electronically or otherwise usi
 9.2  Developer may modify this Agreement from time-to-time and will provide you with notice when these modifications occur (notification may be through the App, email, a website, changes to the date shown at the top of this Agreement, or other electronic means). Your continued use of the App indicates your acceptance of any modifications to this Agreement. You must stop using and uninstall the App if you do not agree to any modifications that are made to this Agreement. \n
 9.3 Each of us will comply with the laws, rules, and regulations (together, Laws) that apply to our respective performance under this Agreement; including, without limitation, laws related to the collection and use of consumer information obtained via the App. You will follow the requirements of all user documentation provided for the App. You will not use your App to access, store, or transmit materials that are tortious, libelous, offensive, or forbidden( according to the list mentioned in`
 
-const EulaLink = 'https://nottmystyle.com/prohibited-items/';
+const EulaLink = 'https://mytreetapp.com/index.php/privacy-policy-2/';
 
 const EulaBottom = `); contain malicious code, viruses, time bombs, Trojan horses, bots, scrips or other programs; or infringe third parties’ intellectual property rights. \n
 9.4 This is the entire agreement between us, and supersedes any prior agreements related to its subject matter. Any sections or terms of this Agreement that are, or become, invalid or unenforceable will be severed; and the remaining terms will continue in effect. Developer is not waiving any of its rights under this Agreement if it delays their exercise or fails to exercise them. We are independent contractors. This Agreement does not create an agency, partnership, or joint venture of any kind. \n
@@ -70,10 +70,10 @@ treet has not reviewed all of the sites linked to its application and is not res
 7. Application Terms of Use Modifications \n
 treet may revise these Terms of Use for its application at any time without prior notice. By using this application, you are agreeing to be bound by the current version of these Terms and Conditions of Use. \n
 8. Governing Law \n
-Any claim related to treet's application shall be governed by the laws of Great Britain without regards to its conflict of law provisions.
+Any claim related to treet's application shall be governed by the laws of the Islamic Republic of Pakistan without regards to its conflict of law provisions.
 `;
 
-const PrivacyPolicy = `Effective date: March 18, 2020 \n
+const PrivacyPolicy = `Effective date: April 7th, 2020 \n
 treet ("us", "we", or "our") operates the website and the treet mobile application (the "Service"). \n
 This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. Our Privacy Policy for treet is managed through Free Privacy Policy \n
 We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, terms used in this Privacy Policy have the same meanings as in our Terms and Conditions. \n
@@ -87,6 +87,7 @@ While using our Service, we may ask you to provide us with certain personally id
 • First name and last name
 • Phone number
 • Address, State, Province, ZIP/Postal code, City
+• Permission based geolocation 
 • Cookies and Usage Data
 \n
 (ii) Usage Data \n
@@ -160,7 +161,7 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 Contact Us \n
 If you have any questions about this Privacy Policy, please contact us by email: sameer.dada@gmail.com`;
 
-const ContactUs = 'Please send us an email at: sameer.dada@gmail.com, and we shall get back to you as soon as possible.';
+const ContactUs = 'Please send us an email at: sameer.dada@gmail.com, or call at 0300-2127538, and we shall get back to you as soon as possible.';
 
 
 
@@ -170,12 +171,12 @@ export default {
 
     privacy: {
         title: "Privacy Policy",
-        text: "Lorem ipsum"
+        text: PrivacyPolicy,
     },
 
     contact: {
         title: "Contact Us",
-        text: "Lorem ipsum contact"
+        text: ContactUs
     },
 
     EulaTop, EulaLink, EulaBottom, TsAndCs, PrivacyPolicy, ContactUs

@@ -23,7 +23,7 @@ const apiClient = create({
 let fulfilled = (response) => response
 
 function getRewards(payload) {
-  return apiClient.get(`/getRewards/?uid=${payload.uid}`).then(fulfilled)
+  return apiClient.get(`/getRewards?uid=${payload.uid}`).then(fulfilled)
 }
 
 function redeemReward(payload) {

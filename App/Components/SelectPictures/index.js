@@ -51,7 +51,7 @@ class SelectPictures extends Component {
                 return null
             }   
             else {
-                console.log(response.uri);
+                // console.log(response.uri);
                 const picture = response.uri;
                 this.props.navigation.navigate('Register', {pictureuris: picture} );
                 
@@ -123,7 +123,7 @@ class SelectPictures extends Component {
   }
 
   launchGallery = (navToComponent) => {
-    console.log('Opening iOS image selector')
+    // console.log('Opening iOS image selector')
     ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -134,7 +134,7 @@ class SelectPictures extends Component {
       // console.log(image);
       // console.log("TEST FOR IMAGES: " + JSON.stringify(images));
       let pictureuris = image.sourceURL
-      console.log('Preparing to nav back to origin component with pictures:')
+      // console.log('Preparing to nav back to origin component with pictures:')
       // console.log(pictureuris);
       let origin = "";
       switch(navToComponent) {
@@ -209,7 +209,7 @@ class SelectPictures extends Component {
   }
 
   renderMainPictureRow = (pictureuris) => {
-    console.log(pictureuris)
+    // console.log(pictureuris)
     return (
       <View style={styles.mainPictureRow}>
         <TouchableHighlight underlayColor={'transparent'} style={styles.mainPictureTouchContainer} onPress={this.platformSpecificAction} >

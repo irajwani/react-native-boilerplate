@@ -8,7 +8,7 @@ export const getRewardsRequest = (state) => ({
 })
 
 export const getRewardsSuccess = (state, {message}) => {
-  console.log(message);
+  
   return {
     ...state,
     rewards: message,
@@ -30,7 +30,7 @@ export const redeemRewardRequest = (state, {rewardRedeemed}) => ({
 })
 
 export const redeemRewardSuccess = (state, {message}) => {
-  console.log(message);
+  
   return {
     ...state,
     redeemStatus: 'done',
@@ -53,7 +53,7 @@ export const redeemStaticRewardRequest = (state, {rewardRedeemed}) => ({
 })
 
 export const redeemStaticRewardSuccess = (state, {message}) => {
-  console.log(message);
+  
   return {
     ...state,
     redeemStatus: 'done',
@@ -74,7 +74,7 @@ export const isRewardRedeemableRequest = (state) => ({
 })
 
 export const isRewardRedeemableSuccess = (state, {message}) => {
-  console.log(message);
+  
   return {
     ...state,
     isRewardRedeemable: message.isRewardRedeemable,
@@ -94,8 +94,7 @@ export const getVisitDetailsRequest = (state) => ({
 })
 
 export const getVisitDetailsSuccess = (state, {visitDetails}) => {
-  console.log("got visit details");
-  console.log(visitDetails);
+  
   return {
     ...state,
     visitDetails: visitDetails.visitDetails,

@@ -10,6 +10,7 @@ import {Strings} from '../../Theme'
 import firebase from 'react-native-firebase';
 // import StartupActions from 'App/Stores/Startup/Actions'
 import AuthActions from '../../Stores/Auth/Actions'
+import RewardActions from '../../Stores/Reward/Actions'
 import { connect } from 'react-redux'
 
 import styles from './styles'
@@ -102,10 +103,12 @@ class SplashScreen extends React.Component {
                 // console.log('person signed up')
                 // console.log("Debugging why this func wasnt invoked");
                 this.props.getProfile(user.uid);
+                this.props.getRewards(user.uid);
               }
               else {
                 // console.log("Debugging why this func wasnt invoked");
                 this.props.getProfile(user.uid);
+                this.props.getRewards(user.uid);
                 NavigationService.navigate('AppStack');
                 
               }
@@ -115,7 +118,7 @@ class SplashScreen extends React.Component {
             }
             else {
               NavigationService.navigate('AuthStack');
-              console.log("USER DISCONNECTED")
+              // console.log("USER DISCONNECTED")
 
             }
     
@@ -159,6 +162,7 @@ const mapStateToProps = (state) => ({})
 const mapDispatchToProps = (dispatch) => ({
   storeUid: (uid) => dispatch(AuthActions.storeUid(uid)),
   getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
+  getRewards: (uid) => dispatch(RewardActions.getRewardsRequest(uid)),
 
 
 })

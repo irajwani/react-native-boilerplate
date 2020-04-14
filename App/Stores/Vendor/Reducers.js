@@ -2,12 +2,16 @@ import { INITIAL_STATE } from './InitialState'
 import { createReducer } from 'reduxsauce'
 import { VendorTypes } from './Actions'
 
-export const getVendorsRequest = (state) => ({
-  ...state,
-  isLoading: true,
-})
+export const getVendorsRequest = (state) => {
+  console.log('fetching vendors');
+  return {
+    ...state,
+    isLoading: true,
+  }
+}
 
 export const getVendorsSuccess = (state, {vendors}) => {
+  console.log(vendors);
   return {
     ...state,
     vendors,
@@ -23,10 +27,11 @@ export const getVendorsFailure = (state, { errorMessage }) => ({
   errorMessage,
 })
 
-export const addCardRequest = (state, {uid, vendorUid}) => ({
+export const addCardRequest = (state, {uid, vendorUid, cardKey}) => ({
   ...state,
   uid,
   vendorUid,
+  cardKey,
   addStatus: 'pending',
   isLoading: true,
 })

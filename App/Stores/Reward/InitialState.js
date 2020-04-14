@@ -12,5 +12,7 @@ export const INITIAL_STATE = {
     },
     isRewardRedeemable: false,
 
+    isLoading: false,
+
     
 }

@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Loading from '../../Components/ActivityIndicator/Loading';
+import Toast from '../../Components/Toast';
 
 
 
@@ -45,6 +46,8 @@ let {Check, Facebook} = Images;
 
 let forgotPasswordText = "Please enter the email you created an account with. Follow the instructions sent to your email to reset your password for Treet. Then log in with your new credentials.";
 
+let toastDuration = 4000;
+
 export class Welcome extends Component {
 
     constructor(props) {
@@ -62,6 +65,9 @@ export class Welcome extends Component {
             error: '',
 
             isFpVisible: false,
+
+            showToast: false,
+            toast: "",
         }
         // console.log(props.navigation.state.params.newUser)
         // this.newUser = props.navigation.state.params.newUser;
@@ -119,7 +125,13 @@ export class Welcome extends Component {
 
     signIn = () => {
         let {email, pass} = this.state;
-        this.setState({isLoading: true})
+        this.setState({isLoading: true, showToast: true, toast: `Signing in...`}, 
+            () => {
+                setTimeout(() => {
+                    this.setState({showToast: false})
+                }, toastDuration)
+            }
+        );
         firebase.auth().signInWithEmailAndPassword(email, pass)
         .then(()=>{
             this.setState({isLoading: false})
@@ -136,7 +148,7 @@ export class Welcome extends Component {
             
         })
         .catch(err => {
-            console.log('failed because' + err);
+            // console.log('failed because' + err);
             this.setState({isLoading: false, error: err, isAlertVisible: true});
         })
     }
@@ -413,6 +425,7 @@ export class Welcome extends Component {
 
             {this.renderAlert()}
             {this.renderForgotPassword()}
+            {this.state.showToast && <Toast text={this.state.toast}/>}
         </Container>
     )
 

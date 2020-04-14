@@ -1,4 +1,5 @@
 export const INITIAL_STATE = {
+    isLoading: false,
     newUser: {},
     data: {}, //for edit profile
     registerStatus: false,

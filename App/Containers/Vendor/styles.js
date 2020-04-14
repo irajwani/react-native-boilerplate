@@ -52,8 +52,8 @@ export default StyleSheet.create({
         logoContainer: {
             
             
-            bottom: 20,
-            left: 20,
+            bottom: 2*Metrics.baseMargin,
+            left: 2*Metrics.baseMargin,
             position: 'absolute',
             zIndex: 1,
             backgroundColor: 'transparent',
@@ -65,6 +65,27 @@ export default StyleSheet.create({
                 height: 72,
                 borderRadius: 36.5,
             },
+
+        button: {
+            bottom: 2*Metrics.baseMargin,
+            right: Metrics.baseMargin,
+            position: 'absolute',
+            zIndex: 1,
+
+            width: 90,
+            ...Helpers.center,
+            ...shadowStyles.whiteCard,
+            
+            borderRadius: 20,
+            padding: 5
+
+        },
+
+                buttonText: {
+                    ...Fonts.style.small,
+                    color: Colors.white,
+                    fontWeight: "600"
+                },
 
     bodyContainer: {
         // flex: 0.8,

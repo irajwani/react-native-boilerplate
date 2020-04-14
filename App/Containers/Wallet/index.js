@@ -1,29 +1,24 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Text, View, Animated, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 import Container from '../../Components/Container';
 
-import { connect } from 'react-redux'
-import firebase from 'react-native-firebase'
+import { connect } from 'react-redux';
+import firebase from 'react-native-firebase';
 import NavigationService from '../../Services/NavigationService.js';
 import styles from './styles';
-import { Fonts, Images, Colors } from '../../Theme';
-import HeaderRow from '../../Components/HeaderRow'
+import { Fonts, Images, Colors, Helpers } from '../../Theme';
+import HeaderRow from '../../Components/HeaderRow';
 import VendorCard from '../../Components/Card/VendorCard';
 import ProgressiveImage from '../../Components/Image/ProgressiveImage';
 import CardList from '../../Components/List/CardList';
 
-import VendorActions from '../../Stores/Vendor/Actions'
-import AuthActions from '../../Stores/Auth/Actions'
+import VendorActions from '../../Stores/Vendor/Actions';
+import RewardActions from '../../Stores/Reward/Actions';
 import shadowStyles from '../../StyleSheets/shadowStyles';
+import Loading from '../../Components/ActivityIndicator/Loading';
 
 let {LogOut, Gear} = Images;
-
-let stats = [
-    {title: 'Number Of Stamps', number: 12},
-    {title: 'Number of Rewards', number: 10},
-    {title: 'Number of Cards Used', number: 3},
-]
 
 class Wallet extends Component {
     constructor(props) {
@@ -38,10 +33,6 @@ class Wallet extends Component {
 
             isExitVisible: false,
         }
-    }
-
-    async componentDidMount() {
-        await this.props.getRewards(this.props.uid);
     }
 
     // async componentDidMount() {
@@ -70,7 +61,9 @@ class Wallet extends Component {
         
     }
 
-
+    handleWalletChange = (vendorUid, cardKey) => {
+        this.props.addCard(this.props.uid, vendorUid, cardKey)
+    }
 
     logOut = () => {
         firebase.auth().signOut();
@@ -123,8 +116,8 @@ class Wallet extends Component {
     )
 
     render() {
+        let {isLoading} = this.props;
         
-        // console.tron.log(this.props.uid)
         return (
             <Container>
                 <ImageBackground style={styles.gradientBanner} source={Images.walletBg}>
@@ -173,15 +166,21 @@ class Wallet extends Component {
                     </TouchableOpacity>
 
                     {this.props.myCards == undefined ?
-                    <Animated.View style={{height: this.state.drawerHeight, backgroundColor: '#fff'}}/>
+                        <Animated.View style={{height: this.state.drawerHeight, backgroundColor: '#fff'}}/>
                     :
-                    <CardList
-                        //vendor input argument will be provided within CardList
-                        vendors={this.props.vendors.filter(vendor => this.props.myCards.map((card) => card.vendorUid).includes(vendor.uid) )}
-                        myCards={this.props.myCards}
-                        onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
-                        style={{height: this.state.drawerHeight}}
-                    />
+                        isLoading ?
+                            <Animated.View style={{height: this.state.drawerHeight, backgroundColor: '#fff', ...Helpers.center}}>
+                                <Loading />
+                            </Animated.View>
+                            :
+                            <CardList
+                                //vendor input argument will be provided within CardList
+                                vendors={this.props.vendors.filter(vendor => this.props.myCards.map((card) => card.cardKey).includes(vendor.cardKey) )}
+                                myCards={this.props.myCards}
+                                onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
+                                handleWalletChange={(vendorUid, cardKey) => this.handleWalletChange(vendorUid, cardKey)}
+                                style={{height: this.state.drawerHeight}}
+                            />
                     }
 
                     {/* <Animated.FlatList 
@@ -207,14 +206,19 @@ const mapStateToProps = (state) => ({
     uid: state.auth.uid,
     // auth: state.auth,
     customerId: state.auth.profile.customerId,
-    myCards: state.auth.profile.cards,
+    myCards: state.auth.profile.cards != undefined ? state.auth.profile.cards : [],
     rewards: state.reward.rewards,
     photoURL: state.auth.profile.profile.photoURL,
     displayName: state.auth.profile.profile.displayName,
     vendors: state.vendor.vendors,
+
+    isLoading: state.vendor.isLoading,
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    addCard: (uid, vendorUid, cardKey) => dispatch(VendorActions.addCardRequest(uid, vendorUid, cardKey)),
+
+    
     // getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
     // getVendors: () => dispatch(VendorActions.getVendorsRequest()),
 

@@ -6,9 +6,10 @@ import { rewardService } from "../Services/RewardService"
 
 export function* getRewards(payload) {
     const response = yield call(rewardService.getRewards, payload)
+    console.log('getting rewards');
     
     if (response.status === 200) {
-      console.log(response.data);
+      
       yield put(RewardActions.getRewardsSuccess(response.data));
     } else {
       yield put(RewardActions.getRewardsFailure('S** happened'));
@@ -19,9 +20,11 @@ export function* redeemReward(payload) {
   const response = yield call(rewardService.redeemReward, payload)
   
   if (response.status === 200) {
-    console.log(response.data);
+    
+    yield call(RewardActions.getRewardsRequest)
     yield put(RewardActions.redeemRewardSuccess(response.data));
   } else {
+    yield call(RewardActions.getRewardsRequest)
     yield put(RewardActions.redeemRewardFailure('S** happened'));
   }
 }
@@ -40,7 +43,7 @@ export function* isRewardRedeemable(payload) {
   const response = yield call(rewardService.isRewardRedeemable, payload)
   
   if (response.status === 200) {
-    console.log(response.data);
+    // console.log(response.data);
     yield put(RewardActions.isRewardRedeemableSuccess(response.data));
   } else {
     yield put(RewardActions.isRewardRedeemableFailure('S** happened'));
@@ -51,8 +54,8 @@ export function* redeemStaticReward(payload) {
   const response = yield call(rewardService.redeemStaticReward, payload)
   
   if (response.status === 200) {
-    console.log('redeemed static reward');
-    console.log(response.data);
+    // console.log('redeemed static reward');
+    // console.log(response.data);
     yield put(RewardActions.redeemStaticRewardSuccess(response.data));
   } else {
     yield put(RewardActions.redeemStaticRewardFailure('S** happened'));

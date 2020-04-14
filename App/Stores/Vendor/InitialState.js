@@ -3,6 +3,7 @@ export const INITIAL_STATE = {
     vendors: [],
     uid: '',
     vendorUid: '',
+    cardKey: '',
     // message: false,
     errorMessage: null,
     

@@ -24,7 +24,7 @@ class Rewards extends Component {
     
 
     componentDidUpdate = (prevProps) => {
-      if(prevProps.redeemStatus != this.props.redeemStatus) {
+      if(prevProps.redeemStatus != this.props.redeemStatus && this.props.redeemStatus == 'done') {
         this.props.getRewards(this.props.uid);
       }
     }
@@ -44,7 +44,7 @@ class Rewards extends Component {
     }
 
     onRewardPress = (vendorUid, visitNumber) => {
-        console.log(vendorUid, visitNumber);
+        // console.log(vendorUid, visitNumber);
         this.setState({isVisible: !this.state.isVisible, vendorUid, visitNumber});
     }
 
@@ -88,6 +88,7 @@ class Rewards extends Component {
       )
 
     render() {
+        let {isLoading, rewards} = this.props;
         // console.log(this.props.rewards)
         return (
             <Container>
@@ -97,13 +98,13 @@ class Rewards extends Component {
                 </HeaderRow>
 
                 <View style={styles.cardsContainer}>
-                    {this.props.isLoading ?
+                    {isLoading ?
                       <Container center>
                         <Loading/>
                       </Container>
                     :
                       <RewardList
-                          rewards={this.props.rewards}
+                          rewards={rewards}
                           onRewardPress={this.onRewardPress}
                       />
                     }

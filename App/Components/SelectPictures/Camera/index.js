@@ -32,10 +32,10 @@ class Camera extends Component {
   }
   
   takePicture(navToComponent) {
-    console.log(navToComponent);
+    // console.log(navToComponent);
     this.setState({isLoading: true});
     let self = this;
-    console.log('first')
+    // console.log('first')
     const options = { quality: 0.5, base64: true };
     this.camera.takePictureAsync(options).then((image64) => {
         var {...state} = this.state;
@@ -43,8 +43,8 @@ class Camera extends Component {
         state.confirmDisabled = false;
         state.pictureuris.push(image64.uri);
         this.setState(state);
-        console.log(navToComponent, "& Camera took picture")
-        console.log(this.state.pictureuris)
+        // console.log(navToComponent, "& Camera took picture")
+        // console.log(this.state.pictureuris)
         //if the user was previously on the EditProfile Page, then send user back there, else assume
         //the user is creating an item and let them take up to 4 pictures
         if(navToComponent == 'EditProfile' || navToComponent == 'CreateProfile') {
@@ -54,7 +54,7 @@ class Camera extends Component {
         if (this.state.pictureuris.length == 4) {
           this.confirmSelection(navToComponent);
         }
-        console.log(this.state.pictureuris);
+        // console.log(this.state.pictureuris);
         // this.setState({
         //     isLoading: false, pictureuri: image64.uri, picturebase64: image64.base64, pictureWidth: image64.width, pictureHeight: image64.height
         // });
@@ -65,8 +65,8 @@ class Camera extends Component {
   }
 
   confirmSelection(navToComponent) {
-    console.log('User confirmed selection of pictures')
-    console.log(this.state.pictureuris)
+    // console.log('User confirmed selection of pictures')
+    // console.log(this.state.pictureuris)
     //if its going back to EditItem, will it skim over the details?
     let origin = "";
     switch(navToComponent) {

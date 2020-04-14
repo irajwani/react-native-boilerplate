@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
 
 import Container from '../../Components/Container';
 import HeaderRow from '../../Components/HeaderRow'
 import Modal, { ModalContent, SlideAnimation, ModalTitle, ModalFooter, ModalButton } from 'react-native-modals';
 
 import NavigationService from '../../Services/NavigationService'
-import { Images, Fonts, Colors, Strings } from '../../Theme'
+import { Images, Fonts, Colors, Strings, Metrics } from '../../Theme'
 import styles from './styles';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import firebase from 'react-native-firebase';
@@ -39,35 +39,36 @@ class Settings extends Component {
     }
 
     toggleDocumentModal = (doc = 'contact') => {
-        console.log('pressed');
+        // console.log('pressed');
         this.setState({isDocumentVisible: !this.state.isDocumentVisible, document: doc == "privacy" ? privacy : contact});
     }
 
     renderDocumentModal = () => (
         <Modal
             rounded={false}
-            modalStyle={{...shadowStyles.blackShadow, }}
+            modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, height: Metrics.screenHeight - 3*Metrics.baseMargin}}
             modalTitle={<ModalTitle hasTitleBar={false} title={this.state.document.title} titleTextStyle={{...Fonts.style.medium, color: Colors.primary, fontWeight: "400"}}/>}
             visible={this.state.isDocumentVisible}
             onTouchOutside={this.toggleDocumentModal}
             modalAnimation={new SlideAnimation({
             slideFrom: 'bottom',
             })}
-            swipeDirection={['up', 'down', 'left', 'right']} // can be string or an array
-            swipeThreshold={200} // default 100
-            onSwipeOut={this.toggleDocumentModal}
-            footer={
-            <ModalFooter bordered={true} >
-                <ModalButton
-                    text="Okay!"
-                    textStyle={{...Fonts.style.medium,color: Colors.primary}}
-                    onPress={this.toggleDocumentModal}
-                />
-            </ModalFooter>
-            }
         >
             <ModalContent>
-                <Text>{this.state.document.text}</Text>
+                
+                <ScrollView style={{height: Metrics.screenHeight/2}} contentContainerStyle={styles.documentScroll}>
+                    <Text>{this.state.document.text}</Text>
+                </ScrollView>
+
+                <Text
+                    style={{...Fonts.style.medium,color: Colors.primary, alignSelf: 'center', marginTop: 2*Metrics.baseMargin}}    
+                    onPress={this.toggleDocumentModal}
+                >
+                    Close
+                </Text>
+                
+                    
+                
             </ModalContent>
         </Modal>
     )

@@ -6,6 +6,7 @@ import Container from '../../Components/Container'
 import { connect } from 'react-redux'
 
 import VendorActions from '../../Stores/Vendor/Actions'
+import AuthActions from '../../Stores/Auth/Actions'
 
 import NavigationService from '../../Services/NavigationService';
 import CardList from '../../Components/List/CardList'
@@ -15,7 +16,6 @@ import { Colors, Helpers } from '../../Theme'
 import styles from './styles'
 import shadowStyles from '../../StyleSheets/shadowStyles'
 
-
 class Cards extends Component {
     
     async componentDidMount() {
@@ -23,17 +23,26 @@ class Cards extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        // if(this.props.addStatus == 'done') {
-        //   this.props.getVendors();
-        // }
+        if(prevProps.addStatus != this.props.addStatus && this.props.addStatus == 'done') {
+          this.props.getVendors();
+          this.props.getProfile(this.props.uid);
+        }
     }
 
-    handleWalletChange = (vendorUid) => {
-        this.props.addCard(this.props.uid, vendorUid)
+    handleWalletChange = (vendorUid, cardKey) => {
+        this.props.addCard(this.props.uid, vendorUid, cardKey)
     }
     
     render() {
-        console.tron.log(this.props.uid);
+        let {isLoading, vendors, myCards} = this.props;
+        console.log(vendors, myCards);
+        if(isLoading) {
+            return (
+                <Container center>
+                    <Loading />
+                </Container>
+            )
+        }
         return (
             <Container style={{...shadowStyles.lowerBlackShadow}}>
 
@@ -49,11 +58,11 @@ class Cards extends Component {
                     :
                     <View style={styles.cardsContainer}>
                         <CardList
-                            vendors={this.props.vendors}
-                            myCards={this.props.myCards == undefined ? [{vendorUid: 'nothing here'}] : this.props.myCards}
+                            vendors={vendors}
+                            myCards={myCards == undefined ? [{vendorUid: 'nothing here', cardKey: 'not an actual key'}] : myCards}
                             //vendor input argument will be provided within CardList
                             onPress={(vendor) => NavigationService.navigate('Vendor', {vendor})}
-                            handleWalletChange={(vendorUid) => this.handleWalletChange(vendorUid)}
+                            handleWalletChange={(vendorUid, cardKey) => this.handleWalletChange(vendorUid, cardKey)}
                         />
                     </View>
                 }
@@ -77,7 +86,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getVendors: () => dispatch(VendorActions.getVendorsRequest()),
-    addCard: (uid, vendorUid) => dispatch(VendorActions.addCardRequest(uid, vendorUid)),
+    addCard: (uid, vendorUid, cardKey) => dispatch(VendorActions.addCardRequest(uid, vendorUid, cardKey)),
+
+    getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
 })
 
 export default connect(

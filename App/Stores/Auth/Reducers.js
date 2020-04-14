@@ -4,18 +4,21 @@ import { AuthTypes } from './Actions'
 
 export const createUserRequest = (state, {newUser}) => ({
   ...state,
+  isLoading: true,
   newUser,
 })
 
 export const createUserSuccess = (state) => {
   return {
     ...state,
+    isLoading: false,
     registerStatus: true
   }
 }
 
 export const createUserFailure = (state, { errorMessage }) => ({
   ...state,
+  isLoading: false,
   errorMessage,
 })
 
@@ -25,9 +28,10 @@ export const storeUid = (state, {uid}) => ({
 })
 
 export const getProfileRequest = (state, {uid}) => {
-  console.log('IntiateGetProfileRequest');
+  
   return {
     ...state,
+    isLoading: true,
     uid,
   }
 }
@@ -35,28 +39,33 @@ export const getProfileRequest = (state, {uid}) => {
 export const getProfileSuccess = (state, {message}) => {
   return {
     ...state,
+    isLoading: false,
     profile: message,
   }
 }
 
 export const getProfileFailure = (state, { errorMessage }) => ({
   ...state,
+  isLoading: false,
   errorMessage,
 })
 
 export const updateUserRequest = (state, {data}) => ({
   ...state,
+  isLoading: true,
   data,
 })
 
 export const updateUserSuccess = (state) => {
   return {
     ...state,
+    isLoading: false,
   }
 }
 
 export const updateUserFailure = (state, { errorMessage }) => ({
   ...state,
+  isLoading: true,
   errorMessage,
 })
 

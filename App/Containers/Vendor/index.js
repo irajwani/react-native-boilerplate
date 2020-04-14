@@ -11,12 +11,15 @@ import NavigationService from '../../Services/NavigationService';
 
 import {connect} from 'react-redux';
 import RewardActions from '../../Stores/Reward/Actions'
+import VendorActions from '../../Stores/Vendor/Actions'
+import AuthActions from '../../Stores/Auth/Actions'
 
 import styles from './styles';
 import { Images, Fonts, Colors, Metrics } from '../../Theme'
 import Label from '../../Components/Text/Label'
 
 import shadowStyles from '../../StyleSheets/shadowStyles';
+import Loading from '../../Components/ActivityIndicator/Loading';
 
 let {AnimatedBackArrow, BackArrow, RightArrow, Phone, Place} = Images;
 
@@ -55,7 +58,7 @@ class Vendor extends Component {
 
             //Confirmation modal
             staticReward: {},
-            isVisible: false,
+            isVisible: false, 
 
             //Message modal
             isMessageVisible: false,
@@ -72,6 +75,14 @@ class Vendor extends Component {
         await this.props.isRewardRedeemableFunction(payload);
     }
 
+    componentDidUpdate = (prevProps) => {
+        if(prevProps.addStatus != this.props.addStatus && this.props.addStatus == 'done') {
+          this.props.getVendors();
+          this.props.getProfile(this.props.uid);
+          
+        }
+    }
+
     // componentDidUpdate = (prevProps) => {
     //     if(this.props.redeemStatus == 'done') {
     //         let payload = {
@@ -83,9 +94,13 @@ class Vendor extends Component {
     //     }
     // }
 
+    handleWalletChange = (vendorUid, cardKey) => {
+        this.props.addCard(this.props.uid, vendorUid, cardKey)
+    }
+
     renderVisitRewards = () => {
         let {name, loyaltyCard, visitRewards} = this.state;
-        console.log('stamps collected:', this.props.visitDetails.visitNumber);
+        // console.log('stamps collected:', this.props.visitDetails.visitNumber);
         return (
         <View style={styles.visitRewards}>
             
@@ -149,8 +164,8 @@ class Vendor extends Component {
             vendorUid: uid,
             uid: this.props.uid
         }
-        console.log("Redeeming:")
-        console.log(rewardRedeemed);
+        // console.log("Redeeming:")
+        // console.log(rewardRedeemed);
         this.props.redeemStaticReward(rewardRedeemed);
         this.toggleConfirmationModal();
     }
@@ -322,13 +337,27 @@ class Vendor extends Component {
       };
 
     render() {
+        let {logo, name, branch, cardKey} = this.state;
+        let {isLoading, isVendorLoading, myCards} = this.props;
+        let cardNotAdded = !myCards.map((card) => card.cardKey).includes(cardKey);
+
         const headerOpacity = this._getHeaderOpacity();
         const headerColor = this._getHeaderColor();
         const arrowColor = this._getArrowColor();
 
-        let {logo, name} = this.state;
+        
+        let address = branch.split(" ")[0], phone = branch.split(" ")[1]
+        
         // console.log('Can Redeem?');
         // console.log(this.props.isRewardRedeemable);
+
+        if(isLoading || isVendorLoading) {
+            return (
+                <Container center>
+                    <Loading />
+                </Container>
+            )
+        }
 
         return (
             <Container>
@@ -359,6 +388,11 @@ class Vendor extends Component {
                     <View style={styles.logoContainer}>
                         <ProgressiveImage thumbnailSource={Images.smallProfile} source={{uri: logo}} style={styles.logo}/>
                     </View>
+                    <TouchableOpacity 
+                    style={[styles.button, {backgroundColor: cardNotAdded ? Colors.primary : Colors.grey}]} 
+                    onPress={() => this.handleWalletChange(this.state.uid, cardKey)}>
+                        <Text style={styles.buttonText}>{cardNotAdded ? "Add to Wallet" : "Added"}</Text>
+                    </TouchableOpacity>
                     
                 </View>
 
@@ -366,7 +400,7 @@ class Vendor extends Component {
 
                     {this.renderVisitRewards()}
                     {this.renderStaticRewards()}
-                    {this.renderAddress(this.state.branch, this.state.branch)}
+                    {this.renderAddress(address, phone)}
                 </View>
 
 
@@ -385,12 +419,20 @@ const mapStateToProps = (state) => ({
     uid: state.auth.uid,
     redeemStatus: state.reward.redeemStatus,
     isLoading: state.reward.isLoading,
+    isVendorLoading: state.vendor.isLoading,
     isRewardRedeemable: state.reward.isRewardRedeemable,
-    visitDetails: state.reward.visitDetails
+    visitDetails: state.reward.visitDetails,
+
+    myCards: state.auth.profile.cards != undefined ? state.auth.profile.cards : [],
     // vendors: state.vendor.vendors,
 })
 
 const mapDispatchToProps = (dispatch) => ({
+    addCard: (uid, vendorUid, cardKey) => dispatch(VendorActions.addCardRequest(uid, vendorUid, cardKey)),
+
+    getVendors: () => dispatch(VendorActions.getVendorsRequest()),
+    getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
+
     redeemStaticReward: (rewardRedeemed) => dispatch(RewardActions.redeemStaticRewardRequest(rewardRedeemed)),
     isRewardRedeemableFunction: (payload) => dispatch(RewardActions.isRewardRedeemableRequest(payload)),
     getVisitDetails: (payload) => dispatch(RewardActions.getVisitDetailsRequest(payload)),

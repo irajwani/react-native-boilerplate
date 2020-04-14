@@ -10,7 +10,13 @@ const CardList = ({vendors, myCards, onPress, handleWalletChange, style = null})
         contentContainerStyle={styles.cardsContentContainer}
         data={vendors}
         showsVerticalScrollIndicator={true}
-        renderItem={(item, index) => <VendorCard myCards={myCards} vendor={item.item} onPress={() => onPress(item.item)} handleWalletChange={() => handleWalletChange(item.item.uid)}/>}
+        renderItem={(item, cardIndex) => (
+            <VendorCard 
+            key={cardIndex}
+            myCards={myCards} vendor={item.item} onPress={() => onPress(item.item)} 
+            handleWalletChange={() => handleWalletChange(item.item.uid, item.item.cardKey)}
+            />
+        )}
         // renderItem={(item, index) => this.renderVendor(item.item, index)}
         keyExtractor={(item, index) => index}
         numColumns={1}

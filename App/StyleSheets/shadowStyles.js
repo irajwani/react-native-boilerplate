@@ -68,5 +68,16 @@ export default StyleSheet.create({
         shadowRadius: 1,
     },
 
+    lowerThemeShadow: {
+        shadowColor: Colors.primary,
+        
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.7,
+        shadowRadius: 1,
+    },
+
 
 })
