@@ -26,6 +26,7 @@ class SplashScreen extends React.Component {
       Metrics.platform == 'android' ? this.createChannel() : null;
       this.checkPermission();
       this.createNotificationListeners();
+      // firebase.auth().signOut()
       setTimeout(() => {
         this.showAppOrAuth();
         

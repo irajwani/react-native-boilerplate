@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
         ...shadowStyles.lowerThemeShadow,
         ...Helpers.center,
         padding: Metrics.baseMargin,
+        elevation: 2,
         
     },
 

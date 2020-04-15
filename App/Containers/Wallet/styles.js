@@ -6,6 +6,7 @@ export default StyleSheet.create({
     gradientBanner: {
         flex: 0.25,
         ...shadowStyles.lowerGreyShadow,
+        elevation: 2,
     },
 
     bodyContainer: {
@@ -20,7 +21,8 @@ export default StyleSheet.create({
             position: 'absolute',
             alignSelf: 'center',
             zIndex: 1,
-            ...shadowStyles.greyShadow
+            ...shadowStyles.greyShadow,
+            elevation: 2,
         },
 
             profilePicture: {
@@ -81,7 +83,7 @@ export default StyleSheet.create({
             borderTopLeftRadius: 15,
             backgroundColor: Colors.secondary,
             ...shadowStyles.greyShadow,
-            
+            elevation: 2,  
         },
 
         drawerBody: {

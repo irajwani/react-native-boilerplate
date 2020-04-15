@@ -54,7 +54,7 @@ class Rewards extends Component {
         
         <Modal
           rounded={false}
-          modalStyle={{...shadowStyles.blackShadow, }}
+          modalStyle={{...shadowStyles.blackShadow, elevation: 2,}}
         //   modalTitle={<ModalTitle hasTitleBar={false} title="Redeem Gift" titleTextStyle={{...Fonts.style.medium, color: Colors.secondary, fontWeight: "600"}}/>}
           visible={this.state.isVisible}
           onTouchOutside={this.toggleConfirmationModal}

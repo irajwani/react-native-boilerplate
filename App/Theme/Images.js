@@ -190,8 +190,8 @@ export default {
   Facebook: ({onPress}) => (
     <Icon 
       name='facebook'
-      size={20}
-      color={Colors.black}
+      size={32}
+      color={Colors.facebook}
       onPress={onPress}
     />
   ),

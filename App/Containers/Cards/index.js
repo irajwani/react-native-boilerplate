@@ -44,7 +44,7 @@ class Cards extends Component {
             )
         }
         return (
-            <Container style={{...shadowStyles.lowerBlackShadow}}>
+            <Container>
 
                 <HeaderRow backgroundColor={Colors.primary} shadow>
                     <Text style={styles.headerText}>Browse Cards</Text>

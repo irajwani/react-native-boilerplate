@@ -73,7 +73,7 @@ export class Welcome extends Component {
         // this.newUser = props.navigation.state.params.newUser;
     }
 
-    async componentWillMount () {
+    async UNSAFE_componentWillMount () {
        
         let newUser = await AsyncStorage.getItem('newUser');
         AsyncStorage.getItem('saveUsernamePass')
@@ -248,7 +248,7 @@ export class Welcome extends Component {
     renderForgotPassword = () => ( 
         <Modal
           rounded={true}
-          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin }}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, elevation: 2, }}
           modalTitle={<ModalTitle hasTitleBar={true} title="Forgot Password?" titleTextStyle={{...Fonts.style.big}}/>}
           visible={this.state.isFpVisible}
           onTouchOutside={this.toggleForgotPassword}
@@ -306,7 +306,7 @@ export class Welcome extends Component {
         return (
         <Modal
           rounded={false}
-          modalStyle={{...shadowStyles.blackShadow, }}
+          modalStyle={{...shadowStyles.blackShadow, elevation: 2,}}
         //   modalTitle={<ModalTitle hasTitleBar={false} title="Error!" titleTextStyle={{...Fonts.style.big, color: Colors.primary, fontWeight: "600"}}/>}
           visible={this.state.isAlertVisible}
           onTouchOutside={this.toggleAlert}
@@ -367,53 +367,53 @@ export class Welcome extends Component {
                 </View>
 
                 <View style={styles.bodyContainer}>
-
+                    <View style={styles.whiteCard}>
                     
 
-                    <View style={styles.logoContainer}>
-                        <Image style={styles.logo} source={Images.logo}/>
-                    </View>
-                    
-                    <AuthInput
-                        placeholder={'Email'}
-                        value={this.state.email}
-                        onChangeText={email => this.setState({email})}
-                        keyboardType={'email-address'}
-                    />
-
-                    <AuthInput
-                        placeholder={'Password'}
-                        value={this.state.pass}
-                        onChangeText={pass => this.setState({pass})}
-                        secureTextEntry
-                    />
-
-                    {this.renderRememberHelper()}
-                    
-                    
-
-                    {this.state.isLoading ? 
-                    <Loading />
-                    :
-                    <>
-                    <View style={styles.buttonContainer}>
-                        <AuthButton
-                            text={"Login"}
-                            onPress={this.signIn}  
+                        <View style={styles.logoContainer}>
+                            <Image style={styles.logo} source={Images.logo}/>
+                        </View>
+                        
+                        <AuthInput
+                            placeholder={'Email'}
+                            value={this.state.email}
+                            onChangeText={email => this.setState({email})}
+                            keyboardType={'email-address'}
                         />
-                    </View>
 
-                    <View style={{marginTop: 15}}>
-                        <View style={{...Helpers.center, paddingVertical: 5,}}>
-                            <Text style={{...Fonts.style.small, fontWeight: "bold", color: Colors.primary}}>Or login with</Text>
+                        <AuthInput
+                            placeholder={'Password'}
+                            value={this.state.pass}
+                            onChangeText={pass => this.setState({pass})}
+                            secureTextEntry
+                        />
+
+                        {this.renderRememberHelper()}
+                        
+                        
+
+                        {this.state.isLoading ? 
+                        <Loading />
+                        :
+                        <>
+                        <View style={styles.buttonContainer}>
+                            <AuthButton
+                                text={"Login"}
+                                onPress={this.signIn}  
+                            />
                         </View>
-                        <View style={{...Helpers.center, flexDirection: 'row', padding: 0, }}>
-                            <Facebook onPress={() => this.signInWithFacebook()}/>
+
+                        <View style={{marginTop: 15}}>
+                            <View style={{...Helpers.center, paddingVertical: 5,}}>
+                                <Text style={{...Fonts.style.small, fontWeight: "bold", color: Colors.primary}}>Or login with</Text>
+                            </View>
+                            <View style={{...Helpers.center, flexDirection: 'row', padding: 0, }}>
+                                <Facebook onPress={() => this.signInWithFacebook()}/>
+                            </View>
                         </View>
+                        </>
+                        }
                     </View>
-                    </>
-                    }
-                    
                 </View>
 
                 <View style={styles.footerContainer}>

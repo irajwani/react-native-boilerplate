@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         width: Metrics.screenWidth/1.5,
         paddingVertical: 8, 
         borderRadius: 30,
-        ...shadowStyles.greyShadow
-        
+        ...shadowStyles.greyShadow,
+        elevation: 2
     },
 
     text: {

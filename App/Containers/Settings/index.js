@@ -46,7 +46,7 @@ class Settings extends Component {
     renderDocumentModal = () => (
         <Modal
             rounded={false}
-            modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, height: Metrics.screenHeight - 3*Metrics.baseMargin}}
+            modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, height: Metrics.screenHeight - 3*Metrics.baseMargin, elevation: 2,}}
             modalTitle={<ModalTitle hasTitleBar={false} title={this.state.document.title} titleTextStyle={{...Fonts.style.medium, color: Colors.primary, fontWeight: "400"}}/>}
             visible={this.state.isDocumentVisible}
             onTouchOutside={this.toggleDocumentModal}

@@ -24,12 +24,16 @@ export default StyleSheet.create({
 
     bodyContainer: {
         flex: 0.7,
-        // alignSelf: 'center',
+        justifyContent: 'center',
+    },
+
+    whiteCard: {
         marginHorizontal: Metrics.baseMargin,
         padding: 10,
         backgroundColor: Colors.white,
         borderRadius: 10,
         ...shadowStyles.lowerBlackShadow,
+        elevation: 2,
     },
 
         logoContainer: {

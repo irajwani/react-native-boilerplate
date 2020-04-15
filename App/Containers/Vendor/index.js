@@ -237,7 +237,7 @@ class Vendor extends Component {
     renderConfirmationModal = () => (
         <Modal
           rounded={false}
-          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin}}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, elevation: 2,}}
         //   modalTitle={<ModalTitle hasTitleBar={false} title="Redeem Gift" titleTextStyle={{...Fonts.style.medium, color: Colors.secondary, fontWeight: "600"}}/>}
           visible={this.state.isVisible}
           onTouchOutside={this.toggleConfirmationModal}
@@ -275,7 +275,7 @@ class Vendor extends Component {
         return ( 
         <Modal
           rounded={false}
-          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin}}
+          modalStyle={{...shadowStyles.blackShadow, margin: Metrics.baseMargin, elevation: 2,}}
           visible={this.state.isMessageVisible}
           onTouchOutside={this.toggleMessageModal}
           modalAnimation={new SlideAnimation({

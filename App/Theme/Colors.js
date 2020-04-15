@@ -43,5 +43,7 @@ const background = {
     grey: '#989898',
     lightgrey: '#e4e4e4',
     containerBackground: '#F2F2F2',
+
+    facebook: "#3b5998"
   }
   

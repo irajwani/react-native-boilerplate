@@ -50,19 +50,21 @@ const styles = StyleSheet.create({
         // width: "100%",
         // height: Metrics.screenHeight/4.7,
         flex: 0.45,
-        margin: 5,
+        
+        margin: Metrics.baseMargin,
         ...shadowStyles.whiteCard,
-        backgroundColor: 'white'
+        backgroundColor: Colors.white,
+        elevation: 2,
         
     },
 
     imageContainer: {
         flex: 0.65,
-        ...Helpers.center,
+        // ...Helpers.center,
         // ...borderStyles.mediumBottomBorder
     },
         image: {
-            width: 105,
+            width: "100%",
             height: 105,
         },
 
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
             width: 90,
             ...Helpers.center,
             ...shadowStyles.whiteCard,
-            
+            elevation: 2,
             borderRadius: 20,
             padding: 5
 

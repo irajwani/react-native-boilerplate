@@ -57,7 +57,8 @@ export default StyleSheet.create({
             position: 'absolute',
             zIndex: 1,
             backgroundColor: 'transparent',
-            ...shadowStyles.blackShadow
+            ...shadowStyles.blackShadow,
+            elevation: 2,
         },
 
             logo: {
@@ -71,7 +72,7 @@ export default StyleSheet.create({
             right: Metrics.baseMargin,
             position: 'absolute',
             zIndex: 1,
-
+            elevation: 2,
             width: 90,
             ...Helpers.center,
             ...shadowStyles.whiteCard,
@@ -104,6 +105,7 @@ export default StyleSheet.create({
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 paddingVertical: 10,
+                elevation: 2,
                 ...shadowStyles.lowerGreyShadow,
                 alignItems: 'center'
                 // ...Helpers.center,

@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
                 margin: 10,
                 ...Helpers.center,
                 ...shadowStyles.lowerGreyShadow,
+                elevation: 2,
             },
 
                 redeemText: {

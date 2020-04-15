@@ -79,7 +79,7 @@ class Wallet extends Component {
         
         <Modal
             rounded={false}
-            modalStyle={{...shadowStyles.blackShadow, }}
+            modalStyle={{...shadowStyles.blackShadow, elevation: 2,}}
             modalTitle={<ModalTitle hasTitleBar={false} title="Log Out" titleTextStyle={{...Fonts.style.medium, color: Colors.primary, fontWeight: "400"}}/>}
             visible={this.state.isExitVisible}
             onTouchOutside={this.toggleExitModal}

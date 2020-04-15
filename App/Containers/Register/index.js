@@ -223,6 +223,7 @@ class Register extends Component {
                 token
                 // token: "dJUd9hBupPI:APA91bHq7vv-mlMWvsplrlBFq8RI6mstf0ub8Ws6H-EYffd5M2zkP2Stg78Lk3WdzxkjmVfGUwoNm0DJmHivmgG84fqD7es3Fj8wuUisSQHLCe6yclsuITUDzRfnjuU1_j5HPdTdJ7yY",
             }
+            console.log(newUser);
             createUser(newUser);
             this.setState({uploadingPicture: false, modalVisible: false});
         })
