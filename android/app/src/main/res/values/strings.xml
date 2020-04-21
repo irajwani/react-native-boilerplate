@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">treet</string>
     <string name="facebook_app_id">221045929087692</string>
+    <string name="theme">#7e11a8</string>
 </resources>
