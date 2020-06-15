@@ -1,4 +1,4 @@
-package com.push;
+package com.treetloyaltycards;
 
 import com.facebook.react.ReactActivity;
 

@@ -48,7 +48,7 @@ let forgotPasswordText = "Please enter the email you created an account with. Fo
 
 let toastDuration = 4000;
 
-export class Welcome extends Component {
+class Welcome extends Component {
 
     constructor(props) {
         super(props);

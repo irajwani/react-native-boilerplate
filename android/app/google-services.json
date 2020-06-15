@@ -38,6 +38,57 @@
             {
               "client_id": "1772966563-0k2p42oqrtg3l8ikdgjq9v2h5uqnpdas.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1772966563-lejmrc8e2anrv7ufeh2vj59nuljt5iq3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appstack.push"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1772966563:android:26ee93acba9f6c22e76516",
+        "android_client_info": {
+          "package_name": "com.treetloyaltycards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1772966563-rsekj9ku6rjepvbbi72f0d6n187oj815.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.treetloyaltycards",
+            "certificate_hash": "76fee54f57ff82ff7206b548081e3ead1f563d2b"
+          }
+        },
+        {
+          "client_id": "1772966563-0k2p42oqrtg3l8ikdgjq9v2h5uqnpdas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAtKYjL0OuFLs7q4d6DDvbIsqS11NxO4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1772966563-0k2p42oqrtg3l8ikdgjq9v2h5uqnpdas.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1772966563-lejmrc8e2anrv7ufeh2vj59nuljt5iq3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appstack.push"
+              }
             }
           ]
         }

@@ -6,6 +6,9 @@ import ProgressiveImage from '../Image/ProgressiveImage';
 import shadowStyles from '../../StyleSheets/shadowStyles'
 import borderStyles from '../../StyleSheets/borderStyles'
 import { Images, Fonts, Helpers, Colors, Metrics } from '../../Theme';
+import { TapGestureHandler, gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
+import AddButton from '../Button/AddButton';
 
 let {Plus} = Images;
 
@@ -16,21 +19,29 @@ export default ({vendor, myCards, onPress, handleWalletChange}) => {
     return (
     
     <TouchableOpacity 
-    style={styles.card} onPress={onPress}
+    style={styles.card} onPress={onPress} 
     // underlayColor={'transparent'}
     >
         <View style={[styles.imageContainer, {backgroundColor: vendor.loyaltyCard.backgroundColor}]}>
-            <ProgressiveImage source={{uri: vendor.logo}} thumbnailSource={Images.blankAvatar} style={styles.image}/>
+            <View style={styles.buttonContainer}>
+                {/* <Text>Hi</Text> */}
+                {/* <AddButton cardNotAdded={cardNotAdded} onPress={handleWalletChange}/> */}
+            </View>
+            <ProgressiveImage source={{uri: vendor.branchImage}} thumbnailSource={Images.blankAvatar} style={styles.image}/>
         </View> 
 
         <View style={styles.bodyContainer}>
             <View style={styles.nameContainer}>
                 <Text style={styles.name}>{vendor.name}</Text>
-                <TouchableOpacity 
+
+                
+                {/* <TouchableOpacity 
                 style={[styles.button, {backgroundColor: cardNotAdded ? Colors.primary : Colors.grey}]} 
                 onPress={handleWalletChange}>
                     <Text style={styles.buttonText}>{cardNotAdded ? "Add to Wallet" : "Added"}</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                
+            
             </View>
             <View style={styles.branchContainer}>
                 <Text style={styles.branch}>{vendor.branch}</Text>
@@ -66,6 +77,15 @@ const styles = StyleSheet.create({
         image: {
             width: "100%",
             height: 105,
+        },
+
+        buttonContainer: {
+            position: "absolute",
+            top: Metrics.baseMargin,
+            right: Metrics.baseMargin,
+            zIndex: 180,
+            backgroundColor: 'green'
+            // zIndex: 100
         },
 
     bodyContainer: {

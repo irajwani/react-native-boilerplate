@@ -117,7 +117,7 @@ class Wallet extends Component {
 
     render() {
         let {isLoading} = this.props;
-        
+        console.log(this.props.myCards);
         return (
             <Container>
                 <ImageBackground style={styles.gradientBanner} source={Images.walletBg}>

@@ -66,11 +66,12 @@ class Vendor extends Component {
         // console.tron.log(this.state);
     }
 
-    async componentWillMount() {
+    componentWillMount = async () => {
         let payload = {
             uid: this.props.uid,
             vendorUid: this.state.uid,
         }
+        await this.props.getVendor({vendorUid: this.state.uid});
         await this.props.getVisitDetails(payload);
         await this.props.isRewardRedeemableFunction(payload);
     }
@@ -337,16 +338,13 @@ class Vendor extends Component {
       };
 
     render() {
-        let {logo, name, branch, cardKey} = this.state;
-        let {isLoading, isVendorLoading, myCards} = this.props;
+        let {name, branch, branchImage, cardKey} = this.state;
+        let {isLoading, isVendorLoading, myCards, logo, phone} = this.props;
         let cardNotAdded = !myCards.map((card) => card.cardKey).includes(cardKey);
 
         const headerOpacity = this._getHeaderOpacity();
         const headerColor = this._getHeaderColor();
         const arrowColor = this._getArrowColor();
-
-        
-        let address = branch.split(" ")[0], phone = branch.split(" ")[1]
         
         // console.log('Can Redeem?');
         // console.log(this.props.isRewardRedeemable);
@@ -384,7 +382,7 @@ class Vendor extends Component {
             >
                 
                 <View style={styles.bannerContainer}>
-                    <ProgressiveImage thumbnailSource={Images.glass} source={Images.blur} style={styles.banner}/>
+                    <ProgressiveImage thumbnailSource={Images.glass} source={{uri: branchImage}} style={styles.banner}/>
                     <View style={styles.logoContainer}>
                         <ProgressiveImage thumbnailSource={Images.smallProfile} source={{uri: logo}} style={styles.logo}/>
                     </View>
@@ -400,7 +398,7 @@ class Vendor extends Component {
 
                     {this.renderVisitRewards()}
                     {this.renderStaticRewards()}
-                    {this.renderAddress(address, phone)}
+                    {this.renderAddress(branch, phone)}
                 </View>
 
 
@@ -424,6 +422,10 @@ const mapStateToProps = (state) => ({
     visitDetails: state.reward.visitDetails,
 
     myCards: state.auth.profile.cards != undefined ? state.auth.profile.cards : [],
+
+    //vendor specific information
+    logo: state.vendor.vendorData.logo,
+    phone: state.vendor.vendorData.phone,
     // vendors: state.vendor.vendors,
 })
 
@@ -431,6 +433,7 @@ const mapDispatchToProps = (dispatch) => ({
     addCard: (uid, vendorUid, cardKey) => dispatch(VendorActions.addCardRequest(uid, vendorUid, cardKey)),
 
     getVendors: () => dispatch(VendorActions.getVendorsRequest()),
+    getVendor: (body) => dispatch(VendorActions.getVendorRequest(body)),
     getProfile: (uid) => dispatch(AuthActions.getProfileRequest(uid)),
 
     redeemStaticReward: (rewardRedeemed) => dispatch(RewardActions.redeemStaticRewardRequest(rewardRedeemed)),

@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.push"
+        applicationId "com.treetloyaltycards"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

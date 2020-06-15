@@ -9,7 +9,7 @@ import { RewardTypes } from '../Stores/Reward/Actions'
 // import { startup } from './StartupSaga'
 import { createUser, getProfile, updateUser } from './AuthSaga'
 // import { getDeals } from './DealsSaga'
-import {getVendors, addCard} from './VendorSaga';
+import {getVendors, addCard, getVendor} from './VendorSaga';
 import {getRewards, redeemReward, getVisitDetails, isRewardRedeemable, redeemStaticReward} from './RewardSaga';
 
 
@@ -27,6 +27,7 @@ export default function* root() {
 
     takeLatest(VendorTypes.GET_VENDORS_REQUEST, getVendors),
     takeLatest(VendorTypes.ADD_CARD_REQUEST, addCard),
+    takeLatest(VendorTypes.GET_VENDOR_REQUEST, getVendor),
 
     takeLatest(RewardTypes.GET_REWARDS_REQUEST, getRewards),
     takeLatest(RewardTypes.REDEEM_REWARD_REQUEST, redeemReward),

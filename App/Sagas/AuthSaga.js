@@ -6,9 +6,9 @@ import { authService } from '../Services/AuthService'
 import NavigationService from '../Services/NavigationService'
 
 export function* createUser(payload) {
-  console.log('Sending new user data to server');
+  // console.log('Sending new user data to server');
   const {newUser} = payload;
-  console.log(newUser);
+  // console.log(newUser);
   const response = yield call(authService.createUser, newUser);
   console.log(response);
   if (response.status === 200) {
@@ -30,7 +30,7 @@ export function* getProfile(payload) {
   // console.log(JSON.stringify(payload))
   // console.log('Initiate profile retrieval for ' + JSON.stringify(payload));
   const response = yield call(authService.getProfile, payload)
-  console.log(response);
+  // console.log(response);
   if (response.status === 200) {
     // console.log(response.data);
     yield put(AuthActions.getProfileSuccess(response.data))
@@ -40,11 +40,11 @@ export function* getProfile(payload) {
 }
 
 export function* updateUser(payload) {
-  console.log('updating user');
+  // console.log('updating user');
   const {data} = payload;
-  console.log(data);
+  // console.log(data);
   const response = yield call(authService.updateUser, data);
-  console.log(response);
+  // console.log(response);
   if (response.status === 200) {
     
     yield put(AuthActions.getProfileSuccess(response.data.data));

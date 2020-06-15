@@ -170,20 +170,21 @@ export default {
 
 
 
-  Plus: () => (
+  Plus: ({color = Colors.white, size = 30, style=null}) => (
     <Icon 
       name='plus'
-      size={30}
-      color={Colors.white}
-      
+      size={size}
+      color={color}
+      style={style}
     />
   ),
 
-  Check: () => (
+  Check: ({color = Colors.black, size = 30, style=null}) => (
     <Icon
     name="check"
-    size={22}
-    color={Colors.black} 
+    size={size}
+    color={color} 
+    style={style}
     />
   ),
 

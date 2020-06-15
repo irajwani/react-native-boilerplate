@@ -30,8 +30,14 @@ function addCard(payload) {
   return apiClient.post(`/addCard`, payload).then(fulfilled)
 }
 
+function getVendor(payload) {
+  return apiClient.get(`/getVendor?uid=${payload.vendorUid}`).then(fulfilled)
+}
+
 export const vendorService = {
   getVendors,
 
   addCard,
+
+  getVendor,
 }

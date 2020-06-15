@@ -5,6 +5,11 @@ const { Types, Creators } = createActions({
   getVendorsSuccess: ['vendors'],
   getVendorsFailure: ['errorMessage'],
 
+  //argument namespace incongruency as I now have now shifted to pattern below
+  getVendorRequest: ['body'],
+  getVendorSuccess: ['message'],
+  getVendorFailure: ['errorMessage'],
+
   addCardRequest: ['uid', 'vendorUid', 'cardKey'],
   addCardSuccess: ['message'],
   addCardFailure: ['errorMessage'],

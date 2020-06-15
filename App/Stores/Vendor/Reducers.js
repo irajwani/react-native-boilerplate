@@ -3,7 +3,7 @@ import { createReducer } from 'reduxsauce'
 import { VendorTypes } from './Actions'
 
 export const getVendorsRequest = (state) => {
-  console.log('fetching vendors');
+  // console.log('fetching vendors');
   return {
     ...state,
     isLoading: true,
@@ -11,13 +11,12 @@ export const getVendorsRequest = (state) => {
 }
 
 export const getVendorsSuccess = (state, {vendors}) => {
-  console.log(vendors);
+  // console.log(vendors);
   return {
     ...state,
     vendors,
     isLoading: false,
-    
-    // deals: [{title: 'Top Rated', deals}],
+  
   }
 }
 
@@ -26,6 +25,11 @@ export const getVendorsFailure = (state, { errorMessage }) => ({
   isLoading: false,
   errorMessage,
 })
+
+
+
+
+
 
 export const addCardRequest = (state, {uid, vendorUid, cardKey}) => ({
   ...state,
@@ -55,6 +59,35 @@ export const addCardFailure = (state, { errorMessage }) => ({
 
 
 
+
+
+export const getVendorRequest = (state) => {
+  console.log('fetching vendor');
+  return {
+    ...state,
+    isLoading: true,
+  }
+}
+
+export const getVendorSuccess = (state, {message}) => {
+  
+  return {
+    ...state,
+    vendorData: message,
+    isLoading: false,
+    
+  }
+}
+
+export const getVendorFailure = (state, { errorMessage }) => ({
+  ...state,
+  isLoading: false,
+  errorMessage,
+})
+
+
+
+
 export const reducer = createReducer(INITIAL_STATE, {
   [VendorTypes.GET_VENDORS_REQUEST]: getVendorsRequest,
   [VendorTypes.GET_VENDORS_SUCCESS]: getVendorsSuccess,
@@ -63,6 +96,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [VendorTypes.ADD_CARD_REQUEST]: addCardRequest,
   [VendorTypes.ADD_CARD_SUCCESS]: addCardSuccess,
   [VendorTypes.ADD_CARD_FAILURE]: addCardFailure,
+
+  [VendorTypes.GET_VENDOR_REQUEST]: getVendorRequest,
+  [VendorTypes.GET_VENDOR_SUCCESS]: getVendorSuccess,
+  [VendorTypes.GET_VENDOR_FAILURE]: getVendorFailure,
 
   
 
